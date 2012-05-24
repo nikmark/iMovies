@@ -49,4 +49,20 @@ public class loginBean {
     public void setPassword(String password) {
         this.password = password;
     }
+    
+    /**
+     * 
+     */
+    public String query() {
+        if (username == null || password == null)
+            // prima apertura allora non fare niente
+            return "";
+        else if (username.isEmpty())
+            return "user non può essere vuoto";
+        else if (password.isEmpty())
+            return "password non può essere vuota";
+        
+        return "controllo credenziali con query SQL...";
+
+    }
 }

@@ -13,11 +13,16 @@
         
     </h:head>
     <h:body>
+        <!--<p:overlayPanel />-->
+
         <h:form>
-            <p:inputText value="#{loginBean.username}"  /><br />
+            Username: <p:inputText id="user" value="#{loginBean.username}"  /><br />
+            Password: <p:inputText id="pwd" value="#{loginBean.password}" type="password" /><br />
             #{loginBean.login()}<br /><br />
-            <input value="submit" type="submit" />
-            Lo username è: <h:outputText value="#{loginBean.username}" />
+            <!--<input value="submit" type="submit" />-->
+            <p:commandButton value="cliccami" title="se mi clicchi invio il form" update="auth" />
+            <br />
+            <h:outputText id="auth" value="#{loginBean.query()}" />
         </h:form>
     </h:body>
 </html>
