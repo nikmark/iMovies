@@ -62,6 +62,11 @@ public class loginBean {
         else if (password.isEmpty())
             return "password non può essere vuota";
         
+        // sanitizzazione dell'input
+        // DA FARE
+        
+        
+        // query
         return "controllo credenziali con query SQL...";
 
     }
