@@ -8,8 +8,8 @@
     xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
     <managed-bean>
         <description>bean per il login</description>
-        <managed-bean-name>loginBean</managed-bean-name>
-        <managed-bean-class>main.loginBean</managed-bean-class>
-        <managed-bean-scope>request</managed-bean-scope>
-    </managed-bean>
+        <managed-bean-name>LoginBean</managed-bean-name>
+        <managed-bean-class>main.LoginBean</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
 </faces-config>

@@ -41,22 +41,30 @@ public class DBMS {
     }
     
     	// Metodo per il recupero delle principali informazioni di tutti i corsi di studi
-	public Vector getUsers() {
+	public PersonaBean getUser(String userid, String password) {
 		// Dichiarazione delle variabili
 		Connection con = null;
-		Statement stmt = null;
-		ResultSet rs = null;
-		Vector result = new Vector();
+		PreparedStatement pstmt;
+		ResultSet rs;
+		//Vector result = new Vector();
 		try {
 			// Tentativo di connessione al database
 			con = DriverManager.getConnection(url, user, passwd);
-			// Connessione riuscita, ottengo l'oggetto per l'esecuzione dell'interrogazione.
-			stmt = con.createStatement();
-			// Eseguo l'interrogazione desiderata
-			rs = stmt.executeQuery(login);
+                        
+                        // Connessione riuscita, ottengo l'oggetto per l'esecuzione
+			// dell'interrogazione.
+			pstmt = con.prepareStatement(login); 
+			pstmt.clearParameters();
+                        //Imposto i parametri della query
+			pstmt.setString(1, userid);
+                        pstmt.setString(2, password);
+			rs=pstmt.executeQuery(); 
+     
 			// Memorizzo il risultato dell'interrogazione nel Vector
-			while(rs.next())
-				result.add(makePersonaBean(rs));
+			// while(rs.next())
+			//	result.add(
+                        if (rs.next())
+                            return makePersonaBean(rs);//);
 		} catch(SQLException sqle) {                /* Catturo le eventuali eccezioni! */
 			sqle.printStackTrace();
 		} finally {                                 /* Alla fine chiudo la connessione. */
@@ -66,7 +74,7 @@ public class DBMS {
 				sqle1.printStackTrace();
 			}
 		}
-		return result;
+		return null;
     }
 
     private PersonaBean makePersonaBean(ResultSet rs) throws SQLException {
