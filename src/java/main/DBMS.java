@@ -14,17 +14,17 @@ import java.util.*;
 public class DBMS {
 
     //Dati di identificazione dell'utente (da personalizzare)
-    private String user = "root";
-    private String passwd = "root";
+    private String user = "imovies";
+    private String passwd = "imovies";
     /**
      * URL per la connessione alla base di dati e' formato dai seguenti
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
      */
-    private String url = "jdbc:postgresql://dbserver.sci.univr.it/did2011";
+    private String url = "jdbc:mysql://localhost:3306/iMoviesDB";
     /**
      * Driver da utilizzare per la connessione e l'esecuzione delle query.
      */
-    private String driver = "org.postgresql.Driver";
+    private String driver = "com.mysql.jdbc.Driver";
     //Recupera tutte le informazioni di un particolare corso di studi
     private String login = "SELECT uid,lastname,firstname,email,pwd FROM users WHERE uid=? AND pwd=?";
     private PersonaBean bean;

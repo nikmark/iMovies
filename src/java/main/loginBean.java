@@ -53,7 +53,10 @@ public class loginBean {
     /**
      * 
      */
-    public String query() {
+    public String query() throws ClassNotFoundException {
+        
+        DBMS prova = new DBMS();
+        prova.getUsers();
         if (username == null || password == null)
             // prima apertura allora non fare niente
             return "";
