@@ -12,4 +12,37 @@
         <managed-bean-class>main.LoginBean</managed-bean-class>
     
         <managed-bean-scope>request</managed-bean-scope></managed-bean>
+        
+        <managed-bean>
+        <description>bean dei dati utente</description>
+        <managed-bean-name>HomeUserBean</managed-bean-name>
+        <managed-bean-class>main.HomeUserBean</managed-bean-class>
+    
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>
+        
+        <navigation-rule>
+		<from-view-id>login.xhtml</from-view-id>
+		<navigation-case>
+	       <from-action>#{LoginBean.login}
+                </from-action>
+	       <from-outcome>success</from-outcome>
+	       <to-view-id>homeUser.xhtml<redirect /></to-view-id>
+               
+		</navigation-case>
+	</navigation-rule>
+       <!-- <navigation-rule>
+            <from-view-id>faces/login.xhtml</from-view-id>
+            <navigation-case>
+                <from-outcome>if</from-outcome>
+                <to-view-id>faces/index.xhtml</to-view-id>
+                <redirect />
+                </navigation-case>
+                </navigation-rule> -->
+        <!-- <navigation-rule>
+        <from-view-id>faces/login.xhtml</from-view-id>
+            <navigation-case>
+                <to-view-id>faces/index.xhtml</to-view-id>
+                <redirect />
+            </navigation-case>
+        </navigation-rule> -->
 </faces-config>

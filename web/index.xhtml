@@ -18,11 +18,11 @@
         <h:form>
             Username: <p:inputText id="user" value="#{LoginBean.username}"  /><br />
             Password: <p:inputText id="pwd" value="#{LoginBean.password}" type="password" /><br />
-            #{LoginBean.login()}<br /><br />
+            <!-- # {LoginBean.login()}<br /><br /> -->
             <!--<input value="submit" type="submit" />-->
-            <p:commandButton value="cliccami"  title="se mi clicchi invio il form" update="auth" />
+            <p:commandButton value="cliccami"  title="se mi clicchi invio il form" />
             <br /><br /><br />
-            <h:outputText id="auth" value="#{LoginBean.query()}" />
+            <!-- <h:outputText id="auth" value="# {LoginBean.login()}" /> -->
         </h:form>
     </h:body>
 </html>

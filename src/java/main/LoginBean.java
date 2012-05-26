@@ -1,9 +1,13 @@
 package main;
 
 
+import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.util.Formatter;
+import javax.faces.application.FacesMessage;
+import javax.faces.context.FacesContext;
+import org.primefaces.context.RequestContext;
 
 /**
  *
@@ -22,10 +26,10 @@ public class LoginBean {
         
     }
     
-    public String login()
+    /* public String login()
     {
         return "Ciao, sono il bean di login";
-    }
+    }*/
 
     /**
      * @return the username
@@ -58,15 +62,23 @@ public class LoginBean {
     /**
      * 
      */
-    public String query() throws NoSuchAlgorithmException {
-        if (username == null || password == null)
-            // prima apertura allora non fare niente
-            return "";
-        else if (username.isEmpty())
-            return "user non può essere vuoto";
-        else if (password.isEmpty())
-            return "password non può essere vuota";
+    public String login() throws NoSuchAlgorithmException, IOException {
         
+        RequestContext context = RequestContext.getCurrentInstance();  
+        FacesMessage msg;  
+        boolean loggedIn;  
+        
+        /* if (username == null || password == null){
+            // prima apertura allora non fare niente
+           loggedIn = false;  
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Username e Password vuoti", "Invalid credentials");
+        }else if (username.isEmpty()){
+            loggedIn = false;  
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Username vuoto", "Invalid credentials");
+        }else if (password.isEmpty()){
+            loggedIn = false;  
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Password vuota", "Invalid credentials");
+        }*/
         // sanitizzazione dell'input
         // DA FARE
         
@@ -75,17 +87,37 @@ public class LoginBean {
         // query
         try {
             DBMS dbms = new DBMS();
-            pb = dbms.getUser(username, this.SHAsum(password.getBytes()));
+            pb = dbms.getUser(username, SHAsum(password.getBytes()));
         } catch (ClassNotFoundException cnfe) {
             cnfe.getMessage();
         } catch (NoSuchAlgorithmException nsae) {
             nsae.getMessage();
         }
         
-        if (pb == null)
-            return "Login Fallito";
-        return "Benvenuto " + pb.getUid();
+        if (pb == null) {
+            loggedIn = false;  
+            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials"); 
+            FacesContext.getCurrentInstance().addMessage(null, msg);  
+             context.addCallbackParam("loggedIn", loggedIn); 
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+             return null;
+
+        }else{
+            loggedIn = true;  
+            //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", pb.getUid());  
+            //FacesContext.getCurrentInstance().addMessage(null, msg);  
+            context.addCallbackParam("loggedIn", loggedIn);
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
+            //context.addCallbackParam("url", "index.xhtml");
+            return "success";
+
+        }
         
+     //  FacesContext.getCurrentInstance().addMessage(null, msg);  
+       // context.addCallbackParam("loggedIn", loggedIn); 
+        
+                
         //return this.SHAsum(password.getBytes());
                //return "controllo credenziali con query SQL...";
 

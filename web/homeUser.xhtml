@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <head>
+        <title>TEST</title>
+    </head>
+    <body>
+        <h:form prependId="false">  
+  
+    <p:growl id="msgs" />  
+  
+    <p:panel header="Inplace Editor">  
+        <h:panelGrid columns="2" columnClasses="column" cellpadding="5">  
+            <h:outputText value="Basic Input: " />  
+            <p:inplace id="basic">  
+                <p:inputText value="Edit Me" />  
+            </p:inplace>  
+  
+            <h:outputText value="Ajax Inplace Editor: " />  
+            <p:inplace id="ajaxInplace" editor="true">  
+                <p:inputText value="#{HomeUserBean.text}"  
+                            required="true" label="text"/>  
+            </p:inplace>  
+  
+            <h:outputText value="Select One (Dlbclick): "/>  
+            <p:inplace id="selectableInplace" label="Cities" effectSpeed="fast" event="dblclick">  
+                <h:selectOneMenu>  
+                    <f:selectItem itemLabel="Istanbul" itemValue="Istanbul" />  
+                    <f:selectItem itemLabel="Ankara" itemValue="Ankara" />  
+                    <f:selectItem itemLabel="Istanbul" itemValue="Istanbul" />  
+                </h:selectOneMenu>  
+            </p:inplace>  
+  
+            <h:outputText value="Checkbox: "/>  
+            <p:inplace id="checkboxInplace" label="Edit me" effect="none">  
+                <h:selectBooleanCheckbox />  
+            </p:inplace>  
+  
+            <!-- <h:outputText value="Sliding Image: " />  
+            <p:inplace id="slidingInplace" label="Show" effect="slide">  
+                <p:graphicImage value="/images/nature1.jpg" />  
+            </p:inplace>  -->
+        </h:panelGrid>  
+    </p:panel>  
+  
+</h:form>  
+    </body>
+</html>
