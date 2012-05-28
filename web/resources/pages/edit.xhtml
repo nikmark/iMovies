@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>iMovies user area</title>
+        <h:outputStylesheet name="style.css" library="css" />
+    </h:head>
+    <h:body>
+        <div id="menu">
+            <h:form>
+                <p:menubar>  
+                    <p:submenu label="My certificate" icon="ui-icon-document">  
+                        <p:menuitem value="Edit my information" url="edit.xhtml" />  
+                        <p:menuitem disabled="true" value="Download certificate" url="#" />  
+                    </p:submenu>  
+
+                    <p:menuitem value="Logout" url="http://www.primefaces.org" icon="ui-icon-close" />  
+                </p:menubar>
+            </h:form>
+        </div>
+        <div id="content" >
+            <h:form id="edit_form">
+                
+                <p:growl id="messages" />
+                
+                <center>
+                    <p:panelGrid columns="2" style="width:960px">
+                        <f:facet name="header">
+                            Personal information
+                        </f:facet>
+
+                        <h:outputText value="Username" class="bold" />
+                        <h:panelGroup>
+                            <p:inputText id="username" value=""/>
+                            <p:tooltip for="username" value="This field will not be included in certificate"  />
+                        </h:panelGroup>
+                        <h:outputText value="Password" class="bold" />
+                        <h:panelGroup>
+                            <p:password id="password" value=""/>
+                            <p:tooltip for="password" value="This field will not be included in certificate"  />
+                        </h:panelGroup>
+                        <h:outputText value="First name" class="bold" />
+                        <p:inputText value="" required="true" requiredMessage="The first name is required"/>
+                        <h:outputText value="Last name" class="bold" />
+                        <p:inputText value="" required="true" requiredMessage="The last name is required" />
+                        <h:outputText value="Date of birth" class="bold" />
+                        <p:calendar yearRange="c-80:c" required="true" requiredMessage="Date of birth is required" navigator="true" />
+                        <h:outputText value="Address" class="bold" />
+                        <p:inputText value=""/>
+                        <h:outputText value="Email" class="bold" />
+                        <p:inputText value="" required="true" requiredMessage="Email is required" />
+
+                        <f:facet name="footer">
+                            Once you have done, click on the button below
+                        </f:facet>
+
+                    </p:panelGrid>
+                    
+                    <br /><br />
+                    
+                    <p:commandButton value="Store my data" update="edit_form" />
+                </center>
+            </h:form>
+        </div>
+    </h:body>
+</html>

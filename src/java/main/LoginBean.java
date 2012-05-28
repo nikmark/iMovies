@@ -4,16 +4,16 @@ package main;
  *
  * @author mattia
  */
-public class loginBean {
+public class LoginBean {
 
     private String username;
     private String password;
     
     
     /**
-     * Creates a new instance of loginBean
+     * Creates a new instance of LoginBean
      */
-    public loginBean() {
+    public LoginBean() {
         
     }
     

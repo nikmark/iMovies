@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html">
+    <h:head>
+        <title>iMovies administrator area</title>
+        <h:outputStylesheet name="style.css" library="css" />
+    </h:head>
+    <h:body>
+        <div id="menu">
+            <h:form>
+                <p:menubar>  
+                    <p:submenu label="Certificates" icon="ui-icon-document">  
+                        <p:menuitem value="Issued" url="#" />  
+                        <p:menuitem value="Revoked" url="#" />  
+                        <p:menuitem value="Current serial number" url="#" />  
+                    </p:submenu>  
+
+                    <p:menuitem value="Logout" url="http://www.primefaces.org" icon="ui-icon-close" />  
+                </p:menubar>
+            </h:form>
+        </div>
+        <div id="content" >
+            Welcome, administrator.<br />
+            With this interface, you can consult the CA's current state.
+        </div>
+    </h:body>
+</html>
