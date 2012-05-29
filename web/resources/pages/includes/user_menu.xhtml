@@ -1,0 +1,15 @@
+<ui:composition xmlns="http://www.w3.org/1999/xhtml"
+                xmlns:p="http://primefaces.org/ui"
+                xmlns:h="http://java.sun.com/jsf/html"
+                xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:form>
+        <p:menubar>  
+            <p:submenu label="My certificate" icon="ui-icon-document">  
+                <p:menuitem value="Edit my information" url="edit.xhtml" />  
+                <p:menuitem disabled="true" value="Download certificate" url="#" />  
+            </p:submenu>  
+
+            <p:menuitem value="Logout" url="http://www.primefaces.org" icon="ui-icon-close" />  
+        </p:menubar>
+    </h:form>
+</ui:composition>
