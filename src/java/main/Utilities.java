@@ -23,42 +23,38 @@ public class Utilities {
 
     public static boolean createCertificate(Persona pb) {
 
-                    String line;
-                    String subject="/C=IT/ST=Italy/L=Verona/O=iMovies Certificate Authority/"
-                            + "OU=iMovies Security Department/CN=iSD/"
-                            + "emailAddress="+pb.getEmail()+"/SN="+pb.getLastname()+""
-                                    + "/GN="+pb.getFirstname()+"";
-                    subject = subject.replaceAll(" ", "\\ ");
-
+        log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
         
-
-                    Scanner scan = new Scanner(System.in);
+//        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
+//        keyGen.initialize(1024, new SecureRandom());
+//        KeyPair keypair = keyGen.generateKeyPair();
+//        PrivateKey privKey = keypair.getPrivate();
+//        PublicKey pubKey = keypair.getPublic();
 //
-//                    //ProcessBuilder builder = new ProcessBuilder("openssl genrsa -out "+pb.getUid()+".key 1024");
-//                    //builder.redirectErrorStream(true);
-//                    Process process = Runtime.getRuntime().exec("openssl genrsa -out "+pb.getUid()+".key 1024");
-//                    process.waitFor();
-//                    
-//                    //stdout = process.getInputStream();
-//                    
-//                    
-//            //        builder = new ProcessBuilder("openssl req -new -key "+pb.getUid()+".key -out "+pb.getUid()+".csr -subj "+subject);
-//            //        builder.redirectErrorStream(true);
-//                    process = Runtime.getRuntime().exec("openssl req -new -key "+pb.getUid()+".key -out "+pb.getUid()+".csr -subj "+subject);
-//                    process.waitFor();
-//                    //stdout = process.getInputStream();
-//                    
-//                    //builder = new ProcessBuilder("openssl x509 -req -days 365 -in "+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt");
-//                    //builder.redirectErrorStream(true);
-//                    //process = builder.start();
-//            process = Runtime.getRuntime().exec("openssl x509 -req -days 365 -in "+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt");
-//                    process.waitFor();
-//                    //stdout = process.getInputStream();
+//        Calendar expiry = Calendar.getInstance();
+//        expiry.add(Calendar.DAY_OF_YEAR, 365);
+
+        String line;
+        String subject = "/C=IT/ST=Italy/L=Verona/O=iMovies Certificate Authority/"
+                + "OU=iMovies Security Department/CN=iSD/"
+                + "emailAddress=" + pb.getEmail() + "/SN=" + pb.getLastname() + ""
+                + "/GN=" + pb.getFirstname() + "";
+        subject = subject.replaceAll(" ", "\\ ");
+
+        OutputStream stdin;
+//                process.getOutputStream();
+        InputStream stderr;
+//                process.getErrorStream();
+        InputStream stdout;
+//                process.getInputStream();
+
+        Scanner scan = new Scanner(System.in);
 
         //ProcessBuilder builder = new ProcessBuilder("openssl genrsa -out "+pb.getUid()+".key 1024");
         //builder.redirectErrorStream(true);
         Process process = null;
         try {
+            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione file con chiavi");
             process = Runtime.getRuntime().exec("openssl genrsa -out " + pb.getUid() + ".key 1024");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
@@ -75,6 +71,7 @@ public class Utilities {
 //        builder = new ProcessBuilder("openssl req -new -key "+pb.getUid()+".key -out "+pb.getUid()+".csr -subj "+subject);
 //        builder.redirectErrorStream(true);
         try {
+            log.info(false, "Creazione certificato", "Generazione file csr", "Generazione file csr");
             process = Runtime.getRuntime().exec("openssl req -new -key " + pb.getUid() + ".key -out " + pb.getUid() + ".csr -subj " + subject);
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
@@ -91,8 +88,8 @@ public class Utilities {
         //builder = new ProcessBuilder("openssl x509 -req -days 365 -in "+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt");
         //builder.redirectErrorStream(true);
         //process = builder.start();
-        try {
-            process = Runtime.getRuntime().exec("openssl x509 -req -days 365 -in " + pb.getUid() + ".csr -signkey " + pb.getUid() + ".key -out " + pb.getUid() + ".crt");
+/*        try {
+            //process = Runtime.getRuntime().exec("openssl x509 -req -days 365 -in " + pb.getUid() + ".csr -signkey " + pb.getUid() + ".key -out " + pb.getUid() + ".crt");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         }
@@ -102,7 +99,7 @@ public class Utilities {
             //stdout = process.getInputStream();
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
-        }
+        }*/
         //stdout = process.getInputStream();
 
 
