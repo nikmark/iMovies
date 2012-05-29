@@ -8,7 +8,7 @@
         <title>Facelet Title</title>
         
         <!--<f:metadata>  
-            <f:event listener="# {LoginBean.verifyLogin}" type="preRenderView" /> 
+            <f:event listener="# {loginBean.verifyLogin}" type="preRenderView" /> 
         </f:metadata>-->
         
     </h:head>
@@ -16,13 +16,13 @@
         <!--<p:overlayPanel />-->
 
         <h:form>
-            Username: <p:inputText id="user" value="#{LoginBean.username}"  /><br />
-            Password: <p:inputText id="pwd" value="#{LoginBean.password}" type="password" /><br />
-            <!-- # {LoginBean.login()}<br /><br /> -->
+            Username: <p:inputText id="user" value="#{loginBean.username}"  /><br />
+            Password: <p:inputText id="pwd" value="#{loginBean.password}" type="password" /><br />
+            #{loginBean.login()}<br /><br />
             <!--<input value="submit" type="submit" />-->
-            <p:commandButton value="cliccami"  title="se mi clicchi invio il form" />
+            <p:commandButton value="cliccami" title="se mi clicchi invio il form" update="auth" />
             <br /><br /><br />
-            <!-- <h:outputText id="auth" value="# {LoginBean.login()}" /> -->
+            <h:outputText id="auth" value="#{loginBean.query()}" />
         </h:form>
     </h:body>
 </html>

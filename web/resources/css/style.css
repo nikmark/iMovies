@@ -1,0 +1,15 @@
+body
+{
+    font-family: sans-serif;
+}
+
+.ui-widget, .ui-widget .ui-widget 
+{
+    font-size: 90%;
+}
+
+#content
+{
+    padding-top: 20px;
+    text-align: center;
+}
