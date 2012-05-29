@@ -12,10 +12,10 @@ and open the template in the editor.
         <title>Welcome #{LoginBean.pb.uid}</title>
     </h:head>
     <h:body>
+
+        <h:form id="form" prependId="false">  
+
             <p:growl id="msgs" />  
-
-        <h:form prependId="false">  
-
 
             <p:panel header="Inplace Editor">  
                 <h:panelGrid columns="2" columnClasses="column" cellpadding="5">  
@@ -105,9 +105,9 @@ and open the template in the editor.
         </h:form>   
         <h:form>
         <p.panel>
-                <p:commandButton id="submitModify" value="Modify Data" action="#{LoginBean.modify}" update=":msgs" />  
-                <p:commandButton id="submitLogout" value="Logout" action="#{LoginBean.logout}" update=":msgs" />  
-                <p:commandButton id="submitCertificate" value="Create Certificate" action="#{LoginBean.makeCertificate}" update=":msgs" />  
+                <p:commandButton id="submitModify" value="Modify Data" action="#{LoginBean.modify}"/>  
+                <p:commandButton id="submitLogout" value="Logout" action="#{LoginBean.logout}"  />  
+                <p:commandButton id="submitCertificate" value="Create Certificate" action="#{LoginBean.makeCertificate}" />  
 
             </p.panel>
         </h:form>
