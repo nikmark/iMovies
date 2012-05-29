@@ -23,6 +23,8 @@ public class Utilities {
 
     public static boolean createCertificate(Persona pb) {
 
+        log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
+        
 //        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 //        keyGen.initialize(1024, new SecureRandom());
 //        KeyPair keypair = keyGen.generateKeyPair();
@@ -52,6 +54,7 @@ public class Utilities {
         //builder.redirectErrorStream(true);
         Process process = null;
         try {
+            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione file con chiavi");
             process = Runtime.getRuntime().exec("openssl genrsa -out " + pb.getUid() + ".key 1024");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
@@ -68,6 +71,7 @@ public class Utilities {
 //        builder = new ProcessBuilder("openssl req -new -key "+pb.getUid()+".key -out "+pb.getUid()+".csr -subj "+subject);
 //        builder.redirectErrorStream(true);
         try {
+            log.info(false, "Creazione certificato", "Generazione file csr", "Generazione file csr");
             process = Runtime.getRuntime().exec("openssl req -new -key " + pb.getUid() + ".key -out " + pb.getUid() + ".csr -subj " + subject);
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
@@ -84,8 +88,8 @@ public class Utilities {
         //builder = new ProcessBuilder("openssl x509 -req -days 365 -in "+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt");
         //builder.redirectErrorStream(true);
         //process = builder.start();
-        try {
-            process = Runtime.getRuntime().exec("openssl x509 -req -days 365 -in " + pb.getUid() + ".csr -signkey " + pb.getUid() + ".key -out " + pb.getUid() + ".crt");
+/*        try {
+            //process = Runtime.getRuntime().exec("openssl x509 -req -days 365 -in " + pb.getUid() + ".csr -signkey " + pb.getUid() + ".key -out " + pb.getUid() + ".crt");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         }
@@ -95,7 +99,7 @@ public class Utilities {
             //stdout = process.getInputStream();
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
-        }
+        }*/
         //stdout = process.getInputStream();
 
 
