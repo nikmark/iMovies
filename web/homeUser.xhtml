@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+To change this template, choose Tools | Templates
+and open the template in the editor.
+-->
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+    <h:head>
+        <title>Welcome #{LoginBean.pb.uid}</title>
+    </h:head>
+    <h:body>
+            <p:growl id="msgs" />  
+
+        <h:form prependId="false">  
+
+
+            <p:panel header="Inplace Editor">  
+                <h:panelGrid columns="2" columnClasses="column" cellpadding="5">  
+
+                    <h:outputText value="Username: " />  
+                    <p:inplace id="inplaceUid">  
+                        <h:outputText value="#{LoginBean.pb.uid}" />  
+                    </p:inplace> 
+                    <h:outputText value="sda: " />  
+                    <p:inplace id="sad" editor="true">  
+                        <p:inputText value="#{LoginBean.username}"  
+                                     required="true" label="textsda"/>  
+                    </p:inplace>  
+                    <h:outputText value="Lastname: " />  
+                    <p:inplace id="inplaceLastname" editor="true">  
+                        <p:inputText value="#{Persona.lastname}"  
+                                     required="true" label="textLastname"/>  
+                    </p:inplace>  
+                    <h:outputText value="Firstname: " />  
+                    <p:inplace id="inplaceFirstname" editor="true">  
+                        <p:inputText value="#{LoginBean.pb.firstname}"  
+                                     required="true" label="textFirstname"/>  
+                    </p:inplace>
+                    <h:outputText value="Email: " />  
+                    <p:inplace id="inplaceEmail" editor="true">  
+                        <p:inputText value="#{LoginBean.pb.email}"  
+                                     required="true" label="textEmail"/>  
+                    </p:inplace>  
+                    <!--            <h:outputText value="Password:  " />  
+                                <p:inplace id="inplaceEmail" editor="true">  
+                                    <p:button onClick="dlgPsw.show()" update="dlgPsw"  
+                                                required="true" label="textEmail"/>  
+                                </p:inplace>  
+                                
+                      <p:dialog id="dialogPsw" widgetVar="dlgPsw" header="Modify your password" >
+                                 <h:form>  
+                    
+                                <h:panelGrid columns="2" cellpadding="5">  
+                    
+                                <h:outputText value="Insert the old password: " />  
+                                <p:password id="oldPsw"  />  
+                      
+                                <h:outputText value="Insert new password: " />  
+                                <p:password id="newPsw1" feedback="true"/> 
+                                <h:outputText value="Confirm new password: " />  
+                                <p:password id="newPsw2" feedback="false"/> 
+                                 </h:panelGrid>  
+                                     <p:commandButton id="submitButton" value="Modify" update=":display" action="# {LoginBean.pb.matchingPsw(oldPsw.value, newPsw1.value, newPsw2.value)}" oncomplete="handlePswModifyRequest(xhr,status,args)"/>  
+                                             <p:commandButton id="cancelButton" value="Cancel" update=":display" oncomplete="dlgPsw.hide();"/>  
+                    
+                                 </h:form>
+                    
+                        </p:dialog> 
+                    
+                      <script type="text/javascript">  
+                        function handlePswModifyRequest(xhr, status, args) {  
+                            if(args.validationFailed || !args.matches) {  
+                                jQuery('#dialog').effect("shake", { times:3 }, 100);  
+                            } else {  
+                                dlgPsw.hide(); 
+                            }  
+                        }  
+                    </script>   -->
+
+
+
+
+                    <!--            <h:outputText value="Select One (Dlbclick): "/>  
+                                <p:inplace id="selectableInplace" label="Cities" effectSpeed="fast" event="dblclick">  
+                                    <h:selectOneMenu>  
+                                        <f:selectItem itemLabel="Istanbul" itemValue="Istanbul" />  
+                                        <f:selectItem itemLabel="Ankara" itemValue="Ankara" />  
+                                        <f:selectItem itemLabel="Istanbul" itemValue="Istanbul" />  
+                                    </h:selectOneMenu>  
+                                </p:inplace>  -->
+
+                    <!--            <h:outputText value="Checkbox: "/>  
+                                <p:inplace id="checkboxInplace" label="Edit me" effect="none">  
+                                    <h:selectBooleanCheckbox />  
+                                </p:inplace>  
+                    -->
+
+                </h:panelGrid>  
+            </p:panel>  
+            
+
+        </h:form>   
+        <h:form>
+        <p.panel>
+                <p:commandButton id="submitModify" value="Modify Data" action="#{LoginBean.modify}" update=":msgs" />  
+                <p:commandButton id="submitLogout" value="Logout" action="#{LoginBean.logout}" update=":msgs" />  
+                <p:commandButton id="submitCertificate" value="Create Certificate" action="#{LoginBean.makeCertificate}" update=":msgs" />  
+
+            </p.panel>
+        </h:form>
+
+
+
+
+
+
+        <!--        <h:form prependId="false">  
+        
+            <p:growl id="msgs" />  
+          
+            <p:panel header="Inplace Editor">  
+                <h:panelGrid columns="2" columnClasses="column" cellpadding="5">  
+        
+                    <h:outputText value="Basic Input: " />  
+                    <p:inplace id="basic">  
+                        <p:inputText value="Edit Me" />  
+                    </p:inplace>  
+          
+                    
+                    
+          
+                    <h:outputText value="Select One (Dlbclick): "/>  
+                    <p:inplace id="selectableInplace" label="Cities" effectSpeed="fast" event="dblclick">  
+                        <h:selectOneMenu>  
+                            <f:selectItem itemLabel="Istanbul" itemValue="Istanbul" />  
+                            <f:selectItem itemLabel="Ankara" itemValue="Ankara" />  
+                            <f:selectItem itemLabel="Istanbul" itemValue="Istanbul" />  
+                        </h:selectOneMenu>  
+                    </p:inplace>  
+          
+                    <h:outputText value="Checkbox: "/>  
+                    <p:inplace id="checkboxInplace" label="Edit me" effect="none">  
+                        <h:selectBooleanCheckbox />  
+                    </p:inplace>  
+          
+                     <h:outputText value="Sliding Image: " />  
+                    <p:inplace id="slidingInplace" label="Show" effect="slide">  
+                        <p:graphicImage value="/images/nature1.jpg" />  
+                    </p:inplace>  
+                    
+        
+                </h:panelGrid>  
+            </p:panel>  
+                        </h:form>  
+        
+        -->
+    </h:body>
+</html>

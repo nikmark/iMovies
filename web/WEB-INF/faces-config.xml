@@ -3,33 +3,58 @@
 <!-- =========== FULL CONFIGURATION FILE ================================== -->
 
 <faces-config version="2.0"
-    xmlns="http://java.sun.com/xml/ns/javaee" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
-    xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
+              xmlns="http://java.sun.com/xml/ns/javaee" 
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" 
+              xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-facesconfig_2_0.xsd">
     <managed-bean>
         <description>bean per il login</description>
         <managed-bean-name>LoginBean</managed-bean-name>
         <managed-bean-class>main.LoginBean</managed-bean-class>
     
-        <managed-bean-scope>request</managed-bean-scope></managed-bean>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
         
-        <managed-bean>
+    <managed-bean>
+        <description>bean dei dati utente</description>
+        <managed-bean-name>Persona</managed-bean-name>
+        <managed-bean-class>main.Persona</managed-bean-class>
+    
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+        
+<!--        <managed-bean>
         <description>bean dei dati utente</description>
         <managed-bean-name>HomeUserBean</managed-bean-name>
         <managed-bean-class>main.HomeUserBean</managed-bean-class>
     
-        <managed-bean-scope>request</managed-bean-scope></managed-bean>
+        <managed-bean-scope>request</managed-bean-scope></managed-bean>-->
         
-        <navigation-rule>
-		<from-view-id>login.xhtml</from-view-id>
-		<navigation-case>
-	       <from-action>#{LoginBean.login}
-                </from-action>
-	       <from-outcome>success</from-outcome>
-	       <to-view-id>homeUser.xhtml<redirect /></to-view-id>
+    <navigation-rule>
+        <from-view-id>login.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{LoginBean.login}
+            </from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>homeUser.xhtml
+                <redirect />
+            </to-view-id>
                
-		</navigation-case>
-	</navigation-rule>
+               
+        </navigation-case>
+    </navigation-rule>
+     <navigation-rule>
+        <from-view-id>homeUser.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{LoginBean.logout}
+            </from-action>
+            <from-outcome>success</from-outcome>
+            <to-view-id>login.xhtml
+                <redirect />
+            </to-view-id>
+               
+               
+        </navigation-case>
+    </navigation-rule>
        <!-- <navigation-rule>
             <from-view-id>faces/login.xhtml</from-view-id>
             <navigation-case>

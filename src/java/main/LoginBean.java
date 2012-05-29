@@ -1,12 +1,14 @@
 package main;
 
-
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateException;
 import java.util.Formatter;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 
 /**
@@ -17,19 +19,21 @@ public class LoginBean {
 
     private String username;
     private String password;
-    
-    
+    protected Persona pb;
+
+    public Persona getPb() {
+        return pb;
+    }
+
+    public void setPb(Persona pb) {
+        this.pb = pb;
+    }
+
     /**
      * Creates a new instance of loginBean
      */
     public LoginBean() {
-        
     }
-    
-    /* public String login()
-    {
-        return "Ciao, sono il bean di login";
-    }*/
 
     /**
      * @return the username
@@ -58,81 +62,177 @@ public class LoginBean {
     public void setPassword(String password) {
         this.password = password;
     }
-    
+
     /**
-     * 
+     *
      */
     public String login() throws NoSuchAlgorithmException, IOException {
+
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
+
+        boolean loggedIn=false;
+        String ret = null;
+        pb=null;
         
-        RequestContext context = RequestContext.getCurrentInstance();  
-        FacesMessage msg;  
-        boolean loggedIn;  
-        
-        /* if (username == null || password == null){
-            // prima apertura allora non fare niente
-           loggedIn = false;  
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Username e Password vuoti", "Invalid credentials");
-        }else if (username.isEmpty()){
-            loggedIn = false;  
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Username vuoto", "Invalid credentials");
-        }else if (password.isEmpty()){
-            loggedIn = false;  
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Password vuota", "Invalid credentials");
-        }*/
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();  
+        HttpSession session=null;
+        // create actual session  
+        // getSession() or getSession(true) or getSession(false)???  
+        // anyway, 'getSession' checks if a session exists, if not, a new one is created  
+  
+        /*
+         * if (username == null || password == null){ // prima apertura allora
+         * non fare niente loggedIn = false; msg = new
+         * FacesMessage(FacesMessage.SEVERITY_WARN, "Username e Password vuoti",
+         * "Invalid credentials"); }else if (username.isEmpty()){ loggedIn =
+         * false; msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Username
+         * vuoto", "Invalid credentials"); }else if (password.isEmpty()){
+         * loggedIn = false; msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
+         * "Password vuota", "Invalid credentials");
+        }
+         */
         // sanitizzazione dell'input
         // DA FARE
-        
-        PersonaBean pb = new PersonaBean();
-        pb.setUid("cia");
+
+        /**
+         * The form component needs to have a UIForm in its ancestry.
+         * Suggestion: enclose the necessary components within
+         */
         // query
         try {
             DBMS dbms = new DBMS();
             pb = dbms.getUser(username, SHAsum(password.getBytes()));
+            session = request.getSession(true);  
+
         } catch (ClassNotFoundException cnfe) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
             cnfe.getMessage();
+
         } catch (NoSuchAlgorithmException nsae) {
             nsae.getMessage();
         }
+
         
-        if (pb == null) {
-            loggedIn = false;  
-            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials"); 
-            FacesContext.getCurrentInstance().addMessage(null, msg);  
-             context.addCallbackParam("loggedIn", loggedIn); 
-            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-             return null;
-
-        }else{
-            loggedIn = true;  
-            //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome", pb.getUid());  
-            //FacesContext.getCurrentInstance().addMessage(null, msg);  
-            context.addCallbackParam("loggedIn", loggedIn);
-            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-            //FacesContext.getCurrentInstance().getExternalContext().redirect("index.xhtml");
-            //context.addCallbackParam("url", "index.xhtml");
-            return "success";
-
+        if (pb != null){
+            if (session.isNew() == false) {  
+                // the session the we got above was not a new one, so destroy it and create new one.  
+                session.invalidate();  
+                session = request.getSession(true);  
+            }  
+            session.setAttribute("Persona", pb);  
+            loggedIn = true;
+            ret = "success";
+            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
         }
         
-     //  FacesContext.getCurrentInstance().addMessage(null, msg);  
-       // context.addCallbackParam("loggedIn", loggedIn); 
-        
-                
+        //        {
+//            loggedIn = false;
+//            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
+//        } 
+//        else 
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        context.addCallbackParam("loggedIn", loggedIn);
+
+        return ret;
+
+        //  FacesContext.getCurrentInstance().addMessage(null, msg);  
+        // context.addCallbackParam("loggedIn", loggedIn); 
+
+
         //return this.SHAsum(password.getBytes());
-               //return "controllo credenziali con query SQL...";
+        //return "controllo credenziali con query SQL...";
 
     }
     
-   public static String SHAsum(byte[] convertme) throws NoSuchAlgorithmException{
-   MessageDigest md = MessageDigest.getInstance("SHA-1"); 
-   return byteArray2Hex(md.digest(convertme));
-}
+    public String modify(){
+        
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();  
+        // create actual session  
+        // getSession() or getSession(true) or getSession(false)???  
+        // anyway, 'getSession' checks if a session exists, if not, a new one is created  
+        HttpSession session = request.getSession(); 
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesMessage msg = null;
+        boolean loggedIn;
+        String ret = null;
+        Persona pb=((Persona)session.getAttribute("Persona"));
+        
+        try {
+            DBMS dbms = new DBMS();
+            pb = dbms.change(pb);
+            
+        } catch (ClassNotFoundException cnfe) {
+            msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
+            cnfe.getMessage();
+        }
+//        catch (NoSuchAlgorithmException nsae) {
+//            nsae.getMessage();
+//        }
+//
+//        if (pb == null) {
+//            loggedIn = false;
+//            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid", "Invalid credentials");
+//        } else {
+        this.pb=pb;
+        session.setAttribute("Persona", pb);
+            loggedIn = true;
+            ret = "success";
+            msg = new FacesMessage("Modifies Ok", "Modifies OK on ");
+//        }
 
-private static String byteArray2Hex(final byte[] hash) {
-   Formatter formatter = new Formatter();
-   for (byte b : hash) {
-       formatter.format("%02x", b);
-   }
-   return formatter.toString();
-}
+        context.addCallbackParam("loggedIn", loggedIn);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+
+        return ret;
+        
+    }
+    
+    public void makeCertificate() throws IOException, InterruptedException{
+        
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();  
+        // create actual session  
+        // getSession() or getSession(true) or getSession(false)???  
+        // anyway, 'getSession' checks if a session exists, if not, a new one is created  
+        HttpSession session = request.getSession(); 
+        
+        Utilities.createCertificate((Persona)session.getAttribute("Persona"));
+        
+    }
+        
+    
+    public String logout(){
+        
+        
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+//        HttpSession session = request.getSession(); 
+        RequestContext context = RequestContext.getCurrentInstance();
+        FacesMessage msg = null;
+        boolean loggedIn=true;
+//        request.getSession().removeAttribute("Persona");
+//        request.getSession().invalidate();
+//        
+        pb=null;
+        
+        msg = new FacesMessage("Logout. Bye Bye");
+//        }
+
+        context.addCallbackParam("loggedIn", loggedIn);
+        FacesContext.getCurrentInstance().addMessage(null, msg);
+        
+        return "success";
+    }
+
+    public static String SHAsum(byte[] convertme) throws NoSuchAlgorithmException {
+        MessageDigest md = MessageDigest.getInstance("SHA-1");
+        return byteArray2Hex(md.digest(convertme));
+    }
+
+    private static String byteArray2Hex(final byte[] hash) {
+        Formatter formatter = new Formatter();
+        for (byte b : hash) {
+            formatter.format("%02x", b);
+        }
+        return formatter.toString();
+    }
 }

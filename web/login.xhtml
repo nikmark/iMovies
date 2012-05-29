@@ -1,0 +1,63 @@
+<?xml version='1.0' encoding='UTF-8' ?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:f="http://java.sun.com/jsf/core">
+
+    <h:head>
+        <title>Welcome to iMovies</title>
+
+        <!--<f:metadata>  
+            <f:event listener="# {LoginBean.verifyLogin}" type="preRenderView" /> 
+        </f:metadata>-->
+
+    </h:head>
+    <h:body onload="dlg.show()">
+
+        <!-- <h:panelGrid columns="1" cellpadding="5">  
+             <p:commandButton id="basic" value="Login" onclick="dlg.show();" type="button" />  
+         </h:panelGrid>  -->
+
+        <p:growl id="growl" showDetail="true" life="4000" />  
+
+        <!-- <p:dialog id="modalDialog" header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">  
+            <h:outputText value="This is a Modal Dialog." />  
+        </p:dialog>  -->
+
+        <p:dialog id="dialog" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
+            <h:form>  
+
+                <h:panelGrid columns="2" cellpadding="5">  
+                    <h:outputLabel for="username" value="Username:" />  
+                    <p:inputText value="#{LoginBean.username}"   
+                                 id="username" required="true" label="username" />  
+
+                    <h:outputLabel for="password" value="Password:" />  
+                    <p:password value="#{LoginBean.password}"    
+                                id="password" required="true" label="password" />  
+
+                    <f:facet name="footer">  
+                        <p:commandButton id="loginButton" value="Login" update=":growl"   
+                                         action="#{LoginBean.login}"    
+                                         oncomplete="handleLoginRequest(xhr, status, args)"/> 
+                        <!--  <p:commandButton id="button" action="success?faces-redirect=true" value="success" /> -->
+                    </f:facet>  
+                </h:panelGrid>  
+
+            </h:form>  
+        </p:dialog>  
+
+        <script type="text/javascript">  
+            function handleLoginRequest(xhr, status, args) {  
+                if(args.validationFailed || !args.loggedIn) {  
+                    jQuery('#dialog').effect("shake", { times:3 }, 100);  
+                } else {  
+                    dlg.hide(); 
+                }  
+            }  
+        </script>   
+
+
+    </h:body>
+</html>
