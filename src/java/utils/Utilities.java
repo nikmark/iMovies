@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package utils;
 
 import java.io.*;
 import java.security.*;
@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import main.Persona;
 import utils.IMoviesLogger;
 
 /**
@@ -78,7 +79,7 @@ public class Utilities {
         try {
             log.info(false, "Creazione certificato", "Generazione file csr", "Generazione file csr su directory 'private': "+priv+" e directory 'cert': "+cert+". Lancio comando "
                     + "openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject);
-            process1 = Runtime.getRuntime().exec("openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject + "");
+            process1 = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject + ""});
             process1.waitFor();
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
