@@ -38,10 +38,20 @@
                                 id="password" required="true" label="password" />  
 
                     <f:facet name="footer">  
-                        <p:commandButton id="loginButton" value="Login" update=":growl"   
-                                         action="#{LoginBean.login}"    
-                                         oncomplete="handleLoginRequest(xhr, status, args)"/> 
-                        <!--  <p:commandButton id="button" action="success?faces-redirect=true" value="success" /> -->
+                        <h:panelGroup layout="block" >
+                            <p:commandButton id="loginButton" value="Login" update=":growl"   
+                                             action="#{LoginBean.login}"    
+                                             oncomplete="handleLoginRequest(xhr, status, args)"/> 
+                            <!--  <p:commandButton id="button" action="success?faces-redirect=true" value="success" /> -->
+                            <p:ajaxStatus style="width:31px;height:31px;">  
+                                <f:facet name="start">  
+                                    <h:graphicImage value="/resources/images/ajax-loader.gif"/>  
+                                </f:facet>  
+                                <f:facet name="complete">  
+                                    <h:outputText value=""/>  
+                                </f:facet>  
+                            </p:ajaxStatus> 
+                        </h:panelGroup>
                     </f:facet>  
                 </h:panelGrid>  
 

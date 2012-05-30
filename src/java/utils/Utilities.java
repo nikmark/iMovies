@@ -2,7 +2,7 @@
  * To change this template, choose Tools | Templates
  * and open the template in the editor.
  */
-package main;
+package utils;
 
 import java.io.*;
 import java.security.*;
@@ -12,6 +12,7 @@ import java.util.Scanner;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import main.Persona;
 import utils.IMoviesLogger;
 
 /**
@@ -24,10 +25,10 @@ public class Utilities {
     private static final String priv = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//certs//private//")+"/";
     private static final String cert = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//certs//cert//")+"/";
 
-    public static boolean createCertificate(Persona pb) throws InterruptedException {
+    public static boolean createCertificate(Persona pb) {
 
         log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
-
+        
 //        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
 //        keyGen.initialize(1024, new SecureRandom());
 //        KeyPair keypair = keyGen.generateKeyPair();
@@ -58,18 +59,17 @@ public class Utilities {
         Process process = null;
         try {
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione file con chiavi su directory 'private': "+priv);
-            process = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl genrsa -out "+ priv + pb.getUid() + ".key 1024"});
-            process.waitFor();
+            process = Runtime.getRuntime().exec("openssl genrsa -out "+ priv + pb.getUid() + ".key 1024");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         }
-//        try {
-//            process.waitFor();
-//
-//            //stdout = process.getInputStream();
-//        } catch (InterruptedException ex) {
-//            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
-//        }
+        try {
+            process.waitFor();
+
+            //stdout = process.getInputStream();
+        } catch (InterruptedException ex) {
+            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
+        }
 
 
 //        builder = new ProcessBuilder("openssl req -new -key "+pb.getUid()+".key -out "+pb.getUid()+".csr -subj "+subject);
@@ -87,36 +87,24 @@ public class Utilities {
             log.err(false, "Errore nel waitFor", e.toString(), e.toString());
         }
         
-//        Process process2 = null;
-//        
-//        try {
-//            log.info(false, "Creazione certificato", "Generazione file csr", "Generazione file csr su directory 'private': "+priv+" e directory 'cert': "+cert+". Lancio comando "
-//                    + "openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject);
-//            process2 = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl x509 -req -days 365 -in "+cert+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt"});
-//            process2.waitFor();
-//        } catch (IOException ex) {
-//            log.err(false, "Errore di IO", ex.toString(), ex.toString());
-//        } catch (InterruptedException e) {
-//            log.err(false, "Errore nel waitFor", e.toString(), e.toString());
-//        }
-//        
             //stdout = process.getInputStream();
         //stdout = process.getInputStream();
 
         //builder = new ProcessBuilder("openssl x509 -req -days 365 -in "+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt");
         //builder.redirectErrorStream(true);
         //process = builder.start();
-/*
-         * try { //process = Runtime.getRuntime().exec("openssl x509 -req -days
-         * 365 -in " + pb.getUid() + ".csr -signkey " + pb.getUid() + ".key -out
-         * " + pb.getUid() + ".crt"); } catch (IOException ex) { log.err(false,
-         * "Errore di IO", ex.toString(), ex.toString()); } try {
-         * process.waitFor();
-         *
-         * //stdout = process.getInputStream(); } catch (InterruptedException
-         * ex) { log.err(false, "Errore nel waitFor", ex.toString(),
-         * ex.toString()); }
-         */
+/*        try {
+            //process = Runtime.getRuntime().exec("openssl x509 -req -days 365 -in " + pb.getUid() + ".csr -signkey " + pb.getUid() + ".key -out " + pb.getUid() + ".crt");
+        } catch (IOException ex) {
+            log.err(false, "Errore di IO", ex.toString(), ex.toString());
+        }
+        try {
+            process.waitFor();
+
+            //stdout = process.getInputStream();
+        } catch (InterruptedException ex) {
+            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
+        }*/
         //stdout = process.getInputStream();
 
 

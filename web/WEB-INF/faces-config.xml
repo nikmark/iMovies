@@ -30,29 +30,33 @@
         <managed-bean-scope>request</managed-bean-scope></managed-bean>-->
         
     <navigation-rule>
-        <from-view-id>login.xhtml</from-view-id>
+        <from-view-id>/resources/pages/login.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{LoginBean.login}
             </from-action>
             <from-outcome>success</from-outcome>
-            <to-view-id>faces/homeUser.xhtml
-                <redirect />
+            <to-view-id>/resources/pages/user
             </to-view-id>
                
                
         </navigation-case>
     </navigation-rule>
-     <navigation-rule>
-        <from-view-id>homeUser.xhtml</from-view-id>
+    <navigation-rule>
+        <from-view-id>/resources/pages/user.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{LoginBean.logout}
             </from-action>
             <from-outcome>success</from-outcome>
-            <to-view-id>login.xhtml
-                <redirect />
+            <to-view-id>/resources/pages/login
             </to-view-id>
-               
-               
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/resources/pages/user.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>edit</from-action>
+            <to-view-id>resources/pages/edit</to-view-id>
         </navigation-case>
     </navigation-rule>
        <!-- <navigation-rule>

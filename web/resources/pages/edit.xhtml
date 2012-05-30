@@ -26,24 +26,19 @@
 
                         <h:outputText value="Username" class="bold" />
                         <h:panelGroup>
-                            <p:inputText id="username" value=""/>
+                            <p:inputText id="username" disabled="true" value="#{LoginBean.pb.uid}"/>
                             <p:tooltip for="username" value="This field will not be included in certificate"  />
                         </h:panelGroup>
-                        <h:outputText value="Password" class="bold" />
-                        <h:panelGroup>
-                            <p:password id="password" value=""/>
-                            <p:tooltip for="password" value="This field will not be included in certificate"  />
-                        </h:panelGroup>
                         <h:outputText value="First name" class="bold" />
-                        <p:inputText value="" required="true" requiredMessage="The first name is required"/>
+                        <p:inputText value="#{LoginBean.pb.firstname}" required="true" requiredMessage="The first name is required"/>
                         <h:outputText value="Last name" class="bold" />
-                        <p:inputText value="" required="true" requiredMessage="The last name is required" />
+                        <p:inputText value="#{Persona.lastname}" required="true" requiredMessage="The last name is required" />
                         <h:outputText value="Date of birth" class="bold" />
                         <p:calendar yearRange="c-80:c" required="true" requiredMessage="Date of birth is required" navigator="true" />
                         <h:outputText value="Address" class="bold" />
                         <p:inputText value=""/>
                         <h:outputText value="Email" class="bold" />
-                        <p:inputText value="" required="true" requiredMessage="Email is required" />
+                        <p:inputText value="#{LoginBean.pb.email}" required="true" requiredMessage="Email is required" />
 
                         <f:facet name="footer">
                             Once you have done, click on the button below
@@ -53,7 +48,7 @@
                     
                     <br /><br />
                     
-                    <p:commandButton value="Store my data" update="edit_form" />
+                    <p:commandButton value="Create my certificate" update="edit_form" action="#{LoginBean.makeCertificate}" />
                 </center>
             </h:form>
         </div>
