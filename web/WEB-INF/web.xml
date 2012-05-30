@@ -22,4 +22,10 @@
         <welcome-file>faces/login.xhtml</welcome-file>
     </welcome-file-list>
     
+<!--    <login-config>
+        <auth-method>CLIENT-CERT</auth-method>
+         
+</login-config>-->
+    
+<!--    faces/resources/pages-->
 </web-app>

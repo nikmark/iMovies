@@ -58,7 +58,8 @@ public class Utilities {
         Process process = null;
         try {
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione file con chiavi su directory 'private': "+priv);
-            process = Runtime.getRuntime().exec("openssl genrsa -out "+ priv + pb.getUid() + ".key 1024");
+            process = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl genrsa -out "+ priv + pb.getUid() + ".key 1024"});
+            process.waitFor();
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         }
@@ -78,7 +79,7 @@ public class Utilities {
         try {
             log.info(false, "Creazione certificato", "Generazione file csr", "Generazione file csr su directory 'private': "+priv+" e directory 'cert': "+cert+". Lancio comando "
                     + "openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject);
-            process1 = Runtime.getRuntime().exec("openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject + "");
+            process1 = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject + ""});
             process1.waitFor();
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
@@ -86,6 +87,19 @@ public class Utilities {
             log.err(false, "Errore nel waitFor", e.toString(), e.toString());
         }
         
+//        Process process2 = null;
+//        
+//        try {
+//            log.info(false, "Creazione certificato", "Generazione file csr", "Generazione file csr su directory 'private': "+priv+" e directory 'cert': "+cert+". Lancio comando "
+//                    + "openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject);
+//            process2 = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl x509 -req -days 365 -in "+cert+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt"});
+//            process2.waitFor();
+//        } catch (IOException ex) {
+//            log.err(false, "Errore di IO", ex.toString(), ex.toString());
+//        } catch (InterruptedException e) {
+//            log.err(false, "Errore nel waitFor", e.toString(), e.toString());
+//        }
+//        
             //stdout = process.getInputStream();
         //stdout = process.getInputStream();
 

@@ -75,8 +75,8 @@ public class LoginBean {
         String ret = null;
         pb=null;
         
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();  
-        HttpSession session=null;
+//        HttpServletRequest request = (HttpServletRequest)
+        HttpSession session= (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);  
         // create actual session  
         // getSession() or getSession(true) or getSession(false)???  
         // anyway, 'getSession' checks if a session exists, if not, a new one is created  
@@ -103,7 +103,7 @@ public class LoginBean {
         try {
             DBMS dbms = new DBMS();
             pb = dbms.getUser(username, SHAsum(password.getBytes()));
-            session = request.getSession(true);  
+//            session = session.getSession(true);  
 
         } catch (ClassNotFoundException cnfe) {
             msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
@@ -118,7 +118,7 @@ public class LoginBean {
             if (session.isNew() == false) {  
                 // the session the we got above was not a new one, so destroy it and create new one.  
                 session.invalidate();  
-                session = request.getSession(true);  
+                session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
             }  
             session.setAttribute("Persona", pb);  
             loggedIn = true;
