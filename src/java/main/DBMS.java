@@ -6,6 +6,8 @@ package main;
 
 import java.sql.*;
 import java.util.*;
+import utils.IMoviesLogger;
+
 
 /**
  *
@@ -20,7 +22,7 @@ public class DBMS {
      * URL per la connessione alla base di dati e' formato dai seguenti
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
      */
-    private String url = "jdbc:mysql://157.27.180.138:3306/iMoviesDB";
+    private String url = "jdbc:mysql://157.27.176.139:3306/iMoviesDB";
     /**
      * Driver da utilizzare per la connessione e l'esecuzione delle query.
      */
@@ -130,7 +132,8 @@ public class DBMS {
             pstmt.setString(4, pb.getPwd());
             pstmt.setString(5, pb.getUid());
 
-
+            IMoviesLogger log = new IMoviesLogger("main.DBMS");
+            log.info(false, "stampa email= "+pb.getEmail(), "stampa email= "+pb.getEmail(), "stampa email= "+pb.getEmail());
             result = pstmt.executeUpdate();
 
             pstmt = con.prepareStatement(row);

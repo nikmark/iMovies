@@ -15,9 +15,9 @@
         </div>
         <div id="content" >
             <h:form id="edit_form">
-                
+
                 <p:growl id="messages" />
-                
+
                 <center>
                     <p:panelGrid columns="2" style="width:960px">
                         <f:facet name="header">
@@ -30,25 +30,33 @@
                             <p:tooltip for="username" value="This field will not be included in certificate"  />
                         </h:panelGroup>
                         <h:outputText value="First name" class="bold" />
-                        <p:inputText value="#{LoginBean.pb.firstname}" required="true" requiredMessage="The first name is required"/>
+                        <p:inputText value="#{LoginBean.pb.firstname}" required="true" requiredMessage="The first name is required">
+                            <p:ajax event="keyup" listener="#{LoginBean.pb.firstname}" />
+                        </p:inputText>
                         <h:outputText value="Last name" class="bold" />
-                        <p:inputText value="#{Persona.lastname}" required="true" requiredMessage="The last name is required" />
-                        <h:outputText value="Date of birth" class="bold" />
-                        <p:calendar yearRange="c-80:c" required="true" requiredMessage="Date of birth is required" navigator="true" />
-                        <h:outputText value="Address" class="bold" />
-                        <p:inputText value=""/>
+                        <p:inputText value="#{LoginBean.pb.lastname}" required="true" requiredMessage="The last name is required">
+                            <p:ajax event="keyup" listener="#{LoginBean.pb.lastname}" />
+                        </p:inputText>
                         <h:outputText value="Email" class="bold" />
-                        <p:inputText value="#{LoginBean.pb.email}" required="true" requiredMessage="Email is required" />
+                        <p:inputText id="email" value="#{LoginBean.pb.email}" required="true" requiredMessage="Email is required">
+                            <p:ajax event="keyup" listener="#{LoginBean.pb.email}" />
+                        </p:inputText>
 
                         <f:facet name="footer">
                             Once you have done, click on the button below
                         </f:facet>
-
+                        <!--                        <h:outputText value="Date of birth" class="bold" />
+                                                                       <p:calendar yearRange="c-80:c" required="true" requiredMessage="Date of birth is required" navigator="true" />
+                                                                       <h:outputText value="Address" class="bold" />
+                                                                       <p:inputText value=""/>-->
                     </p:panelGrid>
-                    
+
                     <br /><br />
-                    
-                    <p:commandButton value="Create my certificate" update="edit_form" action="#{LoginBean.makeCertificate}" />
+
+                    <p:commandButton value="Create my certificate" update=":messages" action="#{LoginBean.makeCertificate}" />
+                    <p:commandButton value="Save Changes" update=":messages" action="#{LoginBean.modify}"/>
+
+
                 </center>
             </h:form>
         </div>

@@ -11,16 +11,19 @@
         <managed-bean-name>LoginBean</managed-bean-name>
         <managed-bean-class>main.LoginBean</managed-bean-class>
     
-        <managed-bean-scope>request</managed-bean-scope>
+        <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
         
-    <managed-bean>
+<!--    <managed-bean>
         <description>bean dei dati utente</description>
         <managed-bean-name>Persona</managed-bean-name>
         <managed-bean-class>main.Persona</managed-bean-class>
+        <managed-property>
+            
+        </managed-property>
     
         <managed-bean-scope>session</managed-bean-scope>
-    </managed-bean>
+    </managed-bean>-->
         
 <!--        <managed-bean>
         <description>bean dei dati utente</description>

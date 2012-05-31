@@ -6,10 +6,10 @@
         <p:menubar>  
             <p:submenu label="My certificate" icon="ui-icon-document">  
                 <p:menuitem value="Edit my information" action="edit" />  
-                <p:menuitem disabled="true" value="Download certificate" url="#" />  
+                <p:menuitem disabled="true" value="Download certificate" />  
             </p:submenu>  
 
-            <p:menuitem value="Logout" action="#{LoginBean.logout}" icon="ui-icon-close" />  
+            <p:menuitem value="Logout" actionListener="#{LoginBean.logout}" icon="ui-icon-close" />  
         </p:menubar>
     </h:form>
 </ui:composition>

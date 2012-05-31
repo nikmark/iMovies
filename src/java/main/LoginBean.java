@@ -69,12 +69,16 @@ public class LoginBean {
      */
     public String login() throws NoSuchAlgorithmException, IOException {
 
+        
+        FacesContext fcontext = FacesContext.getCurrentInstance();
+        //Persona bean = (Persona) fcontext.getApplication().evaluateExpressionGet(fcontext, "#{Persona}", Persona.class);
+
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
 
         boolean loggedIn=false;
         String ret = null;
-        pb=null;
+//                (Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Persona");
         
 //        HttpServletRequest request = (HttpServletRequest)
         HttpSession session= (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);  
@@ -116,12 +120,12 @@ public class LoginBean {
 
         
         if (pb != null){
-            if (session.isNew() == false) {  
-                // the session the we got above was not a new one, so destroy it and create new one.  
-                session.invalidate();  
-                session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
-            }  
-            session.setAttribute("Persona", pb);  
+//            if (session.isNew() == false) {  
+//                // the session the we got above was not a new one, so destroy it and create new one.  
+//                session.invalidate();  
+//                session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
+//            }  
+            //session.setAttribute("Persona", pb);  
             loggedIn = true;
             ret = "success";
             msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
@@ -157,7 +161,7 @@ public class LoginBean {
         FacesMessage msg = null;
         boolean loggedIn;
         String ret = null;
-        Persona pb=((Persona)session.getAttribute("Persona"));
+//        Persona pb=(Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Persona");
         
         try {
             DBMS dbms = new DBMS();
@@ -175,8 +179,8 @@ public class LoginBean {
 //            loggedIn = false;
 //            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Invalid", "Invalid credentials");
 //        } else {
-        this.pb=pb;
-        session.setAttribute("Persona", pb);
+//        this.pb=pb;
+//        session.setAttribute("Persona", pb);
             loggedIn = true;
             ret = "success";
             msg = new FacesMessage("Modifies Ok", "Modifies OK on ");
@@ -196,8 +200,8 @@ public class LoginBean {
         // getSession() or getSession(true) or getSession(false)???  
         // anyway, 'getSession' checks if a session exists, if not, a new one is created  
         HttpSession session = request.getSession(); 
-        
-        Utilities.createCertificate((Persona)session.getAttribute("Persona"));
+//        (Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Persona")
+        Utilities.createCertificate(pb);
         
     }
         
@@ -205,7 +209,6 @@ public class LoginBean {
     public String logout(){
         
         
-        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
 //        HttpSession session = request.getSession(); 
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
@@ -213,14 +216,15 @@ public class LoginBean {
 //        request.getSession().removeAttribute("Persona");
 //        request.getSession().invalidate();
 //        
-        pb=null;
+//        pb=null;
         
         msg = new FacesMessage("Logout. Bye Bye");
 //        }
 
         context.addCallbackParam("loggedIn", loggedIn);
         FacesContext.getCurrentInstance().addMessage(null, msg);
-        
+        FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+
         return "success";
     }
 
