@@ -5,8 +5,9 @@
     <h:form>
         <p:menubar>  
             <p:submenu label="My certificate" icon="ui-icon-document">  
-                <p:menuitem value="Edit my information" action="edit" />  
-                <p:menuitem disabled="true" value="Download certificate" />  
+                <p:menuitem icon="ui-icon-wrench" value="Edit my information" action="edit" />  
+                <p:menuitem icon="ui-icon-close" disabled="true" value="Revoke" />  
+                <p:menuitem icon="ui-icon-document" disabled="true" value="Download" />  
             </p:submenu>  
 
             <p:menuitem value="Logout" actionListener="#{LoginBean.logout}" icon="ui-icon-close" />  

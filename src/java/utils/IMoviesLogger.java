@@ -21,7 +21,7 @@ public class IMoviesLogger {
     /**
      * Oggetto per mantenere una coda con gli ultimi messaggi di errore
      */
-    private Queue<FacesMessage> err_messages;
+   // private Queue<FacesMessage> err_messages;
 
     /**
      * Costruttore di default
@@ -33,7 +33,7 @@ public class IMoviesLogger {
         /**
          * Vengono mantenuti in coda gli ultimi 10 messaggi d'errore
          */
-        err_messages = new ArrayBlockingQueue(10);
+        //err_messages = new ArrayBlockingQueue(10);
     }
 
     /**
@@ -92,17 +92,17 @@ public class IMoviesLogger {
          */
         if (!terminal_only) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, title, infomsg);
-            err_messages.add(msg);
+            //err_messages.add(msg);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
 
-    public void printErrMessages() {
+    /*public void printErrMessages() {
         FacesMessage msg = err_messages.poll();
 
         while (msg != null) {
             FacesContext.getCurrentInstance().addMessage(null, msg);
             msg = err_messages.poll();
         }
-    }
+    }*/
 }

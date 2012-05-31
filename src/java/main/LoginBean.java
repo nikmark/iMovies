@@ -11,6 +11,7 @@ import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import utils.IMoviesLogger;
 
 /**
  *
@@ -21,6 +22,7 @@ public class LoginBean {
     private String username;
     private String password;
     protected Persona pb;
+    private IMoviesLogger log;
 
     public Persona getPb() {
         return pb;
@@ -34,6 +36,7 @@ public class LoginBean {
      * Creates a new instance of loginBean
      */
     public LoginBean() {
+        log = new IMoviesLogger("main.LoginBean");
     }
 
     /**
@@ -69,12 +72,10 @@ public class LoginBean {
      */
     public String login() throws NoSuchAlgorithmException, IOException {
 
-        
         FacesContext fcontext = FacesContext.getCurrentInstance();
         //Persona bean = (Persona) fcontext.getApplication().evaluateExpressionGet(fcontext, "#{Persona}", Persona.class);
 
         RequestContext context = RequestContext.getCurrentInstance();
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
 
         boolean loggedIn=false;
         String ret = null;
@@ -111,13 +112,20 @@ public class LoginBean {
 //            session = session.getSession(true);  
 
         } catch (ClassNotFoundException cnfe) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
-            cnfe.getMessage();
+            //msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
+            log.err(false, "Login error", "Database connection failed", "Database connection failed");
+            //cnfe.getMessage();
 
         } catch (NoSuchAlgorithmException nsae) {
-            nsae.getMessage();
+            log.err(false, "Login error", "Database connection failed", "Database connection failed");
+            //nsae.getMessage();
+        } catch (NullPointerException e) {
+            log.err(false, "Login error", "Database not found", "Database not found");
+            //nsae.getMessage();
         }
+        
 
+        //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
         
         if (pb != null){
 //            if (session.isNew() == false) {  
@@ -128,7 +136,8 @@ public class LoginBean {
             //session.setAttribute("Persona", pb);  
             loggedIn = true;
             ret = "success";
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
+            //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
+            log.info(false,"Welcome in iMovies","","Welcome in iMovies");
         }
         
         //        {
@@ -136,7 +145,7 @@ public class LoginBean {
 //            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
 //        } 
 //        else 
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        //FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("loggedIn", loggedIn);
 
         return ret;
@@ -239,5 +248,10 @@ public class LoginBean {
             formatter.format("%02x", b);
         }
         return formatter.toString();
+    }
+    
+    public void verifyAdmin()
+    {
+        // to-do
     }
 }

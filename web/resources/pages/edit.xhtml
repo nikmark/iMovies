@@ -21,13 +21,12 @@
                 <center>
                     <p:panelGrid columns="2" style="width:960px">
                         <f:facet name="header">
-                            Personal information
+                            #{LoginBean.pb.uid}'s personal information
                         </f:facet>
 
                         <h:outputText value="Username" class="bold" />
                         <h:panelGroup>
-                            <p:inputText id="username" disabled="true" value="#{LoginBean.pb.uid}"/>
-                            <p:tooltip for="username" value="This field will not be included in certificate"  />
+                            <h:outputText id="username" value="#{LoginBean.pb.uid}"/>
                         </h:panelGroup>
                         <h:outputText value="First name" class="bold" />
                         <p:inputText value="#{LoginBean.pb.firstname}" required="true" requiredMessage="The first name is required">
@@ -43,18 +42,16 @@
                         </p:inputText>
 
                         <f:facet name="footer">
-                            Once you have done, click on the button below
+                            Once you have done, click one of the buttons below.
                         </f:facet>
-                        <!--                        <h:outputText value="Date of birth" class="bold" />
-                                                                       <p:calendar yearRange="c-80:c" required="true" requiredMessage="Date of birth is required" navigator="true" />
-                                                                       <h:outputText value="Address" class="bold" />
-                                                                       <p:inputText value=""/>-->
                     </p:panelGrid>
 
                     <br /><br />
 
-                    <p:commandButton value="Create my certificate" update=":messages" action="#{LoginBean.makeCertificate}" />
-                    <p:commandButton value="Save Changes" update=":messages" action="#{LoginBean.modify}"/>
+                    <p:commandButton id="create_cert" value="Create my certificate" update=":edit_form:messages" action="#{LoginBean.makeCertificate}" />
+                    <p:tooltip for="create_cert" value="This will create your certificate and sign that by iMovies CA" />
+                    <p:commandButton id="save" value="Save Changes" update=":edit_form:messages" action="#{LoginBean.modify}"/>
+                    <p:tooltip for="save" value="This will save the changes made in your data. These informations will be used for certificate's generation." />
 
 
                 </center>
