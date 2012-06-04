@@ -15,9 +15,9 @@
         </div>
         <div id="content" >
             Welcome, #{LoginBean.username}.<br />
-            With this interface, you can display your certificate and revoke this one.
+            With this interface, you can display your certificate and revoke or download this one.
         </div>
-
+        <br /><br /><br />
         <center>
             <h:form id="form">  
 
@@ -25,7 +25,7 @@
 
                 <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.uCert}" tableStyle="width:auto">  
 
-                    <p:column headerText="Name Of Certificate" style="width:100px">  
+                    <p:column headerText="Name Of Certificate" style="width:100px" sortBy="#{userCert.nameFile}">  
                         <h:outputText value="#{userCert.nameFile}" />  
                     </p:column>  
 
@@ -35,23 +35,23 @@
 
                     <p:column id="v" headerText="Validity" style="width:100px">  
                         <h:outputText value="#{userCert.ver}">                 
-<!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
+                            <!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
                         </h:outputText>  
                     </p:column>  
 
-                    <p:column headerText="Expiration Date" style="width:100px">  
+                    <p:column headerText="Expiration Date" style="width:100px" sortBy="#{userCert.dateE}">  
                         <h:outputText value="#{userCert.dateE}"/>  
                     </p:column> 
 
-                    <p:column headerText="Revocation Date" style="width:100px">  
+                    <p:column headerText="Revocation Date" style="width:100px" sortBy="#{userCert.dateR}">  
                         <h:outputText value="#{userCert.dateR}">
-<!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
+                            <!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
                         </h:outputText>  
                     </p:column> 
 
                     <p:column headerText="Revoke" style="width:40px">  
                         <h:panelGrid  styleClass="actions" >  
-                            <p:commandButton id="revokeButton" update=":form:certificates" value="Revoke Certificate" action="#{CertificateBean.revokeCertificate}" >  
+                            <p:commandButton id="revokeButton" value="Revoke Certificate" action="#{CertificateBean.revokeCertificate}" >  
                                 <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
                             </p:commandButton>  
                         </h:panelGrid>  
@@ -59,15 +59,40 @@
                     <p:column headerText="Download" style="width:40px">  
                         <h:panelGrid styleClass="actions" cellpadding="2">  
                             <p:commandButton id="downloadButton" value="Download Certificate"  >  
-                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedCert}" />  
+                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
                             </p:commandButton>  
                         </h:panelGrid>  
                     </p:column>  
+                    <p:column headerText="Download" style="width:40px">  
+                        <h:panelGrid styleClass="actions" cellpadding="2">  
+                            <p:commandButton id="cancelButton" value="Delete Certificate" action="#{CertificateBean.deleteCertificate}" >  
+                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
+                            </p:commandButton>  
+                        </h:panelGrid>  
+                    </p:column> 
 
                 </p:dataTable>  
 
             </h:form>  
 
         </center>
-    </h:body>
+        <br /><br />
+<!--            <table width="100%" cellpadding="0" border="0">-->
+<!--                <tr>-->
+<!--                    <td width="50%" valign="top">-->
+                        <p>Remember:<br />
+                            if you delete a certificate, the certificate will be revoked, and after that deleted.</p>
+<br /> 
+<!--                    </td>-->
+<!--                    <td width="50%" valign="top">-->
+                        <p>Legend: </p>
+                        <dt>V: indicates that the certificate is "Verified".</dt>
+                        <dt>E: indicates that the certificate is "Expired".</dt>
+                        <dt>R: indicates that the certificate is "Revoked".</dt>
+<!--                    </td>-->
+<!--                </tr>-->
+<!--            </table>-->
+            <!--            Remember:<br />
+                        if you delete a certificate, the certificate will be revoked, and after that deleted.-->
+           </h:body>
 </html>

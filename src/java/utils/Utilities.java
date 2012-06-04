@@ -328,6 +328,19 @@ public class Utilities {
             }
         }
         System.out.println("fine del cerificateUser");
+        
+        Collections.sort(list, new Comparator<UserCert>() {
+
+            @Override
+            public int compare(UserCert o1, UserCert o2) {
+                if(Integer.parseInt(o1.getSerial()) < Integer.parseInt(o2.getSerial())){
+                    return -1;
+                }else if(Integer.parseInt(o1.getSerial()) > Integer.parseInt(o2.getSerial())){
+                    return 1;
+                }
+                return 0;
+            }
+        });
 
         return list;
     }
@@ -361,6 +374,9 @@ public class Utilities {
                     guardia = false;
                 }
             }
+            
+            br.close();
+            fin.close();
 
         } catch (IOException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
@@ -391,5 +407,23 @@ public class Utilities {
         
         return getIndexInfo(ue);
 
+    }
+
+    public static void deleteCertificate(UserCert selectedUserCert) {
+         Process process = null;
+//        Process process2=null;
+        try {
+//            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
+            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: rm "+directory+"/newcerts/"+selectedUserCert.getNameFile());
+
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "rm "+directory+"/newcerts/"+selectedUserCert.getNameFile()});
+//            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+nomeFile+" >> "+scripts+"error"});
+            process.waitFor();
+//            process2.waitFor();
+        } catch (IOException ex) {
+            log.err(false, "Errore di IO", ex.toString(), ex.toString());
+        } catch (InterruptedException ex) {
+            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
+        }
     }
 }

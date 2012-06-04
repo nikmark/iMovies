@@ -52,4 +52,11 @@ public class CertificateBean implements Serializable{
         setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
         return true;
     }
+    
+    public boolean deleteCertificate(){
+         setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
+         utils.Utilities.deleteCertificate(getSelectedUserCert());
+         return true;
+
+    }
 }
