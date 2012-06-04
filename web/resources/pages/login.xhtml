@@ -7,42 +7,32 @@
 
     <h:head>
         <title>Welcome to iMovies</title>
+        <f:metadata>  
+            <f:event id="eve" listener="# {LoginBean.verify}" type="preRenderView" /> 
 
-        <!--<f:metadata>  
-            <f:event listener="# {LoginBean.verifyLogin}" type="preRenderView" /> 
-        </f:metadata>-->
+        </f:metadata>
 
+        <h:outputStylesheet name="style.css" library="css" />
+        
     </h:head>
-    <h:body onload="dlg.show()">
+    <h:body onload="dlg.show()" >
 
+        
         <!-- <h:panelGrid columns="1" cellpadding="5">  
              <p:commandButton id="basic" value="Login" onclick="dlg.show();" type="button" />  
          </h:panelGrid>  -->
-
-        <p:growl id="growl" showDetail="true" life="4000" />  
-
         <!-- <p:dialog id="modalDialog" header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">  
             <h:outputText value="This is a Modal Dialog." />  
         </p:dialog>  -->
 
         <p:dialog id="dialog" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
-            <h:form>  
+            <h:form id="form">  
+
+                <p:growl id="growl" showDetail="true" life="4000" />  
 
                 <h:panelGrid columns="2" cellpadding="5">  
-                    <h:outputLabel for="username" value="Username:" />  
-                    <p:inputText value="#{LoginBean.username}"   
-                                 id="username" required="true" label="username" />  
-
-                    <h:outputLabel for="password" value="Password:" />  
-                    <p:password value="#{LoginBean.password}"    
-                                id="password" required="true" label="password" />  
-
-                    <f:facet name="footer">  
-                        <h:panelGroup layout="block" >
-                            <p:commandButton id="loginButton" value="Login" update=":growl"   
-                                             action="#{LoginBean.login}"    
-                                             oncomplete="handleLoginRequest(xhr, status, args)"/> 
-                            <!--  <p:commandButton id="button" action="success?faces-redirect=true" value="success" /> -->
+                    <f:facet name="header" >
+                        <center>
                             <p:ajaxStatus style="width:31px;height:31px;">  
                                 <f:facet name="start">  
                                     <h:graphicImage value="/resources/images/ajax-loader.gif"/>  
@@ -51,7 +41,24 @@
                                     <h:outputText value=""/>  
                                 </f:facet>  
                             </p:ajaxStatus> 
-                        </h:panelGroup>
+                        </center>
+                    </f:facet> 
+
+                    <h:outputLabel for="username" value="Username:" />  
+                    <p:inputText value="#{LoginBean.username}"   
+                                 id="username" required="true" label="username" />  
+
+                    <h:outputLabel for="password" value="Password:" />  
+                    <p:password value="#{LoginBean.password}"    
+                                id="password" required="true" requiredMessage="Your iMovies password cannot be empty"  label="password" />  
+
+                    <f:facet name="footer">
+                        <br />
+                        <center>
+                            <p:commandButton id="loginButton" value="Login" update=":form:growl"   
+                                             action="#{LoginBean.login}"    
+                                             oncomplete="handleLoginRequest(xhr, status, args)"/> 
+                        </center>
                     </f:facet>  
                 </h:panelGrid>  
 

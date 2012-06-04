@@ -10,10 +10,23 @@
         <description>bean per il login</description>
         <managed-bean-name>LoginBean</managed-bean-name>
         <managed-bean-class>main.LoginBean</managed-bean-class>
-    
         <managed-bean-scope>session</managed-bean-scope>
     </managed-bean>
-        
+    
+    
+    <managed-bean>
+        <description>bean per i certificati dell'utente</description>
+        <managed-bean-name>CertificateBean</managed-bean-name>
+        <managed-bean-class>main.CertificateBean</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>
+    
+<!--    <managed-bean>
+        <description>bean per i certificati dell'utente</description>
+        <managed-bean-name>UserCert</managed-bean-name>
+        <managed-bean-class>utils.UserCert</managed-bean-class>
+        <managed-bean-scope>request</managed-bean-scope>
+    </managed-bean>-->
 <!--    <managed-bean>
         <description>bean dei dati utente</description>
         <managed-bean-name>Persona</managed-bean-name>
@@ -46,6 +59,8 @@
     </navigation-rule>
     <navigation-rule>
         <from-view-id>/resources/pages/user.xhtml</from-view-id>
+        <from-view-id>/resources/pages/edit.xhtml</from-view-id>
+
         <navigation-case>
             <from-action>#{LoginBean.logout}
             </from-action>
@@ -60,6 +75,25 @@
         <navigation-case>
             <from-action>edit</from-action>
             <to-view-id>resources/pages/edit</to-view-id>
+            <from-action>revokeDownload</from-action>
+            <to-view-id>resources/pages/revokeDownload</to-view-id>
+<!--            <from-action>download</from-action>
+            <to-view-id>resources/pages/download</to-view-id>-->
+        </navigation-case>
+    </navigation-rule>
+    
+     <navigation-rule>
+        <from-view-id>/resources/pages/login.xhtml</from-view-id>
+        <navigation-case>
+           
+            <from-action>#{LoginBean.verify}
+            </from-action>
+            <from-outcome>admin</from-outcome>
+            <to-view-id>/resources/pages/admin
+            </to-view-id>
+            <from-outcome>success</from-outcome>
+            <to-view-id>/resources/pages/user
+            </to-view-id>
         </navigation-case>
     </navigation-rule>
        <!-- <navigation-rule>

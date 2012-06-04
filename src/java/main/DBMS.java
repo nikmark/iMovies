@@ -22,7 +22,7 @@ public class DBMS {
      * URL per la connessione alla base di dati e' formato dai seguenti
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
      */
-    private String url = "jdbc:mysql://192.168.1.4:3306/iMoviesDB";
+    private String url = "jdbc:mysql://192.168.56.101:3306/iMoviesDB";
     /**
      * Driver da utilizzare per la connessione e l'esecuzione delle query.
      */
@@ -89,6 +89,47 @@ public class DBMS {
             }
         }
         return null;
+    }
+    
+    public Persona getUser(String uid){
+        // Dichiarazione delle variabili
+        Connection con = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
+        //Vector result = new Vector();
+        try {
+            // Tentativo di connessione al database
+            con = DriverManager.getConnection(url, user, passwd);
+
+            // Connessione riuscita, ottengo l'oggetto per l'esecuzione
+            // dell'interrogazione.
+            pstmt = con.prepareStatement(row);
+            pstmt.clearParameters();
+            //Imposto i parametri della query
+            pstmt.setString(1, uid);
+            rs = pstmt.executeQuery();
+
+            // Memorizzo il risultato dell'interrogazione nel Vector
+            // while(rs.next())
+            //	result.add(
+            if (rs.next()) {
+                return makePersonaBean(rs);//);
+            }
+        } catch (SQLException sqle) {                /*
+             * Catturo le eventuali eccezioni!
+             */
+            sqle.printStackTrace();
+        } finally {                                 /*
+             * Alla fine chiudo la connessione.
+             */
+            try {
+                con.close();
+            } catch (SQLException sqle1) {
+                sqle1.printStackTrace();
+            }
+        }
+        return null;
+    
     }
 
     private Persona makePersonaBean(ResultSet rs) throws SQLException {

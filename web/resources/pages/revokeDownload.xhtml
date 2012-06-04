@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>iMovies revoke area</title>
+        <h:outputStylesheet name="style.css" library="css" />
+    </h:head>
+    <h:body>
+        <div id="menu">
+            <ui:include src="includes/user_menu.xhtml" />
+        </div>
+        <div id="content" >
+            Welcome, #{LoginBean.username}.<br />
+            With this interface, you can display your certificate and revoke this one.
+        </div>
+
+        <center>
+            <h:form id="form">  
+
+                <p:growl id="msgs" showDetail="true" />  
+
+                <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.uCert}" tableStyle="width:auto">  
+
+                    <p:column headerText="Name Of Certificate" style="width:100px">  
+                        <h:outputText value="#{userCert.nameFile}" />  
+                    </p:column>  
+
+                    <p:column headerText="Serial" style="width:100px">  
+                        <h:outputText value="#{userCert.serial}" />  
+                    </p:column>  
+
+                    <p:column headerText="Validity" style="width:100px">  
+                        <h:outputText value="#{userCert.validity}" />  
+                    </p:column>   
+
+                    <p:column headerText="Revoke" style="width:40px">  
+                        <h:panelGrid  styleClass="actions" cellpadding="2">  
+                            <p:commandButton id="revokeButton"  value="Revoke Certificate" >  
+                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedCert}" />  
+                            </p:commandButton>  
+                        </h:panelGrid>  
+                    </p:column>  
+                    <p:column headerText="Download" style="width:40px">  
+                        <h:panelGrid styleClass="actions" cellpadding="2">  
+                            <p:commandButton id="downloadButton" value="Download Certificate" >  
+                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedCert}" />  
+                            </p:commandButton>  
+                        </h:panelGrid>  
+                    </p:column>  
+
+                </p:dataTable>  
+
+            </h:form>  
+
+        </center>
+    </h:body>
+</html>

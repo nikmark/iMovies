@@ -2,15 +2,26 @@ package main;
 
 import utils.Utilities;
 import java.io.IOException;
+import java.security.Certificate;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.CertificateException;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
+import java.security.cert.X509Certificate;
 import java.util.Formatter;
+import java.util.Iterator;
+import java.util.Map;
+import java.util.StringTokenizer;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
+import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import utils.IMoviesLogger;
 
 /**
  *
@@ -21,6 +32,7 @@ public class LoginBean {
     private String username;
     private String password;
     protected Persona pb;
+    private IMoviesLogger log;
 
     public Persona getPb() {
         return pb;
@@ -34,6 +46,7 @@ public class LoginBean {
      * Creates a new instance of loginBean
      */
     public LoginBean() {
+        log = new IMoviesLogger("main.LoginBean");
     }
 
     /**
@@ -69,23 +82,21 @@ public class LoginBean {
      */
     public String login() throws NoSuchAlgorithmException, IOException {
 
-        
         FacesContext fcontext = FacesContext.getCurrentInstance();
         //Persona bean = (Persona) fcontext.getApplication().evaluateExpressionGet(fcontext, "#{Persona}", Persona.class);
 
         RequestContext context = RequestContext.getCurrentInstance();
-        FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
 
-        boolean loggedIn=false;
+        boolean loggedIn = false;
         String ret = null;
 //                (Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Persona");
-        
+
 //        HttpServletRequest request = (HttpServletRequest)
-        HttpSession session= (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);  
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(true);
         // create actual session  
         // getSession() or getSession(true) or getSession(false)???  
         // anyway, 'getSession' checks if a session exists, if not, a new one is created  
-  
+
         /*
          * if (username == null || password == null){ // prima apertura allora
          * non fare niente loggedIn = false; msg = new
@@ -94,8 +105,7 @@ public class LoginBean {
          * false; msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Username
          * vuoto", "Invalid credentials"); }else if (password.isEmpty()){
          * loggedIn = false; msg = new FacesMessage(FacesMessage.SEVERITY_WARN,
-         * "Password vuota", "Invalid credentials");
-        }
+         * "Password vuota", "Invalid credentials"); }
          */
         // sanitizzazione dell'input
         // DA FARE
@@ -111,15 +121,22 @@ public class LoginBean {
 //            session = session.getSession(true);  
 
         } catch (ClassNotFoundException cnfe) {
-            msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
-            cnfe.getMessage();
+            //msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
+            log.err(false, "Login error", "Database connection failed", "Database connection failed");
+            //cnfe.getMessage();
 
         } catch (NoSuchAlgorithmException nsae) {
-            nsae.getMessage();
+            log.err(false, "Login error", "Database connection failed", "Database connection failed");
+            //nsae.getMessage();
+        } catch (NullPointerException e) {
+            log.err(false, "Login error", "Database not found", "Database not found");
+            //nsae.getMessage();
         }
 
-        
-        if (pb != null){
+
+        //FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
+
+        if (pb != null) {
 //            if (session.isNew() == false) {  
 //                // the session the we got above was not a new one, so destroy it and create new one.  
 //                session.invalidate();  
@@ -128,15 +145,16 @@ public class LoginBean {
             //session.setAttribute("Persona", pb);  
             loggedIn = true;
             ret = "success";
-            msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
+            //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
+            log.info(false, "Welcome in iMovies", "", "Welcome in iMovies");
         }
-        
+
         //        {
 //            loggedIn = false;
 //            msg = new FacesMessage(FacesMessage.SEVERITY_WARN, "Login Error", "Invalid credentials");
 //        } 
 //        else 
-        FacesContext.getCurrentInstance().addMessage(null, msg);
+        //FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("loggedIn", loggedIn);
 
         return ret;
@@ -149,24 +167,24 @@ public class LoginBean {
         //return "controllo credenziali con query SQL...";
 
     }
-    
-    public String modify(){
-        
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();  
+
+    public String modify() {
+
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         // create actual session  
         // getSession() or getSession(true) or getSession(false)???  
         // anyway, 'getSession' checks if a session exists, if not, a new one is created  
-        HttpSession session = request.getSession(); 
+        HttpSession session = request.getSession();
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
         boolean loggedIn;
         String ret = null;
 //        Persona pb=(Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Persona");
-        
+
         try {
             DBMS dbms = new DBMS();
             pb = dbms.change(pb);
-            
+
         } catch (ClassNotFoundException cnfe) {
             msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
             cnfe.getMessage();
@@ -181,49 +199,48 @@ public class LoginBean {
 //        } else {
 //        this.pb=pb;
 //        session.setAttribute("Persona", pb);
-            loggedIn = true;
-            ret = "success";
-            msg = new FacesMessage("Modifies Ok", "Modifies OK on ");
+        loggedIn = true;
+        ret = "success";
+        msg = new FacesMessage("Modifies Ok", "Modifies OK on ");
 //        }
 
         context.addCallbackParam("loggedIn", loggedIn);
         FacesContext.getCurrentInstance().addMessage(null, msg);
 
         return ret;
-        
+
     }
-    
-    public void makeCertificate() throws IOException, InterruptedException{
-        
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();  
+
+    public void makeCertificate() throws IOException, InterruptedException {
+
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
         // create actual session  
         // getSession() or getSession(true) or getSession(false)???  
         // anyway, 'getSession' checks if a session exists, if not, a new one is created  
-        HttpSession session = request.getSession(); 
+//        HttpSession session = request.getSession();
 //        (Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Persona")
-        Utilities.createCertificate(pb);
-        
+        Utilities.createCertificate(pb, password);
+
     }
-        
-    
-    public String logout(){
-        
-        
-//        HttpSession session = request.getSession(); 
+
+    public String logout() {
+
+
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
-        boolean loggedIn=true;
-//        request.getSession().removeAttribute("Persona");
-//        request.getSession().invalidate();
-//        
-//        pb=null;
-        
+        boolean loggedIn = true;
+//        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+
+        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+//        req. 
+
         msg = new FacesMessage("Logout. Bye Bye");
-//        }
 
         context.addCallbackParam("loggedIn", loggedIn);
         FacesContext.getCurrentInstance().addMessage(null, msg);
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
+        session.invalidate();
 
         return "success";
     }
@@ -239,5 +256,96 @@ public class LoginBean {
             formatter.format("%02x", b);
         }
         return formatter.toString();
+    }
+
+    public String verify() {
+
+        //HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+//        X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
+
+//        log.info(false, "" + certs.length, "" + certs.length, "" + certs.length);
+        // to-do
+        Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
+        X509Certificate[] certs = (X509Certificate[]) requestMap.get("javax.servlet.request.X509Certificate");
+        //X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
+
+        if (certs != null && certs.length > 0) {
+               // log.info(false,"X.509 client authentication certificate:" + certs[0],"X.509 client authentication certificate:" + certs[0],"X.509 client authentication certificate:" + certs[0]);
+        }else{
+
+            log.info(false,"No client certificate found in request.","No client certificate found in request.","No client certificate found in request.");
+        }
+//        try {
+//            log.info(false,"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString());
+
+            StringTokenizer st =  new StringTokenizer(certs[0].getSubjectDN().toString(),",");
+                log.info(false,st.toString(),st.toString(),st.toString());
+            
+            String uid="";
+            boolean watcher=true;
+            
+            while(st.hasMoreTokens() && watcher){
+                StringTokenizer tmp =  new StringTokenizer(st.nextToken());
+                String ctrl=tmp.nextToken();
+                                log.info(false,ctrl,ctrl,ctrl);
+
+                if(ctrl.startsWith("CN=")) {
+                    uid=ctrl.substring(3);
+                    watcher=false;
+                }
+            }
+            
+           
+           if(uid.equals("iSD")){
+               log.info(false,"dovrei spostarmi in admin","dovrei spostarmi in admin","dovrei spostarmi in admin");
+
+               return "admin";
+//                              return "/faces/resources/pages/admin.xhtml&faces-redirect=true";
+
+           }else if(trustedLogin(uid).equals("failed")){
+                return null;
+           }
+            
+
+            
+            //            certs[0].getSubjectX500Principal().
+            //certs[0].getSubjectDN()
+            //        } catch (CertificateExpiredException ex) {
+//            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+//        } catch (CertificateNotYetValidException ex) {
+//            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+//        }
+        
+        return "success";
+    
+    }
+    
+    private String trustedLogin(String uid){
+        
+         try {
+            DBMS dbms = new DBMS();
+            pb = dbms.getUser(uid);
+
+//            session = session.getSession(true);  
+
+        } catch (ClassNotFoundException cnfe) {
+            //msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
+            log.err(false, "Login error", "Database connection failed", "Database connection failed");
+            //cnfe.getMessage();
+
+        } catch (NullPointerException e) {
+            log.err(false, "Login error", "Database not found", "Database not found");
+            //nsae.getMessage();
+        }
+        
+        if(pb==null){
+            return "failed";
+        }
+        return "success";
+        
+    }
+    
+    public void getCertificates(){
+        
     }
 }

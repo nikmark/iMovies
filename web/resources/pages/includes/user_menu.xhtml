@@ -5,11 +5,12 @@
     <h:form>
         <p:menubar>  
             <p:submenu label="My certificate" icon="ui-icon-document">  
-                <p:menuitem value="Edit my information" action="edit" />  
-                <p:menuitem disabled="true" value="Download certificate" />  
+                <p:menuitem icon="ui-icon-wrench" value="Edit my information" action="edit" />  
+                <p:menuitem icon="ui-icon-wrench" disabled="false" value="Manage Certificates" action="revokeDownload" />  
+<!--                <p:menuitem icon="ui-icon-document" disabled="false" value="Download" action="download"/>  -->
             </p:submenu>  
 
-            <p:menuitem value="Logout" actionListener="#{LoginBean.logout}" icon="ui-icon-close" />  
+            <p:menuitem value="Logout" action="#{LoginBean.logout}" icon="ui-icon-close" />  
         </p:menubar>
     </h:form>
 </ui:composition>
