@@ -60,7 +60,7 @@
     <navigation-rule>
         <from-view-id>/resources/pages/user.xhtml</from-view-id>
         <from-view-id>/resources/pages/edit.xhtml</from-view-id>
-
+        <from-view-id>/resources/pages/revokeDownload.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{LoginBean.logout}
             </from-action>

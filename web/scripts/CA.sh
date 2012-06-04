@@ -59,8 +59,8 @@ cp_pem() {
 usage() {
  echo "usage: $0 -newreq|-sign|-verify" >&2
 }
-$SSLEAY_CONFIG="-config /etc/ssl/openssl.cnf"; 
-$CATOP="/etc/ssl/CA_iMovies";
+SSLEAY_CONFIG="-config /etc/ssl/openssl.cnf"
+CATOP="/etc/ssl/CA_iMovies"
 if [ -z "$OPENSSL" ]; then OPENSSL=openssl; fi
 
 if [ -z "$DAYS" ] ; then DAYS="-days 365" ; fi	# 1 year
@@ -203,6 +203,13 @@ echo $2 >> /var/lib/tomcat7/webapps/iMovies/subje
     fi
     exit $RET
     ;;
+
+-revoke)
+   
+   $CA -revoke $2 -passin file:$CATOP/private/pass
+
+ 
+   ;;
  *)
     echo "Unknown arg $i" >&2
     usage

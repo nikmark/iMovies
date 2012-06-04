@@ -10,6 +10,7 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import javax.swing.text.Utilities;
 import utils.UserCert;
 
 /**
@@ -18,7 +19,7 @@ import utils.UserCert;
  */
 public class CertificateBean implements Serializable{
     
-    private ArrayList<UserCert> uCert;
+    private ArrayList<UserCert> uCert=new ArrayList<UserCert>();
 
     private UserCert selectedUserCert;
 
@@ -43,5 +44,12 @@ public class CertificateBean implements Serializable{
 
     public void setSelectedUserCert(UserCert selectedUserCert) {
         this.selectedUserCert = selectedUserCert;
+    }
+    
+    public boolean revokeCertificate(){
+        System.out.println("Revoke Certificate di CertificateBean. Nome file da revocare= "+getSelectedUserCert().getNameFile());
+        
+        setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
+        return true;
     }
 }

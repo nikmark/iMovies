@@ -29,24 +29,36 @@
                         <h:outputText value="#{userCert.nameFile}" />  
                     </p:column>  
 
-                    <p:column headerText="Serial" style="width:100px">  
+                    <p:column headerText="Serial" style="width:100px" sortBy="#{userCert.serial}" >  
                         <h:outputText value="#{userCert.serial}" />  
                     </p:column>  
 
-                    <p:column headerText="Validity" style="width:100px">  
-                        <h:outputText value="#{userCert.validity}" />  
-                    </p:column>   
+                    <p:column id="v" headerText="Validity" style="width:100px">  
+                        <h:outputText value="#{userCert.ver}">                 
+<!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
+                        </h:outputText>  
+                    </p:column>  
+
+                    <p:column headerText="Expiration Date" style="width:100px">  
+                        <h:outputText value="#{userCert.dateE}"/>  
+                    </p:column> 
+
+                    <p:column headerText="Revocation Date" style="width:100px">  
+                        <h:outputText value="#{userCert.dateR}">
+<!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
+                        </h:outputText>  
+                    </p:column> 
 
                     <p:column headerText="Revoke" style="width:40px">  
-                        <h:panelGrid  styleClass="actions" cellpadding="2">  
-                            <p:commandButton id="revokeButton"  value="Revoke Certificate" >  
-                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedCert}" />  
+                        <h:panelGrid  styleClass="actions" >  
+                            <p:commandButton id="revokeButton" update=":form:certificates" value="Revoke Certificate" action="#{CertificateBean.revokeCertificate}" >  
+                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
                             </p:commandButton>  
                         </h:panelGrid>  
                     </p:column>  
                     <p:column headerText="Download" style="width:40px">  
                         <h:panelGrid styleClass="actions" cellpadding="2">  
-                            <p:commandButton id="downloadButton" value="Download Certificate" >  
+                            <p:commandButton id="downloadButton" value="Download Certificate"  >  
                                 <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedCert}" />  
                             </p:commandButton>  
                         </h:panelGrid>  

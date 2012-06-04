@@ -15,14 +15,48 @@ public class UserCert {
     private String serial;
     
     private String validity;
+    
+    private String ver;
+    
+    private String dateE;
+    
+    private String dateR;
+    
    
     public UserCert(){
-        
+        this.ver = this.dateE = null;
+        this.dateR = null;
     }
-    public UserCert(String nameFile, String serial, String validity){
-        this.nameFile=nameFile;
-        this.serial=serial;
-        this.validity=validity;
+//    public UserCert(String nameFile, String serial, String validity){
+//        this.nameFile=nameFile;
+//        this.serial=serial;
+//        this.validity=validity;
+//        this.ver = this.dateE = null;
+//        this.dateR = "Not Revoked";
+//    }
+
+    public String getDateE() {
+        return dateE;
+    }
+
+    public void setDateE(String dateE) {
+        this.dateE = dateE;
+    }
+
+    public String getDateR() {
+        return dateR;
+    }
+
+    public void setDateR(String dateR) {
+        this.dateR = dateR;
+    }
+
+    public String getVer() {
+        return ver;
+    }
+
+    public void setVer(String ver) {
+        this.ver = ver;
     }
     
 

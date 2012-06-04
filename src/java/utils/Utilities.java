@@ -24,6 +24,7 @@ public class Utilities {
     private static final String priv = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//certs//private//") + "/";
     private static final String cert = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//certs//cert//") + "/";
     private static final String scripts = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//scripts//") + "/";
+    private static final String directory = "/etc/ssl/CA_iMovies";
 
     public static boolean createCertificate(Persona pb, String password) {
 //                log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
@@ -266,50 +267,55 @@ public class Utilities {
 
     public static ArrayList<UserCert> getCertificateUser(String username) throws CertificateException {
         ArrayList<UserCert> list = new ArrayList<UserCert>();
-        File cartella = new File("/etc/ssl/CA_iMovies/newcerts");
+        File cartella = new File(directory + "/newcerts");
         File[] files = null;
         StringTokenizer tmp, tmp1;
         String mom;
         UserCert ue = null;
-        System.out.println(cartella.getAbsolutePath());
+        //System.out.println(cartella.getAbsolutePath());
         if (cartella.isDirectory()) {
             files = cartella.listFiles();
-            for (int i=0;i<files.length;i++){
-                        System.out.println(files[i].toString());
-            }
+//            for (int i=0;i<files.length;i++){
+//                        System.out.println(files[i].toString());
+//            }
         }
         for (int i = 0; i < files.length; i++) {
             try {
-                System.out.println(files[i].getAbsoluteFile().toString());
+                //System.out.println(files[i].getAbsoluteFile().toString());
                 FileInputStream in = new FileInputStream(files[i].getAbsoluteFile());
-                CertificateFactory cf =CertificateFactory.getInstance("X509");
+                CertificateFactory cf = CertificateFactory.getInstance("X509");
                 X509Certificate cer = (X509Certificate) cf.generateCertificate(in);
                 mom = cer.getSubjectDN().getName();
                 mom = mom.trim();
-                mom=mom.replace(" ", "");
+                mom = mom.replace(" ", "");
                 tmp = new StringTokenizer(mom, ",");
-                System.out.println("stringa trimmata: "+mom);
-                while (tmp.hasMoreTokens()) {
-                    System.out.println("qeusto è il token delle virgole: "+tmp);
+                //System.out.println("stringa trimmata: "+mom);
+                boolean guardia = true;
+                while (tmp.hasMoreTokens() && guardia) {
+                    //System.out.println("qeusto è il token delle virgole: "+tmp);
 
                     tmp1 = new StringTokenizer(tmp.nextToken(), "=");
-                    System.out.println("qeusto è il token tokenizzato di nuovo: "+tmp1.toString());
+                    //System.out.println("qeusto è il token tokenizzato di nuovo: "+tmp1.toString());
+
                     if (tmp1.nextToken().equals("CN")) {
                         if (tmp1.nextToken().equals(username)) {
-                            System.out.println("questo è il certificato di "+username+": "+files[i].getName());
-                            ue=new UserCert();
+                            //System.out.println("questo è il certificato di "+username+": "+files[i].getName());
+                            ue = new UserCert();
                             ue.setNameFile(files[i].getName());
-                            ue.setSerial(cer.getSerialNumber().toString());
-                            int j=cer.getNotBefore().compareTo(Calendar.getInstance().getTime());
-                            int k=Calendar.getInstance().getTime().compareTo(cer.getNotAfter());
-                            if(j<=0 && k<=0){
+                            ue.setSerial("" + cer.getSerialNumber());
+                            int j = cer.getNotBefore().compareTo(Calendar.getInstance().getTime());
+                            int k = Calendar.getInstance().getTime().compareTo(cer.getNotAfter());
+                            if (j <= 0 && k <= 0) {
                                 ue.setValidity("Valid");
-                            }else{
+                            } else {
                                 ue.setValidity("Invalid");
                             }
+
+                            ue = getIndexInfo(ue);
+
                             list.add(ue);
 
-                            break;
+                            guardia = false;
                         }
                     }
 
@@ -321,7 +327,69 @@ public class Utilities {
                 Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
+        System.out.println("fine del cerificateUser");
 
         return list;
+    }
+
+    public static UserCert getIndexInfo(UserCert ue) {
+
+//            HashMap<String,ArrayList<String>> map=new HashMap<String, ArrayList<String>>();
+//            
+        File index = new File(directory + "/index.txt");
+//            
+        try {
+            FileReader fin = new FileReader(index);
+            BufferedReader br = new BufferedReader(fin);
+
+            String line;
+            boolean guardia = true;
+            while ((line = br.readLine()) != null && guardia) {
+                StringTokenizer tok = new StringTokenizer(line, "\t");
+//               
+//                ArrayList<String> arr = new ArrayList<String>();
+                String ver = tok.nextToken();
+                String dateE = tok.nextToken();
+                String dateR = "Not Revoked";
+                if (ver.equals("R")) {
+                    dateR = tok.nextToken();
+                }
+                if (Integer.parseInt(tok.nextToken()) == Integer.parseInt(ue.getSerial())) {
+                    ue.setVer(ver);
+                    ue.setDateE(dateE);
+                    ue.setDateR(dateR);
+                    guardia = false;
+                }
+            }
+
+        } catch (IOException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        System.out.println("fine del getIndexInfo");
+
+        return ue;
+    }
+
+    public static UserCert revokeCertificate(UserCert ue) {
+        System.out.println("dentro revokeCertificate");
+
+        Process process = null;
+//        Process process2=null;
+        try {
+//            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
+            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+ue.getNameFile());
+
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+ue.getNameFile()});
+//            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+nomeFile+" >> "+scripts+"error"});
+            process.waitFor();
+//            process2.waitFor();
+        } catch (IOException ex) {
+            log.err(false, "Errore di IO", ex.toString(), ex.toString());
+        } catch (InterruptedException ex) {
+            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
+        }
+        
+        return getIndexInfo(ue);
+
     }
 }
