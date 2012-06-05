@@ -5,6 +5,7 @@
 package utils;
 
 import java.io.*;
+import java.math.BigInteger;
 import java.security.cert.*;
 import java.util.*;
 import java.util.logging.Level;
@@ -79,7 +80,7 @@ public class Utilities {
             process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid() + ""});
 
             process2.waitFor();
-      } catch (IOException ex) {
+        } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
@@ -125,7 +126,10 @@ public class Utilities {
                             //System.out.println("questo è il certificato di "+username+": "+files[i].getName());
                             ue = new UserCert();
                             ue.setNameFile(files[i].getName());
-                            ue.setSerial("" + cer.getSerialNumber());
+
+                            BigInteger serial = cer.getSerialNumber();
+                            ue.setSerial(serial.toString(16));
+//                            System.out.print("serial number restituto dal certificato= ");
 //                            int j = cer.getNotBefore().compareTo(Calendar.getInstance().getTime());
 //                            int k = Calendar.getInstance().getTime().compareTo(cer.getNotAfter());
 //                            if (j <= 0 && k <= 0) {
@@ -156,9 +160,9 @@ public class Utilities {
 
             @Override
             public int compare(UserCert o1, UserCert o2) {
-                if (Integer.parseInt(o1.getSerial()) < Integer.parseInt(o2.getSerial())) {
+                if (Integer.parseInt(o1.getSerial(),16) < Integer.parseInt(o2.getSerial(),16)) {
                     return -1;
-                } else if (Integer.parseInt(o1.getSerial()) > Integer.parseInt(o2.getSerial())) {
+                } else if (Integer.parseInt(o1.getSerial(),16) > Integer.parseInt(o2.getSerial(),16)) {
                     return 1;
                 }
                 return 0;
@@ -191,18 +195,23 @@ public class Utilities {
                 date = new StringBuilder();
                 anno = Integer.parseInt(dateE.substring(0, 2)) + 2000;
                 date.append(anno).append("/").append(dateE.substring(2, 4)).append("/").append(dateE.substring(4, 6)).append(" ").append(dateE.substring(6, 8)).append(":").append(dateE.substring(8, 10)).append(":").append(dateE.substring(10, 12));
-                dateE=date.toString();
-                
+                dateE = date.toString();
+
                 String dateR = "Not Revoked";
                 if (ver.equals("R")) {
                     dateR = tok.nextToken();
                     date = new StringBuilder();
                     anno = Integer.parseInt(dateR.substring(0, 2)) + 2000;
                     date.append(anno).append("/").append(dateR.substring(2, 4)).append("/").append(dateR.substring(4, 6)).append(" ").append(dateR.substring(6, 8)).append(":").append(dateR.substring(8, 10)).append(":").append(dateR.substring(10, 12));
-                    dateR=date.toString();
+                    dateR = date.toString();
                 }
-
-                if (tok.nextToken().equals(Integer.toHexString(Integer.parseInt(ue.getSerial())))){
+//                StringBuilder string1 = new StringBuilder();
+//                StringBuilder string2 = new StringBuilder();
+//                //string1.append(Integer.parseInt(, 16));
+//                string2.append(Integer.parseInt(ue.getSerial(),16));
+////                String hex = String.format("%x", ue.getSerial());
+//                System.out.println("Stringa1= "+tok.nextToken()+"\nStringa2 ="+string2);
+                if (tok.nextElement().toString().replace("0", "").toLowerCase().equals(ue.getSerial())) {
                     ue.setVer(ver);
                     ue.setDateE(dateE);
                     ue.setDateR(dateR);
@@ -220,18 +229,18 @@ public class Utilities {
 
         return ue;
     }
-    
-    public static void pkcs12Certificate(UserCert userCert){
-        
-        Process process = null;
-        
-         try {
-            log.info(false, "Creazione certificato", "verifica ","comando: sh " + scripts + "CA.sh -pkcs12 "+userCert.getNameFile()+" "+userCert.getNameFile().replace(".pem", ""));
 
-            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -pkcs12 "+userCert.getNameFile() +" "+userCert.getNameFile().replace(".pem", "")+" "+userCert.getPasswordPkcs12()+" "+userCert.getPasswordKey()});
-            
+    public static void pkcs12Certificate(UserCert userCert) {
+
+        Process process = null;
+
+        try {
+            log.info(false, "Creazione certificato", "verifica ", "comando: sh " + scripts + "CA.sh -pkcs12 " + userCert.getNameFile() + " " + userCert.getNameFile().replace(".pem", ""));
+
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -pkcs12 " + userCert.getNameFile() + " " + userCert.getNameFile().replace(".pem", "") + " " + userCert.getPasswordPkcs12() + " " + userCert.getPasswordKey()});
+
             process.waitFor();
-     } catch (IOException ex) {
+        } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());

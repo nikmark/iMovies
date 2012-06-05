@@ -77,7 +77,7 @@
                     </p:column>  
                     <p:column headerText="Download" style="width:40px">  
                         <h:panelGrid styleClass="actions" cellpadding="2">  
-                            <p:commandButton id="downloadButton" update=":dlg" value="Download Certificate" onclick="dlgPswPkcs12.show()">  
+                            <p:commandButton id="downloadButton" update=":dlg" value="Download Certificate" onclick="dlgPswPkcs12.show()" >  
                                 <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />
                             </p:commandButton>  
                         </h:panelGrid>  
