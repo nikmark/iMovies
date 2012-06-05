@@ -59,8 +59,9 @@ cp_pem() {
 usage() {
  echo "usage: $0 -newreq|-sign|-verify" >&2
 }
-$SSLEAY_CONFIG="-config /etc/ssl/openssl.cnf"
-$CATOP="/etc/ssl/CA_iMovies"
+SSLEAY_CONFIG="-config /etc/ssl/openssl.cnf"
+CATOP="/etc/ssl/CA_iMovies"
+CACERT="iMoviesCert.pem"
 if [ -z "$OPENSSL" ]; then OPENSSL=openssl; fi
 
 if [ -z "$DAYS" ] ; then DAYS="-days 365" ; fi	# 1 year
@@ -95,8 +96,7 @@ case $1 in
 #    ;;
 -newreq)
     # create a certificate request
-echo $2 >> /var/lib/tomcat7/webapps/iMovies/subje
-    $REQ -new -keyout /var/lib/tomcat7/webapps/iMovies/certs/private/$3.key -passin file:$4 -passout file:$4 -out /var/lib/tomcat7/webapps/iMovies/certs/cert/$3.csr $DAYS -subj "$2"
+    $REQ -new -keyout /etc/ssl/CA_iMovies/private/$3.key -passin file:$4 -passout file:$4 -out /etc/ssl/CA_iMovies/$3.csr $DAYS -subj "$2"
     RET=$?
     echo "Request is in $3.csr, private key is in $3.key"
     ;;
@@ -151,18 +151,17 @@ echo $2 >> /var/lib/tomcat7/webapps/iMovies/subje
 
 -pkcs12)
     if [ -z "$2" ] ; then
-	CNAME="My Certificate"
+	CNAME="MyCert"
     else
 	CNAME="$2"
     fi
-    $PKCS12 -in newcert.pem -inkey newreq.pem -certfile ${CATOP}/$CACERT \
-	    -out newcert.p12 -export -name "$CNAME"
+    $PKCS12 -in /etc/ssl/CA_iMovies/newcerts/$3.pem -inkey $CATOP/private/$3.pem -certfile ${CATOP}/$CACERT -out /var/lib/tomcat7/webapps/iMovies/pkcs12/$3.p12 -export -name "$CNAME"
     RET=$?
     exit $RET
     ;;
 
 -sign|-signreq)
-    $CA -passin file:$CATOP/private/pass -policy policy_anything -batch -out /var/lib/tomcat7/webapps/iMovies/certs/cert/$3.pem -in $2
+    $CA -passin file:$CATOP/private/pass -policy policy_anything -batch -in $CATOP/$2.csr
 #-passin pass:imovies -passout:imovies -policy policy_anything
 #-policy policy_anything -passout pass:imovies
     RET=$?

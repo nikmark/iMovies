@@ -82,7 +82,27 @@
         </navigation-case>
     </navigation-rule>
     
-     <navigation-rule>
+    <navigation-rule>
+        <from-view-id>/resources/pages/revokeDownload.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{CertificateBean.revokeCertificate}</from-action>
+            <from-outcome>refresh</from-outcome>
+            <to-view-id>resources/pages/revokeDownload</to-view-id>
+          
+        </navigation-case>
+    </navigation-rule>
+    
+    <navigation-rule>
+        <from-view-id>/resources/pages/revokeDownload.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>#{CertificateBean.deleteCertificate}</from-action>
+            <from-outcome>refresh</from-outcome>
+            <to-view-id>resources/pages/revokeDownload</to-view-id>
+        </navigation-case>
+    </navigation-rule>
+ 
+    
+    <navigation-rule>
         <from-view-id>/resources/pages/login.xhtml</from-view-id>
         <navigation-case>
            

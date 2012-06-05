@@ -47,42 +47,16 @@ public class Utilities {
             Output.close();
             file.flush();
             file.close();
-//            FileOutputStream file2  = new FileOutputStream(FacesContext.getCurrentInstance().getExternalContext().getRealPath("//scripts//") + "/cmd");
-//            Output = new PrintStream(file2);
-//            Output.println("sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw");
-////            FileOutputStream file3  = new FileOutputStream(FacesContext.getCurrentInstance().getExternalContext().getRealPath("//scripts//") + "/wmi");
-////            Output = new PrintStream(filew);
-////            Output.println("sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw");
         } catch (IOException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
         log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
 
-//        KeyPairGenerator keyGen = KeyPairGenerator.getInstance("RSA");
-//        keyGen.initialize(1024, new SecureRandom());
-//        KeyPair keypair = keyGen.generateKeyPair();
-//        PrivateKey privKey = keypair.getPrivate();
-//        PublicKey pubKey = keypair.getPublic();
-//
-//        Calendar expiry = Calendar.getInstance();
-//        expiry.add(Calendar.DAY_OF_YEAR, 365);
-
-
-
-//        OutputStream stdin;
-////                process.getOutputStream();
-//        InputStream stderr;
-////                process.getErrorStream();
-//        InputStream stdout;
-////                process.getInputStream();
 
         Scanner scan = new Scanner(System.in);
 
-        //ProcessBuilder builder = new ProcessBuilder("openssl genrsa -out "+pb.getUid()+".key 1024");
-        //builder.redirectErrorStream(true);
         Process process = null;
         Process process2 = null;
-        Process process3 = null;
 
         try {
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
@@ -92,10 +66,6 @@ public class Utilities {
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw"});
 
             process.waitFor();
-//            process2=Runtime.getRuntime().exec(new String[]{"bash", "-c","pwd >> "+scripts+"wmi"});
-//            process2.waitFor();
-//            
-//process = Runtime.getRuntime().exec(new String[]{"bash","-c", "mv "+pb.getUid()+".key "+priv});
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
@@ -104,163 +74,16 @@ public class Utilities {
 
 
         try {
-//            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
-            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + cert + pb.getUid() + ".csr " + pb.getUid() + "");
+            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + "");
 
-            //            process = Runtime.getRuntime().exec("openssl genrsa -out "+ priv + pb.getUid() + ".key 1024");
-            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + cert + pb.getUid() + ".csr " + pb.getUid() + ""});
+            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid() + ""});
 
             process2.waitFor();
-//            process2=Runtime.getRuntime().exec(new String[]{"bash", "-c","pwd >> "+scripts+"wmi"});
-//            process2.waitFor();
-//            
-//process = Runtime.getRuntime().exec(new String[]{"bash","-c", "mv "+pb.getUid()+".key "+priv});
-        } catch (IOException ex) {
+      } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
         }
-
-//        try {
-////            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
-//            log.info(false, "Creazione certificato", "verifica ","comando: sh " + scripts + "CA.sh -verify "+cert+pb.getUid()+"_.pem >> "+scripts+"verify");
-//
-//            //            process = Runtime.getRuntime().exec("openssl genrsa -out "+ priv + pb.getUid() + ".key 1024");
-//            process3 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign "+cert+pb.getUid()+".csr "+pb.getUid()+""});
-//            
-//            process3.waitFor();
-////            process2=Runtime.getRuntime().exec(new String[]{"bash", "-c","pwd >> "+scripts+"wmi"});
-////            process2.waitFor();
-////            
-////process = Runtime.getRuntime().exec(new String[]{"bash","-c", "mv "+pb.getUid()+".key "+priv});
-//        } catch (IOException ex) {
-//            log.err(false, "Errore di IO", ex.toString(), ex.toString());
-//        } catch (InterruptedException ex) {
-//            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
-//        }
-
-
-
-
-//        builder = new ProcessBuilder("openssl req -new -key "+pb.getUid()+".key -out "+pb.getUid()+".csr -subj "+subject);
-//        builder.redirectErrorStream(true);
-//        Process process1 = null;
-//        
-//        try {
-//            log.info(false, "Creazione certificato", "Generazione file csr", "Generazione file csr su directory 'private': "+priv+" e directory 'cert': "+cert+". Lancio comando "
-//                    + "openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject);
-//            process1 = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl req -new -key "+ priv + pb.getUid() + ".key -out "+ cert + pb.getUid() + ".csr -subj " + subject + ""});
-//            process1.waitFor();
-//        } catch (IOException ex) {
-//            log.err(false, "Errore di IO", ex.toString(), ex.toString());
-//        } catch (InterruptedException e) {
-//            log.err(false, "Errore nel waitFor", e.toString(), e.toString());
-//        }
-//        
-//                Process process2 = null;
-//
-//        try {
-//            log.info(false, "Firma Certificato", "Generazione file pem", "Generazione file pem su directory 'private': "+priv+" e directory 'cert': "+cert+". Lancio comando "
-//                    + "openssl ca -in "+ cert + pb.getUid() + ".csr -config /etc/ssl/openssl.cnf");
-//            process2 = Runtime.getRuntime().exec(new String[]{"bash","-c","pwd >> percorso.txt"});
-//                        process2.waitFor();
-//
-//            process2 = Runtime.getRuntime().exec(new String[]{"bash","-c","openssl ca -in "+ cert + pb.getUid() + ".csr -config //etc//ssl//openssl.cnf"});
-//            process2.waitFor();
-//        } catch (IOException ex) {
-//            log.err(false, "Errore di IO", ex.toString(), ex.toString());
-//        } catch (InterruptedException e) {
-//            log.err(false, "Errore nel waitFor", e.toString(), e.toString());
-//        }
-//        
-        //stdout = process.getInputStream();
-        //stdout = process.getInputStream();
-
-        //builder = new ProcessBuilder("openssl x509 -req -days 365 -in "+pb.getUid()+".csr -signkey "+pb.getUid()+".key -out "+pb.getUid()+".crt");
-        //builder.redirectErrorStream(true);
-        //process = builder.start();
-/*
-         * try { //process = Runtime.getRuntime().exec("openssl x509 -req -days
-         * 365 -in " + pb.getUid() + ".csr -signkey " + pb.getUid() + ".key -out
-         * " + pb.getUid() + ".crt"); } catch (IOException ex) { log.err(false,
-         * "Errore di IO", ex.toString(), ex.toString()); } try {
-         * process.waitFor();
-         *
-         * //stdout = process.getInputStream(); } catch (InterruptedException
-         * ex) { log.err(false, "Errore nel waitFor", ex.toString(),
-         * ex.toString()); }
-         */
-        //stdout = process.getInputStream();
-
-
-//        BufferedReader reader = new BufferedReader(new InputStreamReader(stdout));
-//        BufferedWriter writer = new BufferedWriter(new OutputStreamWriter(stdin));
-//
-//        String input = scan.nextLine();
-//        input += "\n";
-//        writer.write(input);
-//        writer.flush();
-//
-//        input = scan.nextLine();
-//        input += "\n";
-//        writer.write(input);
-//        writer.flush();
-//        while (scan.hasNext()) {
-//            String in = scan.nextLine();
-//            if (in.trim().equals("exit")) {
-//                // Putting 'exit' amongst the echo --EOF--s below doesn't work.
-//                writer.write("exit\n");
-//            } else {
-//                writer.write("((" + in + ") && echo --EOF--) || echo --EOF--\n");
-//            }
-//            writer.flush();
-//
-//            line = reader.readLine();
-//            while (line != null && !line.trim().equals("--EOF--")) {
-//                System.out.println("Stdout: " + line);
-//                line = reader.readLine();
-//            }
-//            if (line == null) {
-//                break;
-//            }
-//        }
-
-//        while ((line = reader.readLine()) != null) {
-//            System.out.println("Stdout: " + line);
-//        }
-//
-//        input = scan.nextLine();
-//        input += "\n";
-//        writer.write(input);
-//        writer.close();
-//
-//        while ((line = reader.readLine()) != null) {
-//            System.out.println("Stdout: " + line);
-//
-//        }
-
-
-//        CertificateFactory cf = CertificateFactory.getInstance("X509");
-//			X509Certificate c = (X509Certificate) cf;
-//                        
-//                                CertificateGenerator n;
-//                        n.
-
-//        X509Name x509Name = new X509Name("CN=" + dn);
-//
-//        V3TBSCertificateGenerator certGen = new V3TBSCertificateGenerator();
-//        certGen.setSerialNumber(new DERInteger(BigInteger.valueOf(System.currentTimeMillis())));
-//        certGen.setIssuer(PrincipalUtil.getSubjectX509Principal(caCert));
-//        certGen.setSubject(x509Name);
-//        DERObjectIdentifier sigOID = X509Util.getAlgorithmOID("SHA1WithRSAEncryption");
-//        AlgorithmIdentifier sigAlgId = new AlgorithmIdentifier(sigOID, new DERNull());
-//        certGen.setSignature(sigAlgId);
-//        certGen.setSubjectPublicKeyInfo(new SubjectPublicKeyInfo((ASN1Sequence)new ASN1InputStream(
-//                new ByteArrayInputStream(pubKey.getEncoded())).readObject()));
-//        certGen.setStartDate(new Time(new Date(System.currentTimeMillis())));
-//        certGen.setEndDate(new Time(expiry.getTime()));
-//        TBSCertificateStructure tbsCert = certGen.generateTBSCertificate();
-
 
         return true;
     }
@@ -303,13 +126,13 @@ public class Utilities {
                             ue = new UserCert();
                             ue.setNameFile(files[i].getName());
                             ue.setSerial("" + cer.getSerialNumber());
-                            int j = cer.getNotBefore().compareTo(Calendar.getInstance().getTime());
-                            int k = Calendar.getInstance().getTime().compareTo(cer.getNotAfter());
-                            if (j <= 0 && k <= 0) {
-                                ue.setValidity("Valid");
-                            } else {
-                                ue.setValidity("Invalid");
-                            }
+//                            int j = cer.getNotBefore().compareTo(Calendar.getInstance().getTime());
+//                            int k = Calendar.getInstance().getTime().compareTo(cer.getNotAfter());
+//                            if (j <= 0 && k <= 0) {
+//                                ue.setValidity("Valid");
+//                            } else {
+//                                ue.setValidity("Invalid");
+//                            }
 
                             ue = getIndexInfo(ue);
 
@@ -328,14 +151,14 @@ public class Utilities {
             }
         }
         System.out.println("fine del cerificateUser");
-        
+
         Collections.sort(list, new Comparator<UserCert>() {
 
             @Override
             public int compare(UserCert o1, UserCert o2) {
-                if(Integer.parseInt(o1.getSerial()) < Integer.parseInt(o2.getSerial())){
+                if (Integer.parseInt(o1.getSerial()) < Integer.parseInt(o2.getSerial())) {
                     return -1;
-                }else if(Integer.parseInt(o1.getSerial()) > Integer.parseInt(o2.getSerial())){
+                } else if (Integer.parseInt(o1.getSerial()) > Integer.parseInt(o2.getSerial())) {
                     return 1;
                 }
                 return 0;
@@ -350,6 +173,8 @@ public class Utilities {
 //            HashMap<String,ArrayList<String>> map=new HashMap<String, ArrayList<String>>();
 //            
         File index = new File(directory + "/index.txt");
+        int anno;
+        StringBuilder date;
 //            
         try {
             FileReader fin = new FileReader(index);
@@ -363,18 +188,28 @@ public class Utilities {
 //                ArrayList<String> arr = new ArrayList<String>();
                 String ver = tok.nextToken();
                 String dateE = tok.nextToken();
+                date = new StringBuilder();
+                anno = Integer.parseInt(dateE.substring(0, 2)) + 2000;
+                date.append(anno).append("/").append(dateE.substring(2, 4)).append("/").append(dateE.substring(4, 6)).append(" ").append(dateE.substring(6, 8)).append(":").append(dateE.substring(8, 10)).append(":").append(dateE.substring(10, 12));
+                dateE=date.toString();
+                
                 String dateR = "Not Revoked";
                 if (ver.equals("R")) {
                     dateR = tok.nextToken();
+                    date = new StringBuilder();
+                    anno = Integer.parseInt(dateR.substring(0, 2)) + 2000;
+                    date.append(anno).append("/").append(dateR.substring(2, 4)).append("/").append(dateR.substring(4, 6)).append(" ").append(dateR.substring(6, 8)).append(":").append(dateR.substring(8, 10)).append(":").append(dateR.substring(10, 12));
+                    dateR=date.toString();
                 }
-                if (Integer.parseInt(tok.nextToken()) == Integer.parseInt(ue.getSerial())) {
+
+                if (tok.nextToken().equals(Integer.toHexString(Integer.parseInt(ue.getSerial())))){
                     ue.setVer(ver);
                     ue.setDateE(dateE);
                     ue.setDateR(dateR);
                     guardia = false;
                 }
             }
-            
+
             br.close();
             fin.close();
 
@@ -385,6 +220,23 @@ public class Utilities {
 
         return ue;
     }
+    
+    public static void pkcs12Certificate(UserCert userCert){
+        
+        Process process = null;
+        
+         try {
+            log.info(false, "Creazione certificato", "verifica ","comando: sh " + scripts + "CA.sh -pkcs12 "+userCert.getNameFile()+" "+userCert.getNameFile().replace(".pem", ""));
+
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -pkcs12 "+userCert.getNameFile() +" "+userCert.getNameFile().replace(".pem", "")+" "+userCert.getPasswordPkcs12()+" "+userCert.getPasswordKey()});
+            
+            process.waitFor();
+     } catch (IOException ex) {
+            log.err(false, "Errore di IO", ex.toString(), ex.toString());
+        } catch (InterruptedException ex) {
+            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
+        }
+    }
 
     public static UserCert revokeCertificate(UserCert ue) {
         System.out.println("dentro revokeCertificate");
@@ -393,9 +245,9 @@ public class Utilities {
 //        Process process2=null;
         try {
 //            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
-            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+ue.getNameFile());
+            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -revoke " + directory + "/newcerts/" + ue.getNameFile());
 
-            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+ue.getNameFile()});
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -revoke " + directory + "/newcerts/" + ue.getNameFile()});
 //            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+nomeFile+" >> "+scripts+"error"});
             process.waitFor();
 //            process2.waitFor();
@@ -404,19 +256,19 @@ public class Utilities {
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
         }
-        
+
         return getIndexInfo(ue);
 
     }
 
     public static void deleteCertificate(UserCert selectedUserCert) {
-         Process process = null;
+        Process process = null;
 //        Process process2=null;
         try {
 //            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
-            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: rm "+directory+"/newcerts/"+selectedUserCert.getNameFile());
+            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: rm " + directory + "/newcerts/" + selectedUserCert.getNameFile());
 
-            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "rm "+directory+"/newcerts/"+selectedUserCert.getNameFile()});
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "rm " + directory + "/newcerts/" + selectedUserCert.getNameFile()});
 //            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+nomeFile+" >> "+scripts+"error"});
             process.waitFor();
 //            process2.waitFor();

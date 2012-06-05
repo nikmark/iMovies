@@ -14,13 +14,17 @@ public class UserCert {
     
     private String serial;
     
-    private String validity;
+//    private String validity;
     
     private String ver;
     
     private String dateE;
     
     private String dateR;
+    
+    private String passwordPkcs12;
+    
+    private String passwordKey;
     
    
     public UserCert(){
@@ -76,12 +80,28 @@ public class UserCert {
         this.serial = serial;
     }
 
-    public String getValidity() {
-        return validity;
+//    public String getValidity() {
+//        return validity;
+//    }
+//
+//    public void setValidity(String validity) {
+//        this.validity = validity;
+//    }
+    
+    public String getPasswordPkcs12() {
+        return passwordPkcs12;
     }
 
-    public void setValidity(String validity) {
-        this.validity = validity;
+    public void setPasswordPkcs12(String passwordPkcs12) {
+        this.passwordPkcs12 = passwordPkcs12;
+    }
+    
+        public String getPasswordKey() {
+        return passwordKey;
+    }
+
+    public void setPasswordKey(String passwordKey) {
+        this.passwordKey = passwordKey;
     }
     
 

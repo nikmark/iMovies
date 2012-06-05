@@ -4,13 +4,17 @@
  */
 package main;
 
+import java.io.InputStream;
 import java.io.Serializable;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import javax.servlet.ServletContext;
 import javax.swing.text.Utilities;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 import utils.UserCert;
 
 /**
@@ -22,7 +26,8 @@ public class CertificateBean implements Serializable{
     private ArrayList<UserCert> uCert=new ArrayList<UserCert>();
 
     private UserCert selectedUserCert;
-
+    
+    private StreamedContent file;  
     
     public CertificateBean(){
         try {
@@ -46,17 +51,27 @@ public class CertificateBean implements Serializable{
         this.selectedUserCert = selectedUserCert;
     }
     
-    public boolean revokeCertificate(){
+    public String revokeCertificate(){
         System.out.println("Revoke Certificate di CertificateBean. Nome file da revocare= "+getSelectedUserCert().getNameFile());
         
         setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
-        return true;
+        return "refresh";
     }
     
-    public boolean deleteCertificate(){
+    private void downloadCertificate(){
+        utils.Utilities.pkcs12Certificate(getSelectedUserCert());
+        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/pkcs12/"+getSelectedUserCert().getSerial()+".p12");  
+        this.file=new DefaultStreamedContent(stream);
+    }
+    
+    public String deleteCertificate(){
          setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
          utils.Utilities.deleteCertificate(getSelectedUserCert());
-         return true;
+         return "refresh";
 
     }
+    public StreamedContent getFile(){
+        downloadCertificate();    
+        return file;  
+    } 
 }

@@ -19,17 +19,36 @@
         </div>
         <br /><br /><br />
         <center>
+
+            <p:dialog id="dlg" widgetVar="dlgPswPkcs12" >
+                <h:form id="form_pwd12"> 
+                    <h:panelGrid columns="2" cellpadding="5">  
+
+                        <h:outputLabel for="pwdKey" value="Insert the of the private key of this certificate:" />  
+                        <h:inputSecret value="#{CertificateBean.selectedUserCert.passwordKey}"    
+                                       id="pwdKey" required="true" requiredMessage="Your private key password cannot be empty"  label="pwdKey" />  
+
+                        <h:outputLabel for="pwd12" value="Insert the Password for export:" />  
+                        <h:inputSecret value="#{CertificateBean.selectedUserCert.passwordPkcs12}"    
+                                       id="pwd12" required="true" requiredMessage="Your export password cannot be empty"  label="pwd12" />  
+
+                        <p:commandButton id="exportButton" value="Export" oncomplete="dlgPswPkcs12.hide()">
+                            <p:fileDownload value="#{CertificateBean.file}" />  
+                        </p:commandButton>
+                    </h:panelGrid>
+                </h:form>  
+            </p:dialog>
             <h:form id="form">  
 
                 <p:growl id="msgs" showDetail="true" />  
 
                 <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.uCert}" tableStyle="width:auto">  
 
-                    <p:column headerText="Name Of Certificate" style="width:100px" sortBy="#{userCert.nameFile}">  
+                    <p:column headerText="Name Of Certificate" style="width:100px" >  
                         <h:outputText value="#{userCert.nameFile}" />  
                     </p:column>  
 
-                    <p:column headerText="Serial" style="width:100px" sortBy="#{userCert.serial}" >  
+                    <p:column headerText="Serial" style="width:100px" >  
                         <h:outputText value="#{userCert.serial}" />  
                     </p:column>  
 
@@ -39,11 +58,11 @@
                         </h:outputText>  
                     </p:column>  
 
-                    <p:column headerText="Expiration Date" style="width:100px" sortBy="#{userCert.dateE}">  
+                    <p:column headerText="Expiration Date" style="width:100px" >  
                         <h:outputText value="#{userCert.dateE}"/>  
                     </p:column> 
 
-                    <p:column headerText="Revocation Date" style="width:100px" sortBy="#{userCert.dateR}">  
+                    <p:column headerText="Revocation Date" style="width:100px" >  
                         <h:outputText value="#{userCert.dateR}">
                             <!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
                         </h:outputText>  
@@ -58,8 +77,8 @@
                     </p:column>  
                     <p:column headerText="Download" style="width:40px">  
                         <h:panelGrid styleClass="actions" cellpadding="2">  
-                            <p:commandButton id="downloadButton" value="Download Certificate"  >  
-                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
+                            <p:commandButton id="downloadButton" update=":dlg" value="Download Certificate" onclick="dlgPswPkcs12.show()">  
+                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />
                             </p:commandButton>  
                         </h:panelGrid>  
                     </p:column>  
@@ -77,22 +96,22 @@
 
         </center>
         <br /><br />
-<!--            <table width="100%" cellpadding="0" border="0">-->
-<!--                <tr>-->
-<!--                    <td width="50%" valign="top">-->
-                        <p>Remember:<br />
-                            if you delete a certificate, the certificate will be revoked, and after that deleted.</p>
-<br /> 
-<!--                    </td>-->
-<!--                    <td width="50%" valign="top">-->
-                        <p>Legend: </p>
-                        <dt>V: indicates that the certificate is "Verified".</dt>
-                        <dt>E: indicates that the certificate is "Expired".</dt>
-                        <dt>R: indicates that the certificate is "Revoked".</dt>
-<!--                    </td>-->
-<!--                </tr>-->
-<!--            </table>-->
-            <!--            Remember:<br />
-                        if you delete a certificate, the certificate will be revoked, and after that deleted.-->
-           </h:body>
+        <!--            <table width="100%" cellpadding="0" border="0">-->
+        <!--                <tr>-->
+        <!--                    <td width="50%" valign="top">-->
+        <p>Remember:<br />
+            if you delete a certificate, the certificate will be revoked, and after that deleted.</p>
+        <br /> 
+        <!--                    </td>-->
+        <!--                    <td width="50%" valign="top">-->
+        <p>Legend: </p>
+        <dt>V: indicates that the certificate is "Verified".</dt>
+        <dt>E: indicates that the certificate is "Expired".</dt>
+        <dt>R: indicates that the certificate is "Revoked".</dt>
+        <!--                    </td>-->
+        <!--                </tr>-->
+        <!--            </table>-->
+        <!--            Remember:<br />
+                    if you delete a certificate, the certificate will be revoked, and after that deleted.-->
+    </h:body>
 </html>

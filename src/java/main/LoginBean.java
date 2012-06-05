@@ -345,7 +345,4 @@ public class LoginBean {
         
     }
     
-    public void getCertificates(){
-        
-    }
 }
