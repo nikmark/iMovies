@@ -155,7 +155,7 @@ case $1 in
     else
 	CNAME="$2"
     fi
-    $PKCS12 -in /etc/ssl/CA_iMovies/newcerts/$3.pem -inkey $CATOP/private/$3.pem -certfile ${CATOP}/$CACERT -out /var/lib/tomcat7/webapps/iMovies/pkcs12/$3.p12 -export -name "$CNAME"
+    $PKCS12 -passin pass:$5 -passout pass:$4 -in /etc/ssl/CA_iMovies/newcerts/$3.pem -inkey $CATOP/private/$3.pem -certfile ${CATOP}/$CACERT -out /var/lib/tomcat7/webapps/iMovies/pkcs12/$3.p12 -export -name "$CNAME"
     RET=$?
     exit $RET
     ;;

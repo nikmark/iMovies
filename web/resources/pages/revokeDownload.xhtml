@@ -19,25 +19,34 @@
         </div>
         <br /><br /><br />
         <center>
-
             <p:dialog id="dlg" widgetVar="dlgPswPkcs12" >
+
                 <h:form id="form_pwd12"> 
-                    <h:panelGrid columns="2" cellpadding="5">  
+                    <h:panelGrid id="panGrid" columns="2" cellpadding="5">  
 
                         <h:outputLabel for="pwdKey" value="Insert the of the private key of this certificate:" />  
-                        <h:inputSecret value="#{CertificateBean.selectedUserCert.passwordKey}"    
-                                       id="pwdKey" required="true" requiredMessage="Your private key password cannot be empty"  label="pwdKey" />  
+                        <p:password value="#{CertificateBean.selectedUserCert.passwordKey}"    
+                                    id="pwdKey" required="true" requiredMessage="Your private key password cannot be empty"  > 
+                            <!--                                <p:ajax event="keyup" listener="# {CertificateBean.selectedUserCert.passwordKey}" />-->
+                        </p:password> 
 
                         <h:outputLabel for="pwd12" value="Insert the Password for export:" />  
-                        <h:inputSecret value="#{CertificateBean.selectedUserCert.passwordPkcs12}"    
-                                       id="pwd12" required="true" requiredMessage="Your export password cannot be empty"  label="pwd12" />  
+                        <p:password value="#{CertificateBean.selectedUserCert.passwordPkcs12}"    
+                                    id="pwd12" required="true" requiredMessage="Your export password cannot be empty"  > 
+                            <!--                              <p:ajax event="keyup" listener="# {CertificateBean.selectedUserCert.passwordPkcs12}" />-->
+                        </p:password> 
 
-                        <p:commandButton id="exportButton" value="Export" oncomplete="dlgPswPkcs12.hide()">
+                        <p:commandButton id="exportButton" value="Export"  ajax="false" onclick="#{CertificateBean.downloadCertificate}" oncomplete="dlgPswPkcs12.hide()" >
+
+                            <!--                                <f:event listener="# {CertificateBean.downloadCertificate()}" type="postValidate">-->
                             <p:fileDownload value="#{CertificateBean.file}" />  
+                            <!--                                </f:event>-->
                         </p:commandButton>
                     </h:panelGrid>
-                </h:form>  
+                </h:form>
+
             </p:dialog>
+
             <h:form id="form">  
 
                 <p:growl id="msgs" showDetail="true" />  
@@ -75,14 +84,14 @@
                             </p:commandButton>  
                         </h:panelGrid>  
                     </p:column>  
-                    <p:column headerText="Download" style="width:40px">  
-                        <h:panelGrid styleClass="actions" cellpadding="2">  
-                            <p:commandButton id="downloadButton" update=":dlg" value="Download Certificate" onclick="dlgPswPkcs12.show()" >  
+                    <p:column headerText="Download" style="width:40px"> 
+                        <h:panelGrid styleClass="actions" cellpadding="2">
+                            <p:commandButton id="downloadButton"  update=":dlg" value="Download Certificate" oncomplete="dlgPswPkcs12.show()" >  
                                 <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />
                             </p:commandButton>  
                         </h:panelGrid>  
                     </p:column>  
-                    <p:column headerText="Download" style="width:40px">  
+                    <p:column headerText="Delete" style="width:40px">  
                         <h:panelGrid styleClass="actions" cellpadding="2">  
                             <p:commandButton id="cancelButton" value="Delete Certificate" action="#{CertificateBean.deleteCertificate}" >  
                                 <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  

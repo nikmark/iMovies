@@ -139,7 +139,8 @@ public class Utilities {
 //                            }
 
                             ue = getIndexInfo(ue);
-
+                            ue.setPasswordKey("");
+                            ue.setPasswordPkcs12("");
                             list.add(ue);
 
                             guardia = false;
@@ -231,7 +232,7 @@ public class Utilities {
     }
 
     public static void pkcs12Certificate(UserCert userCert) {
-
+System.out.println("sono in pkcsCertificate.");
         Process process = null;
 
         try {

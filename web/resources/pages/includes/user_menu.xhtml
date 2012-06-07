@@ -1,16 +1,18 @@
 <ui:composition xmlns="http://www.w3.org/1999/xhtml"
                 xmlns:p="http://primefaces.org/ui"
                 xmlns:h="http://java.sun.com/jsf/html"
-                xmlns:ui="http://java.sun.com/jsf/facelets">
+                xmlns:ui="http://java.sun.com/jsf/facelets"
+                xmlns:f="http://java.sun.com/jsf/core">
     <h:form>
         <p:menubar>  
             <p:submenu label="My certificate" icon="ui-icon-document">  
-                <p:menuitem icon="ui-icon-wrench" value="Edit my information" action="edit" />  
-                <p:menuitem icon="ui-icon-wrench" disabled="false" value="Manage Certificates" action="revokeDownload" />  
+                <p:menuitem icon="ui-icon-wrench" value="Edit my information" action="edit" ajax="false" />  
+                <p:menuitem icon="ui-icon-wrench" disabled="false" value="Manage Certificates" action="revokeDownload" ajax="false" />  
 <!--                <p:menuitem icon="ui-icon-document" disabled="false" value="Download" action="download"/>  -->
             </p:submenu>  
 
-            <p:menuitem value="Logout" action="#{LoginBean.logout}" icon="ui-icon-close" />  
+            <p:menuitem id="logout" value="Logout" action="#{LoginBean.logout()}" icon="ui-icon-close"  >
+            </p:menuitem>
         </p:menubar>
     </h:form>
 </ui:composition>

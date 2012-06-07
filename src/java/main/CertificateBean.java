@@ -29,6 +29,8 @@ public class CertificateBean implements Serializable{
     
     private StreamedContent file;  
     
+    private String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//pkcs12//");
+    
     public CertificateBean(){
         try {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
@@ -58,9 +60,19 @@ public class CertificateBean implements Serializable{
         return "refresh";
     }
     
-    private void downloadCertificate(){
+//    public String maliEstremi(){
+//        System.out.println("MALI di CertificateBean. Nome file da revocare= "+getSelectedUserCert().getNameFile());
+//        
+//        //setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
+//        return "refresh";
+//    }
+    
+    public void downloadCertificate(){
+        System.out.println("sono in downloadCertificate.");
         utils.Utilities.pkcs12Certificate(getSelectedUserCert());
-        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/pkcs12/"+getSelectedUserCert().getSerial()+".p12");  
+        
+        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(path+getSelectedUserCert().getSerial()+".p12");  
+        System.out.println("da scaricare= "+"/pkcs12/"+getSelectedUserCert().getNameFile().replace(".pem",".p12"));
         this.file=new DefaultStreamedContent(stream);
     }
     
@@ -71,7 +83,8 @@ public class CertificateBean implements Serializable{
 
     }
     public StreamedContent getFile(){
-        downloadCertificate();    
+        System.out.println("adesso ritorno il file da getFile()");
+        downloadCertificate();  
         return file;  
     } 
 }

@@ -147,6 +147,9 @@ public class LoginBean {
             ret = "success";
             //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
             log.info(false, "Welcome in iMovies", "", "Welcome in iMovies");
+             context.addCallbackParam("loggedIn", loggedIn);
+
+            return "success";
         }
 
         //        {
@@ -157,7 +160,7 @@ public class LoginBean {
         //FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("loggedIn", loggedIn);
 
-        return ret;
+        return null;
 
         //  FacesContext.getCurrentInstance().addMessage(null, msg);  
         // context.addCallbackParam("loggedIn", loggedIn); 
@@ -223,7 +226,7 @@ public class LoginBean {
 
     }
 
-    public String logout() {
+    public void logout() throws IOException {
 
 
         RequestContext context = RequestContext.getCurrentInstance();
@@ -232,17 +235,19 @@ public class LoginBean {
 //        HttpServletRequest req = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
 
-        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
+//        HttpSession session = (HttpSession) FacesContext.getCurrentInstance().getExternalContext().getSession(false);
 //        req. 
 
         msg = new FacesMessage("Logout. Bye Bye");
 
-        context.addCallbackParam("loggedIn", loggedIn);
+//        context.addCallbackParam("loggedIn", loggedIn);
         FacesContext.getCurrentInstance().addMessage(null, msg);
         FacesContext.getCurrentInstance().getExternalContext().invalidateSession();
-        session.invalidate();
+//        session.invalidate();
 
-        return "success";
+//        return "success";
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+
     }
 
     public static String SHAsum(byte[] convertme) throws NoSuchAlgorithmException {

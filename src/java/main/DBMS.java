@@ -23,6 +23,7 @@ public class DBMS {
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
      */
     private String url = "jdbc:mysql://192.168.56.101:3306/iMoviesDB";
+    
     /**
      * Driver da utilizzare per la connessione e l'esecuzione delle query.
      */

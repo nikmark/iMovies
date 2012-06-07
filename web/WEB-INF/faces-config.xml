@@ -18,8 +18,16 @@
         <description>bean per i certificati dell'utente</description>
         <managed-bean-name>CertificateBean</managed-bean-name>
         <managed-bean-class>main.CertificateBean</managed-bean-class>
+        <managed-bean-scope>session</managed-bean-scope>
+    </managed-bean>
+    
+<!--    <managed-bean>
+        <description>bean per i certificati dell'utente</description>
+        <managed-bean-name>Pkcs12FileDownloadController</managed-bean-name>
+        <managed-bean-class>utils.Pkcs12FileDownloadController</managed-bean-class>
         <managed-bean-scope>request</managed-bean-scope>
     </managed-bean>
+    -->
     
 <!--    <managed-bean>
         <description>bean per i certificati dell'utente</description>
@@ -53,32 +61,54 @@
             <from-outcome>success</from-outcome>
             <to-view-id>/resources/pages/user
             </to-view-id>
-               
-               
+            <redirect />
+        </navigation-case>
+    </navigation-rule>
+<!--    
+    <navigation-rule>
+        <from-view-id>/resources/pages/revokeDownload.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>logout
+            </from-action>
+            <to-view-id>/resources/pages/login
+            </to-view-id>
+            <redirect />
+        </navigation-case>
+    </navigation-rule>-->
+<!--
+    <navigation-rule>
+
+        <from-view-id>/resources/pages/user.xhtml</from-view-id>
+        <navigation-case>
+            <from-action>logout
+            </from-action>
+            <to-view-id>/resources/pages/login
+            </to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     <navigation-rule>
-        <from-view-id>/resources/pages/user.xhtml</from-view-id>
         <from-view-id>/resources/pages/edit.xhtml</from-view-id>
-        <from-view-id>/resources/pages/revokeDownload.xhtml</from-view-id>
         <navigation-case>
-            <from-action>#{LoginBean.logout}
+            <from-action>logout
             </from-action>
-            <from-outcome>success</from-outcome>
             <to-view-id>/resources/pages/login
             </to-view-id>
+            <redirect />
         </navigation-case>
-    </navigation-rule>
+    </navigation-rule>-->
     
     <navigation-rule>
         <from-view-id>/resources/pages/user.xhtml</from-view-id>
         <navigation-case>
             <from-action>edit</from-action>
-            <to-view-id>resources/pages/edit</to-view-id>
+            <to-view-id>/resources/pages/edit</to-view-id>
+            <redirect />
             <from-action>revokeDownload</from-action>
-            <to-view-id>resources/pages/revokeDownload</to-view-id>
+            <to-view-id>/resources/pages/revokeDownload</to-view-id>
 <!--            <from-action>download</from-action>
             <to-view-id>resources/pages/download</to-view-id>-->
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -87,8 +117,8 @@
         <navigation-case>
             <from-action>#{CertificateBean.revokeCertificate}</from-action>
             <from-outcome>refresh</from-outcome>
-            <to-view-id>resources/pages/revokeDownload</to-view-id>
-          
+            <to-view-id>/resources/pages/revokeDownload</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
     
@@ -97,7 +127,8 @@
         <navigation-case>
             <from-action>#{CertificateBean.deleteCertificate}</from-action>
             <from-outcome>refresh</from-outcome>
-            <to-view-id>resources/pages/revokeDownload</to-view-id>
+            <to-view-id>/resources/pages/revokeDownload</to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
  
@@ -111,9 +142,11 @@
             <from-outcome>admin</from-outcome>
             <to-view-id>/resources/pages/admin
             </to-view-id>
+            <redirect />
             <from-outcome>success</from-outcome>
             <to-view-id>/resources/pages/user
             </to-view-id>
+            <redirect />
         </navigation-case>
     </navigation-rule>
        <!-- <navigation-rule>

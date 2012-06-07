@@ -7,10 +7,10 @@
 
     <h:head>
         <title>Welcome to iMovies</title>
-        <f:metadata>  
+<!--        <f:metadata>  
             <f:event id="eve" listener="# {LoginBean.verify}" type="preRenderView" /> 
 
-        </f:metadata>
+        </f:metadata>-->
 
         <h:outputStylesheet name="style.css" library="css" />
         
@@ -56,7 +56,7 @@
                         <br />
                         <center>
                             <p:commandButton id="loginButton" value="Login" update=":form:growl"   
-                                             action="#{LoginBean.login}"    
+                                             action="#{LoginBean.login}"   
                                              oncomplete="handleLoginRequest(xhr, status, args)"/> 
                         </center>
                     </f:facet>  
