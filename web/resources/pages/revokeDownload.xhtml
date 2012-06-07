@@ -36,10 +36,11 @@
                             <!--                              <p:ajax event="keyup" listener="# {CertificateBean.selectedUserCert.passwordPkcs12}" />-->
                         </p:password> 
 
-                        <p:commandButton id="exportButton" value="Export"  ajax="false" onclick="#{CertificateBean.downloadCertificate}" oncomplete="dlgPswPkcs12.hide()" >
+                        <p:commandButton id="exportButton" value="Export" ajax="false" onclick="dlgPswPkcs12.hide()" >
 
                             <!--                                <f:event listener="# {CertificateBean.downloadCertificate()}" type="postValidate">-->
-                            <p:fileDownload value="#{CertificateBean.file}" />  
+                            <p:fileDownload value="#{CertificateBean.file}" >
+                            </p:fileDownload>
                             <!--                                </f:event>-->
                         </p:commandButton>
                     </h:panelGrid>
@@ -121,6 +122,14 @@
         <!--                </tr>-->
         <!--            </table>-->
         <!--            Remember:<br />
-                    if you delete a certificate, the certificate will be revoked, and after that deleted.-->
+             if you delete a certificate, the certificate will be revoked, and after that deleted.-->
+        
+<!--                <script type="text/javascript">  
+            function handleDlgRequest(xhr, status, args) {  
+                if(args.validationFailed || args.hide) {  
+                    dlgPswPkcs12.hide(); 
+                }  
+            }  
+        </script>   -->
     </h:body>
 </html>

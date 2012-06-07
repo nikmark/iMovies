@@ -4,6 +4,7 @@
  */
 package main;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.security.cert.CertificateException;
@@ -13,6 +14,7 @@ import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
 import javax.servlet.ServletContext;
 import javax.swing.text.Utilities;
+import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
 import utils.UserCert;
@@ -67,13 +69,13 @@ public class CertificateBean implements Serializable{
 //        return "refresh";
 //    }
     
-    public void downloadCertificate(){
+    public void downloadCertificate() throws IOException{
         System.out.println("sono in downloadCertificate.");
         utils.Utilities.pkcs12Certificate(getSelectedUserCert());
-        
-        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream(path+getSelectedUserCert().getSerial()+".p12");  
-        System.out.println("da scaricare= "+"/pkcs12/"+getSelectedUserCert().getNameFile().replace(".pem",".p12"));
-        this.file=new DefaultStreamedContent(stream);
+        InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/pkcs12/"+getSelectedUserCert().getNameFile().replace(".pem", ".p12"));  
+        System.out.println("test file = "+stream.available()+" esiste? =" +stream.toString());
+        System.out.println("da scaricare= "+path+"/"+getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
+        this.file=new DefaultStreamedContent(stream,"application/x-pkcs12",getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
     }
     
     public String deleteCertificate(){
@@ -82,9 +84,11 @@ public class CertificateBean implements Serializable{
          return "refresh";
 
     }
-    public StreamedContent getFile(){
+    public StreamedContent getFile() throws IOException{
         System.out.println("adesso ritorno il file da getFile()");
         downloadCertificate();  
+
+
         return file;  
     } 
 }

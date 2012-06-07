@@ -33,7 +33,7 @@ public class Utilities {
         String subject = "\"/C=IT/ST=Italy/L=Verona/O=iMovies Certificate Authority"
                 + "/OU=iMovies Security Department/CN=" + pb.getUid() + "/emailAddress=" + pb.getEmail() + "/SN=" + pb.getLastname() + ""
                 + "/GN=" + pb.getFirstname() + "\"";
-//        subject = subject.replace(" ", "\\");
+//        subject = subject.replace(" ", "\\ ");
 //        File psw = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("//scripts//")+"/"+"psw");
         try {
 //            psw.createNewFile();
@@ -43,7 +43,7 @@ public class Utilities {
 
             Output.println(password);
             Output.println(password);
-            Output.println("sh " + scripts + "CA.sh -sign " + cert + pb.getUid() + ".csr " + pb.getUid() + "");
+//            Output.println("sh " + scripts + "CA.sh -sign " + cert + pb.getUid() + ".csr " + pb.getUid() + "");
             Output.flush();
             Output.close();
             file.flush();
@@ -53,33 +53,37 @@ public class Utilities {
         }
         log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
 
-
-        Scanner scan = new Scanner(System.in);
-
-        Process process = null;
-        Process process2 = null;
+        Process process;
 
         try {
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw");
 
-            //            process = Runtime.getRuntime().exec("openssl genrsa -out "+ priv + pb.getUid() + ".key 1024");
+//                        process = Runtime.getRuntime().exec("openssl genrsa -out "+ priv + pb.getUid() + "test"+".key 1024");
+//                                    process.waitFor();
+//                        process = Runtime.getRuntime().exec("mv "+ priv + pb.getUid() + "test"+".key /etc/ssl/CA_iMovies/private/");
+//                                    process.waitFor();
+
+
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw"});
 
             process.waitFor();
-        } catch (IOException ex) {
-            log.err(false, "Errore di IO", ex.toString(), ex.toString());
-        } catch (InterruptedException ex) {
-            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
-        }
+            
+//            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo -e \"sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw >> "+scripts+"cmd"});
+//            process.waitFor();
 
+            //        } catch (IOException ex) {
+//            log.err(false, "Errore di IO", ex.toString(), ex.toString());
+//        } catch (InterruptedException ex) {
+//            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
+//        }
+//
+//
+//        try {
+            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid());
 
-        try {
-            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + "");
-
-            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid() + ""});
-
-            process2.waitFor();
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid()});
+            process.waitFor();
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
@@ -278,7 +282,7 @@ System.out.println("sono in pkcsCertificate.");
 //            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: rm " + directory + "/newcerts/" + selectedUserCert.getNameFile());
 
-            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "rm " + directory + "/newcerts/" + selectedUserCert.getNameFile()});
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -revcanc " + directory + "/newcerts/" + selectedUserCert.getNameFile()});
 //            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+nomeFile+" >> "+scripts+"error"});
             process.waitFor();
 //            process2.waitFor();
