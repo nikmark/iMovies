@@ -72,6 +72,8 @@ public class CertificateBean implements Serializable{
     public void downloadCertificate() throws IOException{
         System.out.println("sono in downloadCertificate.");
         utils.Utilities.pkcs12Certificate(getSelectedUserCert());
+                System.out.println("dopo pkcs12!!");
+
         InputStream stream = ((ServletContext)FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/pkcs12/"+getSelectedUserCert().getNameFile().replace(".pem", ".p12"));  
         System.out.println("test file = "+stream.available()+" esiste? =" +stream.toString());
         System.out.println("da scaricare= "+path+"/"+getSelectedUserCert().getNameFile().replace(".pem", ".p12"));

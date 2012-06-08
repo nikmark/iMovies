@@ -59,27 +59,10 @@ public class Utilities {
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
             log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw");
 
-//                        process = Runtime.getRuntime().exec("openssl genrsa -out "+ priv + pb.getUid() + "test"+".key 1024");
-//                                    process.waitFor();
-//                        process = Runtime.getRuntime().exec("mv "+ priv + pb.getUid() + "test"+".key /etc/ssl/CA_iMovies/private/");
-//                                    process.waitFor();
-
-
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw"});
 
             process.waitFor();
-            
-//            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo -e \"sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw >> "+scripts+"cmd"});
-//            process.waitFor();
 
-            //        } catch (IOException ex) {
-//            log.err(false, "Errore di IO", ex.toString(), ex.toString());
-//        } catch (InterruptedException ex) {
-//            log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
-//        }
-//
-//
-//        try {
             log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid());
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid()});
@@ -133,14 +116,6 @@ public class Utilities {
 
                             BigInteger serial = cer.getSerialNumber();
                             ue.setSerial(serial.toString(16));
-//                            System.out.print("serial number restituto dal certificato= ");
-//                            int j = cer.getNotBefore().compareTo(Calendar.getInstance().getTime());
-//                            int k = Calendar.getInstance().getTime().compareTo(cer.getNotAfter());
-//                            if (j <= 0 && k <= 0) {
-//                                ue.setValidity("Valid");
-//                            } else {
-//                                ue.setValidity("Invalid");
-//                            }
 
                             ue = getIndexInfo(ue);
                             ue.setPasswordKey("");
