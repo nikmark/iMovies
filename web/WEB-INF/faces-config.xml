@@ -112,7 +112,7 @@
         </navigation-case>
     </navigation-rule>
     
-    <navigation-rule>
+<!--    <navigation-rule>
         <from-view-id>/resources/pages/revokeDownload.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{CertificateBean.revokeCertificate}</from-action>
@@ -120,9 +120,9 @@
             <to-view-id>/resources/pages/revokeDownload</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>
+    </navigation-rule>-->
     
-    <navigation-rule>
+<!--    <navigation-rule>
         <from-view-id>/resources/pages/revokeDownload.xhtml</from-view-id>
         <navigation-case>
             <from-action>#{CertificateBean.deleteCertificate}</from-action>
@@ -130,7 +130,7 @@
             <to-view-id>/resources/pages/revokeDownload</to-view-id>
             <redirect />
         </navigation-case>
-    </navigation-rule>
+    </navigation-rule>-->
  
     
     <navigation-rule>

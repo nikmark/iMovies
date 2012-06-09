@@ -26,12 +26,8 @@ rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem
     ;;
 
 -pkcs12)
-    if [ -z "$2" ] ; then
-	CNAME="MyCert"
-    else
-	CNAME="$2"
-    fi
-    openssl pkcs12 -passin pass:$5 -passin pass:$4 -in $CATOP/newcerts/$3.pem -inkey $CATOP/private/$3.key -certfile $CATOP/$CACERT -out /var/lib/tomcat7/webapps/iMovies/pkcs12/$3.p12 -export -name "$CNAME"
+   
+    openssl pkcs12 -passin pass:$5 -passin pass:$4 -in $CATOP/newcerts/$3.pem -inkey $CATOP/private/$3.key -certfile $CATOP/$CACERT -out /var/lib/tomcat7/webapps/iMovies/pkcs12/$3.p12 -export -name $2
     ;;
 
 -revoke)

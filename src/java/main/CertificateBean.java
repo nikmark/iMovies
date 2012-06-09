@@ -34,13 +34,7 @@ public class CertificateBean implements Serializable{
     private String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//pkcs12//");
     
     public CertificateBean(){
-        try {
-            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
-            System.out.println(((LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean")).getUsername());
-            this.uCert=utils.Utilities.getCertificateUser(((LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean")).getUsername());
-        } catch (CertificateException ex) {
-            Logger.getLogger(CertificateBean.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        refreshBean();
     }
     
         public ArrayList<UserCert> getuCert() {
@@ -83,14 +77,27 @@ public class CertificateBean implements Serializable{
     public String deleteCertificate(){
          setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
          utils.Utilities.deleteCertificate(getSelectedUserCert());
+         CertificateBean cb = (CertificateBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("CertificateBean");
+         cb.getuCert().remove(getSelectedUserCert());
+         FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("CertificateBean", cb);
          return "refresh";
 
     }
     public StreamedContent getFile() throws IOException{
         System.out.println("adesso ritorno il file da getFile()");
         downloadCertificate();  
-
-
+//        if(file.getStream().available()==0){
+//            return FacesContext.getCurrentInstance().addMessage(path, null)
+//        }
         return file;  
-    } 
+    }
+
+    public void refreshBean() {
+        try {
+            FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
+            System.out.println(((LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean")).getUsername());
+            this.uCert=utils.Utilities.getCertificateUser(((LoginBean)FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean")).getUsername());
+        } catch (CertificateException ex) {
+            Logger.getLogger(CertificateBean.class.getName()).log(Level.SEVERE, null, ex);
+        }    }
 }

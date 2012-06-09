@@ -11,6 +11,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
+import main.CertificateBean;
 import main.LoginBean;
 import main.Persona;
 import utils.IMoviesLogger;
@@ -77,6 +78,12 @@ public class Utilities {
     }
 
     public static ArrayList<UserCert> getCertificateUser(String username) throws CertificateException {
+//        CertificateBean certBean = new CertificateBean();
+        
+//                CertificateBean certBean = new CertificateBean();
+//FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("CertificateBean",certBean);  
+
+        
         ArrayList<UserCert> list = new ArrayList<UserCert>();
         File cartella = new File(directory + "/newcerts");
         File[] files = null;
@@ -245,7 +252,7 @@ System.out.println("sono in pkcsCertificate.");
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
         }
-
+        
         return getIndexInfo(ue);
 
     }

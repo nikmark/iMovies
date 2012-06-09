@@ -27,7 +27,7 @@ rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem
 
 -pkcs12)
    
-    openssl pkcs12 -passin pass:$5 -passin pass:$4 -in $CATOP/newcerts/$3.pem -inkey $CATOP/private/$3.key -certfile $CATOP/$CACERT -out /var/lib/tomcat7/webapps/iMovies/pkcs12/$3.p12 -export -name $2
+    openssl pkcs12 -passin pass:$5 -passout pass:$4 -in $CATOP/newcerts/$3.pem -inkey $CATOP/private/$3.key -certfile $CATOP/$CACERT -out /var/lib/tomcat7/webapps/iMovies/pkcs12/$3.p12 -export -name $2
     ;;
 
 -revoke)
@@ -37,8 +37,13 @@ rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem
 	;;
 
 -revcanc)
+
+    SERIAL=`openssl x509 -in $2 -serial -noout | cut -f 2 -d =`
+
     openssl ca -revoke $2 -passin file:$CATOP/private/pass
     rm $2 
+    rm $CATOP/private/$SERIAL.key
+    rm $CATOP/certs/$SERIAL.csr
    ;;
 
 esac

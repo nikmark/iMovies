@@ -8,6 +8,10 @@
     <h:head>
         <title>iMovies revoke area</title>
         <h:outputStylesheet name="style.css" library="css" />
+        
+                <f:metadata>
+                    <f:event id="refresh" listener="#{CertificateBean.refreshBean()}" type="preRenderView" /> 
+</f:metadata>
     </h:head>
     <h:body>
         <div id="menu">
@@ -51,6 +55,7 @@
             <h:form id="form">  
 
                 <p:growl id="msgs" showDetail="true" />  
+<h:panelGroup id="tasksList">
 
                 <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.uCert}" tableStyle="width:auto">  
 
@@ -80,7 +85,7 @@
 
                     <p:column headerText="Revoke" style="width:40px">  
                         <h:panelGrid  styleClass="actions" >  
-                            <p:commandButton id="revokeButton" value="Revoke Certificate" action="#{CertificateBean.revokeCertificate}" >  
+                            <p:commandButton id="revokeButton" value="Revoke Certificate" update=":form:tasksList" action="#{CertificateBean.revokeCertificate}" >  
                                 <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
                             </p:commandButton>  
                         </h:panelGrid>  
@@ -94,13 +99,14 @@
                     </p:column>  
                     <p:column headerText="Delete" style="width:40px">  
                         <h:panelGrid styleClass="actions" cellpadding="2">  
-                            <p:commandButton id="cancelButton" value="Delete Certificate" action="#{CertificateBean.deleteCertificate}" >  
+                            <p:commandButton id="cancelButton" value="Delete Certificate" update=":form:tasksList" action="#{CertificateBean.deleteCertificate}" >  
                                 <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
                             </p:commandButton>  
                         </h:panelGrid>  
                     </p:column> 
 
                 </p:dataTable>  
+</h:panelGroup>
 
             </h:form>  
 
