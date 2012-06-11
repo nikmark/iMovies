@@ -43,7 +43,7 @@
                         <p:commandButton id="exportButton" value="Export" ajax="false" onclick="dlgPswPkcs12.hide()" >
 
                             <!--                                <f:event listener="# {CertificateBean.downloadCertificate()}" type="postValidate">-->
-                            <p:fileDownload value="#{CertificateBean.file}" >
+                            <p:fileDownload value="#{CertificateBean.file}" rendered="#{CertificateBean.file eq null ? false : true}" >
                             </p:fileDownload>
                             <!--                                </f:event>-->
                         </p:commandButton>
