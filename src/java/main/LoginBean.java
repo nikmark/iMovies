@@ -33,6 +33,7 @@ public class LoginBean {
 
     private String username;
     private String password;
+    private boolean admin;
     protected Persona pb;
     private IMoviesLogger log;
 
@@ -265,7 +266,7 @@ public class LoginBean {
         return formatter.toString();
     }
 
-    public void verify() {
+    public void verifyAdmin() {
 
         //HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 //        X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
@@ -309,39 +310,49 @@ public class LoginBean {
                 }
             }
 
-            FacesContext fc = FacesContext.getCurrentInstance();
+            //FacesContext fc = FacesContext.getCurrentInstance();
 
             if (uid.equals("iSD")) {
                 //log.info(false,"dovrei spostarmi in admin","dovrei spostarmi in admin","dovrei spostarmi in admin");
 
                 if (!trustedLogin(uid)) {
-                    ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
-                    nav.performNavigation("admin");
-                    
+                    this.admin = true;
+                    /*
+                     * ConfigurableNavigationHandler nav =
+                     * (ConfigurableNavigationHandler)
+                     * fc.getApplication().getNavigationHandler();
+                     * nav.performNavigation("admin");
+                     */
+
                     // PROVA
-                    /*HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-
-        String path = request.getContextPath();
-
-        String getProtocol = request.getScheme();
-        String getDomain = request.getServerName();
-        String getPort = Integer.toString(request.getServerPort());
-
-        String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
-
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath+ "/resources/pages/admin.xhtml");
-            } catch (IOException ex) {
-                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-*/
-                }
-                else
-                {
+                    /*
+                     * HttpServletRequest request = (HttpServletRequest)
+                     * FacesContext.getCurrentInstance().getExternalContext().getRequest();
+                     *
+                     * String path = request.getContextPath();
+                     *
+                     * String getProtocol = request.getScheme(); String
+                     * getDomain = request.getServerName(); String getPort =
+                     * Integer.toString(request.getServerPort());
+                     *
+                     * String getPath = getProtocol + "://" + getDomain + ":" +
+                     * getPort + path;
+                     *
+                     * try {
+                     * FacesContext.getCurrentInstance().getExternalContext().redirect(getPath+
+                     * "/resources/pages/admin.xhtml"); } catch (IOException ex)
+                     * {
+                     * Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE,
+                     * null, ex); }
+                     */
+                } else {
                     log.warn(false, "Login error", "Cannot login with this admin certificate", "Cannot login with this admin certificate");
+                    this.admin = false;
                 }
                 //FacesContext.getCurrentInstance().getExternalContext().redirect("admin");
                 //                              return "/faces/resources/pages/admin.xhtml&faces-redirect=true";
+            } else {
+                this.admin = false;
             }
         }
 
@@ -384,7 +395,7 @@ public class LoginBean {
         if (pb == null) {
             return false;
         }
-        
+
         return true;
     }
 
@@ -409,5 +420,42 @@ public class LoginBean {
             }
         }
 
+    }
+
+    /**
+     * @return the admin
+     */
+    public boolean isAdmin() {
+        return admin;
+    }
+
+    public void adminAccess() throws InterruptedException, IOException {
+        if (isAdmin()) {
+            Thread.sleep(2000);
+            //FacesContext fc = FacesContext.getCurrentInstance();
+            //ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+            //nav.performNavigation("admin");
+            
+            String ref = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer");
+
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+        String path = request.getContextPath() + "/resources/pages/admin.xhtml";
+
+        String getProtocol = request.getScheme();
+        String getDomain = request.getServerName();
+        String getPort = Integer.toString(request.getServerPort());
+
+        String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+
+        if (ref == null || !ref.startsWith(getPath)) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath);
+            } catch (IOException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+        
+        }
     }
 }
