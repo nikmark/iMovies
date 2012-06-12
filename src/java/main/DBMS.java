@@ -18,11 +18,12 @@ public class DBMS {
     //Dati di identificazione dell'utente (da personalizzare)
     private String user = "imovies";
     private String passwd = "imovies";
+    private IMoviesLogger log = new IMoviesLogger("mani.DBMS");
     /**
      * URL per la connessione alla base di dati e' formato dai seguenti
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
      */
-    private String url = "jdbc:mysql://10.236.54.154:3306/iMoviesDB";
+    private String url = "jdbc:mysql://127.0.0.1:3306/iMoviesDB";
     
     /**
      * Driver da utilizzare per la connessione e l'esecuzione delle query.
@@ -104,6 +105,8 @@ public class DBMS {
 
             // Connessione riuscita, ottengo l'oggetto per l'esecuzione
             // dell'interrogazione.
+            log.info(true, "Lancio query: ", "", row+"; con parametro: "+uid);
+            
             pstmt = con.prepareStatement(row);
             pstmt.clearParameters();
             //Imposto i parametri della query

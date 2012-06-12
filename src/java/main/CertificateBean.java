@@ -23,7 +23,7 @@ import utils.UserCert;
 
 /**
  *
- * @author nicolo
+- * @author nicolo
  */
 public class CertificateBean implements Serializable {
 
@@ -67,16 +67,16 @@ public class CertificateBean implements Serializable {
         utils.Utilities.pkcs12Certificate(getSelectedUserCert());
         System.out.println("dopo pkcs12!!");
 
-        File f = new File("/pkcs12/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
-
-        if (f.length() == 0) {
-            this.file = null;
-        } else {
+        //File f = new File("/pkcs12/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
+        
+        //if (f.length() == 0) {
+        //    this.file = null;
+        //} else {
             InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/pkcs12/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
             System.out.println("test file = " + stream.available() + " esiste? =" + stream.toString());
             System.out.println("da scaricare= " + path + "/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
             this.file = new DefaultStreamedContent(stream, "application/x-pkcs12", getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
-        }
+        //}
     }
 
     public String deleteCertificate() {
@@ -92,13 +92,19 @@ public class CertificateBean implements Serializable {
     public StreamedContent getFile() throws IOException {
         System.out.println("adesso ritorno il file da getFile()");
         downloadCertificate();
-        if(file == null)
+        //if(file == null)
+        //{
+        log.info(true, "Stream available", "", ": "+file.getStream().available());
+        
+        if(file.getStream().available() == 0)
         {
             /**
              * La password è sbagliata (oppure si è verificato qualcos'altro di strano)
              */
-            log.err(false, "Wrong password", "The password is wrong ence no certificate will be downloaded", "Password errata");
+            file = null;
+            log.err(false, "Wrong password", "The password is wrong hence no certificate will be downloaded", "Password errata");
         }
+        //}
         return file;
     }
 

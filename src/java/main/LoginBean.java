@@ -15,9 +15,11 @@ import java.util.Map;
 import java.util.StringTokenizer;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ComponentSystemEvent;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
@@ -147,7 +149,7 @@ public class LoginBean {
             ret = "success";
             //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
             log.info(false, "Welcome in iMovies", "", "Welcome in iMovies");
-             context.addCallbackParam("loggedIn", loggedIn);
+            context.addCallbackParam("loggedIn", loggedIn);
 
             return "success";
         }
@@ -246,7 +248,7 @@ public class LoginBean {
 //        session.invalidate();
 
 //        return "success";
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/");
+        FacesContext.getCurrentInstance().getExternalContext().redirect("/iMovies");
 
     }
 
@@ -263,7 +265,7 @@ public class LoginBean {
         return formatter.toString();
     }
 
-    public String verify() {
+    public void verify() {
 
         //HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 //        X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
@@ -274,60 +276,96 @@ public class LoginBean {
         X509Certificate[] certs = (X509Certificate[]) requestMap.get("javax.servlet.request.X509Certificate");
         //X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
 
-        if (certs != null && certs.length > 0) {
-               // log.info(false,"X.509 client authentication certificate:" + certs[0],"X.509 client authentication certificate:" + certs[0],"X.509 client authentication certificate:" + certs[0]);
-        }else{
+        /*
+         * if (certs != null && certs.length > 0) { // log.info(false,"X.509
+         * client authentication certificate:" + certs[0],"X.509 client
+         * authentication certificate:" + certs[0],"X.509 client authentication
+         * certificate:" + certs[0]); }else{
+         *
+         * log.info(false,"No client certificate found in request.","No client
+         * certificate found in request.","No client certificate found in
+         * request."); }
+         */
 
-            log.info(false,"No client certificate found in request.","No client certificate found in request.","No client certificate found in request.");
-        }
+        if (certs != null && certs.length > 0) {
+
 //        try {
 //            log.info(false,"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString());
 
-            StringTokenizer st =  new StringTokenizer(certs[0].getSubjectDN().toString(),",");
-                log.info(false,st.toString(),st.toString(),st.toString());
-            
-            String uid="";
-            boolean watcher=true;
-            
-            while(st.hasMoreTokens() && watcher){
-                StringTokenizer tmp =  new StringTokenizer(st.nextToken());
-                String ctrl=tmp.nextToken();
-                                log.info(false,ctrl,ctrl,ctrl);
+            StringTokenizer st = new StringTokenizer(certs[0].getSubjectDN().toString(), ",");
+            log.info(false, st.toString(), st.toString(), st.toString());
 
-                if(ctrl.startsWith("CN=")) {
-                    uid=ctrl.substring(3);
-                    watcher=false;
+            String uid = "";
+            boolean watcher = true;
+
+            while (st.hasMoreTokens() && watcher) {
+                StringTokenizer tmp = new StringTokenizer(st.nextToken());
+                String ctrl = tmp.nextToken();
+                log.info(false, ctrl, ctrl, ctrl);
+
+                if (ctrl.startsWith("CN=")) {
+                    uid = ctrl.substring(3);
+                    watcher = false;
                 }
             }
-            
-           
-           if(uid.equals("iSD")){
-               log.info(false,"dovrei spostarmi in admin","dovrei spostarmi in admin","dovrei spostarmi in admin");
 
-               return "admin";
-//                              return "/faces/resources/pages/admin.xhtml&faces-redirect=true";
+            FacesContext fc = FacesContext.getCurrentInstance();
 
-           }else if(trustedLogin(uid).equals("failed")){
-                return null;
-           }
-            
+            if (uid.equals("iSD")) {
+                //log.info(false,"dovrei spostarmi in admin","dovrei spostarmi in admin","dovrei spostarmi in admin");
 
-            
-            //            certs[0].getSubjectX500Principal().
-            //certs[0].getSubjectDN()
-            //        } catch (CertificateExpiredException ex) {
+                if (!trustedLogin(uid)) {
+                    ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+                    nav.performNavigation("admin");
+                    
+                    // PROVA
+                    /*HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+        String path = request.getContextPath();
+
+        String getProtocol = request.getScheme();
+        String getDomain = request.getServerName();
+        String getPort = Integer.toString(request.getServerPort());
+
+        String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath+ "/resources/pages/admin.xhtml");
+            } catch (IOException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+*/
+                }
+                else
+                {
+                    log.warn(false, "Login error", "Cannot login with this admin certificate", "Cannot login with this admin certificate");
+                }
+                //FacesContext.getCurrentInstance().getExternalContext().redirect("admin");
+                //                              return "/faces/resources/pages/admin.xhtml&faces-redirect=true";
+            }
+        }
+
+        /*
+         * }else if(trustedLogin(uid).equals("failed")){ return null; }
+         */
+
+
+
+        //            certs[0].getSubjectX500Principal().
+        //certs[0].getSubjectDN()
+        //        } catch (CertificateExpiredException ex) {
 //            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
 //        } catch (CertificateNotYetValidException ex) {
 //            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
 //        }
-        
-        return "success";
-    
+
+        //return "success";
+
     }
-    
-    private String trustedLogin(String uid){
-        
-         try {
+
+    private boolean trustedLogin(String uid) {
+
+        try {
             DBMS dbms = new DBMS();
             pb = dbms.getUser(uid);
 
@@ -342,12 +380,34 @@ public class LoginBean {
             log.err(false, "Login error", "Database not found", "Database not found");
             //nsae.getMessage();
         }
-        
-        if(pb==null){
-            return "failed";
+
+        if (pb == null) {
+            return false;
         }
-        return "success";
         
+        return true;
     }
-    
+
+    public void refererPage() {
+        String ref = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer");
+
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+        String path = request.getContextPath();
+
+        String getProtocol = request.getScheme();
+        String getDomain = request.getServerName();
+        String getPort = Integer.toString(request.getServerPort());
+
+        String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+
+        if (ref == null || !ref.startsWith(getPath)) {
+            try {
+                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath);
+            } catch (IOException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+
+    }
 }
