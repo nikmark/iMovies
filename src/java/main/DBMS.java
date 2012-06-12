@@ -22,7 +22,7 @@ public class DBMS {
      * URL per la connessione alla base di dati e' formato dai seguenti
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
      */
-    private String url = "jdbc:mysql://192.168.56.101:3306/iMoviesDB";
+    private String url = "jdbc:mysql://127.0.0.1:3306/iMoviesDB";
     
     /**
      * Driver da utilizzare per la connessione e l'esecuzione delle query.
