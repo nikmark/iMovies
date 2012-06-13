@@ -431,12 +431,12 @@ public class LoginBean {
 
     public void adminAccess() throws InterruptedException, IOException {
         if (isAdmin()) {
-            Thread.sleep(2000);
-            //FacesContext fc = FacesContext.getCurrentInstance();
-            //ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
-            //nav.performNavigation("admin");
+            Thread.sleep(1000);
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+            nav.performNavigation("admin");
             
-            String ref = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer");
+/*            String ref = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer");
 
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
@@ -454,7 +454,7 @@ public class LoginBean {
             } catch (IOException ex) {
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }
+        }*/
         
         }
     }
