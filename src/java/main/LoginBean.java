@@ -435,27 +435,37 @@ public class LoginBean {
             FacesContext fc = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
             nav.performNavigation("admin");
-            
-/*            String ref = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer");
 
-        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            /*
+             * String ref =
+             * FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer");
+             *
+             * HttpServletRequest request = (HttpServletRequest)
+             * FacesContext.getCurrentInstance().getExternalContext().getRequest();
+             *
+             * String path = request.getContextPath() +
+             * "/resources/pages/admin.xhtml";
+             *
+             * String getProtocol = request.getScheme(); String getDomain =
+             * request.getServerName(); String getPort =
+             * Integer.toString(request.getServerPort());
+             *
+             * String getPath = getProtocol + "://" + getDomain + ":" + getPort
+             * + path;
+             *
+             * if (ref == null || !ref.startsWith(getPath)) { try {
+             * FacesContext.getCurrentInstance().getExternalContext().redirect(getPath);
+             * } catch (IOException ex) {
+             * Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE,
+             * null, ex); } }
+             */
 
-        String path = request.getContextPath() + "/resources/pages/admin.xhtml";
+        }
+    }
 
-        String getProtocol = request.getScheme();
-        String getDomain = request.getServerName();
-        String getPort = Integer.toString(request.getServerPort());
-
-        String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
-
-        if (ref == null || !ref.startsWith(getPath)) {
-            try {
-                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath);
-            } catch (IOException ex) {
-                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }*/
-        
+    public void getOut() throws IOException {
+        if (!isAdmin()) {
+            logout();
         }
     }
 }

@@ -3,15 +3,34 @@
                 xmlns:h="http://java.sun.com/jsf/html"
                 xmlns:ui="http://java.sun.com/jsf/facelets"
                 xmlns:f="http://java.sun.com/jsf/core">
+
     <h:form>
         <p:menubar>  
             <p:submenu label="Certificates" icon="ui-icon-document">  
-                <p:menuitem value="Issued" url="#" />  
+                <p:menuitem value="Issued" action="admin/issued" />  
                 <p:menuitem value="Revoked" url="#" />  
                 <p:menuitem value="Current serial number" url="#" />  
             </p:submenu>  
 
-            <p:menuitem value="Logout" url="http://www.primefaces.org" icon="ui-icon-close" />  
+            <p:menuitem value="Logout" action="#{LoginBean.logout()}" icon="ui-icon-close" />  
         </p:menubar>
     </h:form>
+
+    <br /><br />
+
+    <p:ajaxStatus style="width:31px;height:31px;">  
+        <f:facet name="start">  
+            <h:graphicImage value="/resources/images/ajax-loader.gif"/>  
+        </f:facet>  
+        <f:facet name="complete">  
+            <h:outputText value=""/>  
+        </f:facet>  
+    </p:ajaxStatus> 
+
+    <h:form id="form_admin">  
+        <!--<p:poll listener="# {LoginBean.verifyAdmin}" autoStart="true"/> 
+        <p:poll interval="1" listener="# {LoginBean.out}" autoStart="true"/> -->
+    </h:form>
+
+
 </ui:composition>

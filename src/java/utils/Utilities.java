@@ -77,7 +77,7 @@ public class Utilities {
         return true;
     }
 
-    public static ArrayList<UserCert> getCertificateUser(String username) throws CertificateException {
+    public static ArrayList<UserCert> getCertificateUser(String username,boolean admin) throws CertificateException {
 //        CertificateBean certBean = new CertificateBean();
 
 //                CertificateBean certBean = new CertificateBean();
@@ -116,7 +116,13 @@ public class Utilities {
                     //System.out.println("qeusto è il token tokenizzato di nuovo: "+tmp1.toString());
 
                     if (tmp1.nextToken().equals("CN")) {
-                        if (tmp1.nextToken().equals(username)) {
+                        /**
+                         * Aggiunto controllo su amministratore: 
+                         * se il certificato appartiene all'utente oppure questo è un amministratore,
+                         * tale certificato viene visualizzato.
+                         */
+                        String user_cert = tmp1.nextToken();
+                        if ((user_cert.equals(username) || admin) && !user_cert.equals("iSD")) {
                             //System.out.println("questo è il certificato di "+username+": "+files[i].getName());
                             ue = new UserCert();
                             ue.setNameFile(files[i].getName());
@@ -127,6 +133,12 @@ public class Utilities {
                             ue = getIndexInfo(ue);
                             ue.setPasswordKey("");
                             ue.setPasswordPkcs12("");
+                            
+                            /**
+                             * Aggiunto il nome utente dell'utente che possiede il certificato (funzione utilizzata da admin)
+                             */
+                            ue.setUser(user_cert);
+                            
                             list.add(ue);
 
                             guardia = false;
