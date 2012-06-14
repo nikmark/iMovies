@@ -19,8 +19,13 @@ import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import utils.IMoviesLogger;
@@ -152,7 +157,9 @@ public class LoginBean {
             log.info(false, "Welcome in iMovies", "", "Welcome in iMovies");
             context.addCallbackParam("loggedIn", loggedIn);
 
-            return "success";
+             //return "success";
+            // diventa
+            nextPage("user");
         }
 
         //        {
@@ -432,9 +439,7 @@ public class LoginBean {
     public void adminAccess() throws InterruptedException, IOException {
         if (isAdmin()) {
             Thread.sleep(1000);
-            FacesContext fc = FacesContext.getCurrentInstance();
-            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
-            nav.performNavigation("admin");
+            nextPage("admin");
             
 /*            String ref = FacesContext.getCurrentInstance().getExternalContext().getRequestHeaderMap().get("referer");
 
@@ -457,5 +462,47 @@ public class LoginBean {
         }*/
         
         }
+    }
+    
+    //public void nextPage() {
+    //    nextPage("");
+    //}
+    
+    public void nextPage(String page) {
+    
+        
+            /* FORWARD va ma doppio click * /
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+            nav.performNavigation(page);
+            * 
+            */
+            
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+       
+        String path = request.getContextPath();
+
+        String getProtocol = request.getScheme();
+        String getDomain = request.getServerName();
+        String getPort = Integer.toString(request.getServerPort());
+
+        String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+        try {  
+            /* REDIRECT */
+            FacesContext.getCurrentInstance().getExternalContext().redirect(getPath + "/resources/pages/" + page + ".xhtml");
+             
+            /* FORWARD non va * /
+            FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
+            */
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void nextPageAction(ActionEvent event){
+        String value = (String)event.getComponent().
+                getAttributes().get("page");
+        nextPage(value);
     }
 }

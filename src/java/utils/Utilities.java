@@ -10,6 +10,7 @@ import java.security.cert.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.context.FacesContext;
 import main.CertificateBean;
 import main.LoginBean;

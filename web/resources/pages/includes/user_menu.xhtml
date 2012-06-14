@@ -6,8 +6,12 @@
     <h:form>
         <p:menubar>  
             <p:submenu label="My certificate" icon="ui-icon-document">  
-                <p:menuitem icon="ui-icon-wrench" value="Edit my information" action="edit" ajax="false" />  
-                <p:menuitem icon="ui-icon-wrench" disabled="false" value="Manage Certificates" action="revokeDownload" ajax="false" />  
+                <p:menuitem icon="ui-icon-wrench" value="Edit my information" actionListener="#{LoginBean.nextPageAction}">
+                            <f:attribute name="page" value="edit"/>
+                </p:menuitem>
+                <p:menuitem icon="ui-icon-wrench" disabled="false" value="Manage Certificates" actionListener="#{LoginBean.nextPageAction}" ajax="false" >
+                    <f:attribute name="page" value="revokeDownload"/>
+                </p:menuitem>
 <!--                <p:menuitem icon="ui-icon-document" disabled="false" value="Download" action="download"/>  -->
             </p:submenu>  
 
