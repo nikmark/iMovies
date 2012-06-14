@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml"
+      xmlns:p="http://primefaces.org/ui"
+      xmlns:h="http://java.sun.com/jsf/html"
+      xmlns:f="http://java.sun.com/jsf/core"
+      xmlns:ui="http://java.sun.com/jsf/facelets">
+    <h:head>
+        <title>iMovies issued certificate</title>
+        <h:outputStylesheet name="style.css" library="css" />
+
+        <f:metadata>
+            <f:event id="refresh" listener="#{CertificateBean.refreshBean()}" type="preRenderView" /> 
+            <f:event id="referer" listener="#{LoginBean.refererPage}" type="preRenderView" />
+        </f:metadata>
+
+    </h:head>
+    <h:body>
+        <div id="menu">
+            <ui:include src="../includes/admin_menu.xhtml" />
+        </div>
+        <div id="content" >
+
+        </div>
+
+        <h:form>
+
+            <center>
+                <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.UCert}" paginator="true" rows="10" tableStyle="width:auto">  
+
+                    <f:facet name="header" >
+                        <h:outputText value="Issued certificates" />
+                    </f:facet>
+
+                    <p:column headerText="Name" sortBy="#{userCert.nameFile}"  style="width:100px" id="name" >  
+                        #{userCert.nameFile}
+                    </p:column>  
+
+                    <p:column headerText="Serial" sortBy="#{userCert.serial}"  style="width:100px" id="serial" >  
+                        #{userCert.serial}
+                    </p:column>  
+
+                    <p:column  headerText="User" filterBy="#{userCert.user}" style="width:100px" id="user" >  
+                        #{userCert.user}
+                    </p:column>  
+
+                    <p:column id="v" headerText="Validity" style="width:100px">  
+                        <h:outputText value="#{userCert.ver}">                 
+                            <!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
+                        </h:outputText>  
+                    </p:column>  
+
+                    <p:column headerText="Expiration Date" style="width:100px" id="expiration" >  
+                        <h:outputText value="#{userCert.dateE}"/>  
+                    </p:column> 
+
+                    <p:column headerText="Revocation Date" style="width:100px" id="revocation" >  
+                        <h:outputText value="#{userCert.dateR}">
+                            <!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
+                        </h:outputText>  
+                    </p:column> 
+                    
+                    <f:facet name="footer" >
+                        Number of certificate: #{CertificateBean.UCert.size()}
+                    </f:facet>
+                             
+
+                </p:dataTable>
+            </center>
+
+        </h:form>
+
+    </h:body>
+</html>

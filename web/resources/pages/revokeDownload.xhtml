@@ -8,10 +8,12 @@
     <h:head>
         <title>iMovies revoke area</title>
         <h:outputStylesheet name="style.css" library="css" />
-        
-                <f:metadata>
-                    <f:event id="refresh" listener="#{CertificateBean.refreshBean()}" type="preRenderView" /> 
-</f:metadata>
+
+        <f:metadata>
+            <f:event id="refresh" listener="#{CertificateBean.refreshBean()}" type="preRenderView" /> 
+            <f:event id="referer" listener="#{LoginBean.refererPage}" type="preRenderView" />
+        </f:metadata>
+
     </h:head>
     <h:body>
         <div id="menu">
@@ -55,58 +57,58 @@
             <h:form id="form">  
 
                 <p:growl id="msgs" showDetail="true" />  
-<h:panelGroup id="tasksList">
+                <h:panelGroup id="tasksList">
 
-                <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.uCert}" tableStyle="width:auto">  
+                    <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.UCert}" tableStyle="width:auto">  
 
-                    <p:column headerText="Name Of Certificate" style="width:100px" >  
-                        <h:outputText value="#{userCert.nameFile}" />  
-                    </p:column>  
+                        <p:column headerText="Name Of Certificate" style="width:100px" >  
+                            <h:outputText value="#{userCert.nameFile}" />  
+                        </p:column>  
 
-                    <p:column headerText="Serial" style="width:100px" >  
-                        <h:outputText value="#{userCert.serial}" />  
-                    </p:column>  
+                        <p:column headerText="Serial" style="width:100px" >  
+                            <h:outputText value="#{userCert.serial}" />  
+                        </p:column>  
 
-                    <p:column id="v" headerText="Validity" style="width:100px">  
-                        <h:outputText value="#{userCert.ver}">                 
-                            <!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
-                        </h:outputText>  
-                    </p:column>  
+                        <p:column id="v" headerText="Validity" style="width:100px">  
+                            <h:outputText value="#{userCert.ver}">                 
+                                <!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
+                            </h:outputText>  
+                        </p:column>  
 
-                    <p:column headerText="Expiration Date" style="width:100px" >  
-                        <h:outputText value="#{userCert.dateE}"/>  
-                    </p:column> 
+                        <p:column headerText="Expiration Date" style="width:100px" >  
+                            <h:outputText value="#{userCert.dateE}"/>  
+                        </p:column> 
 
-                    <p:column headerText="Revocation Date" style="width:100px" >  
-                        <h:outputText value="#{userCert.dateR}">
-                            <!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
-                        </h:outputText>  
-                    </p:column> 
+                        <p:column headerText="Revocation Date" style="width:100px" >  
+                            <h:outputText value="#{userCert.dateR}">
+                                <!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
+                            </h:outputText>  
+                        </p:column> 
 
-                    <p:column headerText="Revoke" style="width:40px">  
-                        <h:panelGrid  styleClass="actions" >  
-                            <p:commandButton id="revokeButton" value="Revoke Certificate" update=":form:tasksList" action="#{CertificateBean.revokeCertificate}" >  
-                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
-                            </p:commandButton>  
-                        </h:panelGrid>  
-                    </p:column>  
-                    <p:column headerText="Download" style="width:40px"> 
-                        <h:panelGrid styleClass="actions" cellpadding="2">
-                            <p:commandButton id="downloadButton"  update=":dlg" value="Download Certificate" oncomplete="dlgPswPkcs12.show()" >  
-                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />
-                            </p:commandButton>  
-                        </h:panelGrid>  
-                    </p:column>  
-                    <p:column headerText="Delete" style="width:40px">  
-                        <h:panelGrid styleClass="actions" cellpadding="2">  
-                            <p:commandButton id="cancelButton" value="Delete Certificate" update=":form:tasksList" action="#{CertificateBean.deleteCertificate}" >  
-                                <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
-                            </p:commandButton>  
-                        </h:panelGrid>  
-                    </p:column> 
+                        <p:column headerText="Revoke" style="width:40px">  
+                            <h:panelGrid  styleClass="actions" >  
+                                <p:commandButton id="revokeButton" value="Revoke Certificate" update=":form:tasksList" action="#{CertificateBean.revokeCertificate}" >  
+                                    <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
+                                </p:commandButton>  
+                            </h:panelGrid>  
+                        </p:column>  
+                        <p:column headerText="Download" style="width:40px"> 
+                            <h:panelGrid styleClass="actions" cellpadding="2">
+                                <p:commandButton id="downloadButton"  update=":dlg" value="Download Certificate" oncomplete="dlgPswPkcs12.show()" >  
+                                    <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />
+                                </p:commandButton>  
+                            </h:panelGrid>  
+                        </p:column>  
+                        <p:column headerText="Delete" style="width:40px">  
+                            <h:panelGrid styleClass="actions" cellpadding="2">  
+                                <p:commandButton id="cancelButton" value="Delete Certificate" update=":form:tasksList" action="#{CertificateBean.deleteCertificate}" >  
+                                    <f:setPropertyActionListener value="#{userCert}" target="#{CertificateBean.selectedUserCert}" />  
+                                </p:commandButton>  
+                            </h:panelGrid>  
+                        </p:column> 
 
-                </p:dataTable>  
-</h:panelGroup>
+                    </p:dataTable>  
+                </h:panelGroup>
 
             </h:form>  
 
@@ -129,13 +131,13 @@
         <!--            </table>-->
         <!--            Remember:<br />
              if you delete a certificate, the certificate will be revoked, and after that deleted.-->
-        
-<!--                <script type="text/javascript">  
-            function handleDlgRequest(xhr, status, args) {  
-                if(args.validationFailed || args.hide) {  
-                    dlgPswPkcs12.hide(); 
-                }  
-            }  
-        </script>   -->
+
+        <!--                <script type="text/javascript">  
+                    function handleDlgRequest(xhr, status, args) {  
+                        if(args.validationFailed || args.hide) {  
+                            dlgPswPkcs12.hide(); 
+                        }  
+                    }  
+                </script>   -->
     </h:body>
 </html>

@@ -7,9 +7,9 @@
 
     <h:head>
         <title>Welcome to iMovies</title>
-        <!--<f:metadata>  
-            <f:event id="eve" listener="# {LoginBean.verify}" type="preRenderView" /> 
-        </f:metadata>-->
+        <f:metadata>  
+            <f:event id="eve" listener="#{LoginBean.verifyAdmin}" type="preRenderView" /> 
+        </f:metadata>
 
         <h:outputStylesheet name="style.css" library="css" />
         <h:outputStylesheet name="login.css" library="css" />
@@ -17,18 +17,20 @@
     </h:head>
     <h:body onload="dlg.show()" >
 
+        <p:growl id="growl" showDetail="true" life="4000" />  
 
-        <!-- <h:panelGrid columns="1" cellpadding="5">  
-             <p:commandButton id="basic" value="Login" onclick="dlg.show();" type="button" />  
-         </h:panelGrid>  -->
-        <!-- <p:dialog id="modalDialog" header="Modal Dialog" widgetVar="dlg2" modal="true" height="100">  
-            <h:outputText value="This is a Modal Dialog." />  
-        </p:dialog>  -->
+        <p:dialog id="dialog_admin" rendered="#{LoginBean.admin}" header="Redirect in progress..." widgetVar="dlg" closable="false" resizable="false" draggable="false">  
+            <center>
+                <h:graphicImage value="/resources/images/ajax-loader.gif"/>
+            </center>   
 
-        <p:dialog id="dialog" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
-            <h:form id="form">  
+            <h:form id="form_admin">  
+                <p:poll listener="#{LoginBean.adminAccess()}" autoStart="true"/> 
+            </h:form>
+        </p:dialog>
 
-                <p:growl id="growl" showDetail="true" life="4000" />  
+        <p:dialog id="dialog_user" rendered="#{!LoginBean.admin}" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
+            <h:form id="form_user">  
 
                 <h:panelGrid columns="2" cellpadding="5">  
                     <f:facet name="header" >
@@ -55,7 +57,7 @@
                     <f:facet name="footer">
                         <br />
                         <center>
-                            <p:commandButton id="loginButton" value="Login" update=":form:growl"   
+                            <p:commandButton id="loginButton" value="Login" update=":growl"   
                                              action="#{LoginBean.login}"   
                                              oncomplete="handleLoginRequest(xhr, status, args)"/> 
                         </center>

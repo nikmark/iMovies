@@ -8,6 +8,9 @@
     <h:head>
         <title>iMovies user area</title>
         <h:outputStylesheet name="style.css" library="css" />
+        <f:metadata>
+            <f:event id="referer" listener="#{LoginBean.refererPage}" type="preRenderView" />
+        </f:metadata>
     </h:head>
     <h:body>
         <div id="menu">
