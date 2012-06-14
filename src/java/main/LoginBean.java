@@ -256,7 +256,8 @@ public class LoginBean {
 //        session.invalidate();
 
 //        return "success";
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/iMovies");
+        //FacesContext.getCurrentInstance().getExternalContext().redirect("/iMovies");
+        nextPage("login");
 
     }
 
@@ -471,12 +472,12 @@ public class LoginBean {
     public void nextPage(String page) {
     
         
-            /* FORWARD va ma doppio click * /
+            /* FORWARD va ma doppio click */
             FacesContext fc = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
             nav.performNavigation(page);
-            * 
-            */
+        /*    * 
+            * /
             
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
        
@@ -488,16 +489,16 @@ public class LoginBean {
 
         String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
         try {  
-            /* REDIRECT */
+            /* REDIRECT * /
             FacesContext.getCurrentInstance().getExternalContext().redirect(getPath + "/resources/pages/" + page + ".xhtml");
              
             /* FORWARD non va * /
             FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
-            */
+            * /
         } catch (IOException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        
+        */
     }
     
     public void nextPageAction(ActionEvent event){

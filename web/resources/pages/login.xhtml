@@ -58,7 +58,7 @@
                         <br />
                         <center>
                             <p:commandButton id="loginButton" value="Login" update=":growl"   
-                                             action="#{LoginBean.login}"   
+                                             actionListener="#{LoginBean.login}"   
                                              oncomplete="handleLoginRequest(xhr, status, args)"/> 
                         </center>
                     </f:facet>  
