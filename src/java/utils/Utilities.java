@@ -65,7 +65,7 @@ public class Utilities {
 
             process.waitFor();
 
-            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + pb.startDate + " " + pb.endDate);
+            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + pb.getStartDate() + " " + pb.getEndDate());
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid()});
             process.waitFor();
@@ -154,7 +154,7 @@ public class Utilities {
                 Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        System.out.println("fine del cerificateUser");
+        //System.out.println("fine del certificateUser");
 
         Collections.sort(list, new Comparator<UserCert>() {
 
@@ -229,7 +229,7 @@ public class Utilities {
         } catch (IOException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("fine del getIndexInfo");
+        //System.out.println("fine del getIndexInfo");
 
         return ue;
     }

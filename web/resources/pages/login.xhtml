@@ -17,8 +17,8 @@
     </h:head>
     <h:body onload="dlg.show()" >
 
-<!--        <p:growl id="growl" showDetail="true" life="4000" />  -->
-        
+        <p:growl id="growl" showDetail="true" life="4000" sticky="true" />  
+
         <p:dialog id="dialog_admin" rendered="#{LoginBean.admin}" header="Redirect in progress..." widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <center>
                 <h:graphicImage value="/resources/images/ajax-loader.gif"/>
@@ -48,7 +48,7 @@
 
                     <h:outputLabel for="username" value="Username:" />  
                     <p:inputText value="#{LoginBean.username}"   
-                                 id="username" required="true" label="username" />  
+                                 id="username" required="false" label="username" />  
 
                     <h:outputLabel for="password" value="Password:" />  
                     <p:password value="#{LoginBean.password}"    

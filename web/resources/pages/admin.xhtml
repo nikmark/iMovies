@@ -8,7 +8,10 @@
     <h:head>
         <title>iMovies administrator area</title>
         <h:outputStylesheet name="style.css" library="css" />
-        
+        <f:metadata>
+            <f:event id="refresh" listener="#{CertificateBean.refreshBean()}" type="preRenderView" /> 
+            <f:event id="referer" listener="#{LoginBean.refererPage}" type="preRenderView" />
+        </f:metadata>
     </h:head>
     <h:body>
         <div id="menu">
