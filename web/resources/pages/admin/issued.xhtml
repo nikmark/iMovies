@@ -23,10 +23,8 @@
 
         </div>
 
-        <h:form>
-
-            <center>
-                <p:dataTable id="certificates" var="userCert" value="#{CertificateBean.UCert}" paginator="true" rows="10" tableStyle="width:auto">  
+        <h:form>            
+            <p:dataTable id="certificates"  rowKey="#{userCert.nameFile}" var="userCert" value="#{CertificateBean.UCert}" paginator="true" rows="10" >  
 
                     <f:facet name="header" >
                         <h:outputText value="Issued certificates" />
@@ -45,9 +43,7 @@
                     </p:column>  
 
                     <p:column id="v" headerText="Validity" style="width:100px">  
-                        <h:outputText value="#{userCert.ver}">                 
-                            <!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
-                        </h:outputText>  
+                        <h:outputText value="#{userCert.ver}" />                 
                     </p:column>  
 
                     <p:column headerText="Expiration Date" style="width:100px" id="expiration" >  
@@ -55,18 +51,16 @@
                     </p:column> 
 
                     <p:column headerText="Revocation Date" style="width:100px" id="revocation" >  
-                        <h:outputText value="#{userCert.dateR}">
-                            <!--                            <p:ajax event="change" listener="# {userCert.dateR}" />                        -->
-                        </h:outputText>  
+                        <h:outputText value="#{userCert.dateR}" />
                     </p:column> 
                     
                     <f:facet name="footer" >
-                        Number of certificate: #{CertificateBean.UCert.size()}
+                        Issued: #{CertificateBean.UCert.size()}, Valid: #{CertificateBean.num_valid}, Revoked:#{CertificateBean.num_revoked}<br />
+                        The current certificate's serial number is: #{CertificateBean.current_sn}
                     </f:facet>
                              
 
                 </p:dataTable>
-            </center>
 
         </h:form>
 
