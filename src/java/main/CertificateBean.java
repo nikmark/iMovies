@@ -29,7 +29,7 @@ import utils.UserCert;
  */
 public class CertificateBean implements Serializable {
 
-    private ArrayList<UserCert> uCert = new ArrayList<UserCert>();
+    private List<UserCert> uCert = new ArrayList<UserCert>();
     private UserCert selectedUserCert;
     private StreamedContent file;
     private String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//pkcs12//");
@@ -42,7 +42,7 @@ public class CertificateBean implements Serializable {
         num_revoked = 0;
     }
 
-    public ArrayList<UserCert> getUCert() {
+    public List<UserCert> getUCert() {
         return uCert;
     }
 
@@ -126,12 +126,14 @@ public class CertificateBean implements Serializable {
         /**
          * Controllo sul numero di certficati rilasciati(ma validi) e revocati
          */
-        /*
-         * for (int i = 0; i < this.uCert.size(); i++) { if
-         * (this.uCert.get(i).getDateR().equals("Not Revoked")) {
-         * this.num_revoked++; } else { this.num_valid++; }
+        for (int i = 0; i < this.uCert.size(); i++) {
+            if (this.uCert.get(i).getDateR().equals("Not Revoked")) {
+                this.num_revoked++;
+            } else {
+                this.num_valid++;
+            }
         }
-         */
+
     }
 
     /**
@@ -153,7 +155,7 @@ public class CertificateBean implements Serializable {
      */
     public String getCurrent_sn() {
         String current_sn = "";
-        
+
         FileReader stream = null;
         try {
             stream = new FileReader("/etc/ssl/CA_iMovies/serial");
@@ -178,7 +180,7 @@ public class CertificateBean implements Serializable {
         } catch (IOException e) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
         }
-        
+
         return current_sn;
     }
 }

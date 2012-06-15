@@ -459,7 +459,7 @@ public class LoginBean {
         if (isAdmin()) {
             Thread.sleep(1000);
 
-            nextPage("admin");
+            nextPage("admin/admin");
 
             /*
              * String ref =
