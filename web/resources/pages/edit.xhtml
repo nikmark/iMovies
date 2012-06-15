@@ -20,6 +20,16 @@
 
 
             <p:dialog id="dlg" widgetVar="dlgPswKey">
+                <center>
+                    <p:ajaxStatus style="width:31px;height:31px;">  
+                        <f:facet name="start">  
+                            <h:graphicImage value="/resources/images/ajax-loader.gif"/>  
+                        </f:facet>  
+                        <f:facet name="complete">  
+                            <h:outputText value=""/>  
+                        </f:facet>  
+                    </p:ajaxStatus> 
+                </center>
                 <h:form id="form_pwd"> 
                     <h:outputLabel for="pwd" value="Insert the Key Password:" />  
                     <h:inputSecret value="#{LoginBean.password}"    
