@@ -26,6 +26,8 @@ public class UserCert {
     
     private String passwordKey;
     
+    private String user;
+    
    
     public UserCert(){
         this.ver = this.dateE = null;
@@ -103,6 +105,20 @@ public class UserCert {
 
     public void setPasswordKey(String passwordKey) {
         this.passwordKey = passwordKey;
+    }
+
+    /**
+     * @return the user
+     */
+    public String getUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(String user) {
+        this.user = user;
     }
     
 
