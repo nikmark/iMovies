@@ -9,10 +9,7 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
-import java.util.Formatter;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.ConfigurableNavigationHandler;
@@ -41,6 +38,9 @@ public class LoginBean {
     private boolean admin;
     protected Persona pb;
     private IMoviesLogger log;
+    
+    private String keyPassword;
+    private String startDate, endDate;
 
     public Persona getPb() {
         return pb;
@@ -88,7 +88,7 @@ public class LoginBean {
     /**
      *
      */
-    public String login() throws NoSuchAlgorithmException, IOException {
+    public void login() throws NoSuchAlgorithmException, IOException {
 
         FacesContext fcontext = FacesContext.getCurrentInstance();
         //Persona bean = (Persona) fcontext.getApplication().evaluateExpressionGet(fcontext, "#{Persona}", Persona.class);
@@ -157,7 +157,7 @@ public class LoginBean {
             log.info(false, "Welcome in iMovies", "", "Welcome in iMovies");
             context.addCallbackParam("loggedIn", loggedIn);
 
-             //return "success";
+            //return "success";
             // diventa
             nextPage("user");
         }
@@ -170,7 +170,7 @@ public class LoginBean {
         //FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("loggedIn", loggedIn);
 
-        return null;
+        //return null;
 
         //  FacesContext.getCurrentInstance().addMessage(null, msg);  
         // context.addCallbackParam("loggedIn", loggedIn); 
@@ -483,12 +483,12 @@ public class LoginBean {
     public void nextPage(String page) {
     
         
-            /* FORWARD */
+            /* FORWARD * /
             FacesContext fc = FacesContext.getCurrentInstance();
             ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
             nav.performNavigation(page);
-        /*    * 
-            * /
+        
+        /*/
             
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
        
@@ -500,16 +500,16 @@ public class LoginBean {
 
         String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
         try {  
-            /* REDIRECT * /
+            /* REDIRECT */
             FacesContext.getCurrentInstance().getExternalContext().redirect(getPath + "/resources/pages/" + page + ".xhtml");
              
             /* FORWARD non va * /
             FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
-            * /
+            */
         } catch (IOException ex) {
             Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
         }
-        */
+        
     }
     
     public void nextPageAction(ActionEvent event){

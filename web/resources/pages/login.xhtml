@@ -17,7 +17,7 @@
     </h:head>
     <h:body onload="dlg.show()" >
 
-        <p:growl id="growl" showDetail="true" life="4000" />  
+<!--        <p:growl id="growl" showDetail="true" life="4000" />  -->
         
         <p:dialog id="dialog_admin" rendered="#{LoginBean.admin}" header="Redirect in progress..." widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <center>
@@ -28,7 +28,7 @@
                 <p:poll listener="#{LoginBean.adminAccess()}" autoStart="true"/> 
             </h:form>
         </p:dialog>
-
+<p:growl id="growl" showDetail="true" life="4000" />
         <p:dialog id="dialog_user" rendered="#{!LoginBean.admin}" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <h:form id="form_user">  
 

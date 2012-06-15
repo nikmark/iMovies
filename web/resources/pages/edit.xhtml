@@ -22,9 +22,9 @@
             <p:dialog id="dlg" widgetVar="dlgPswKey">
                 <h:form id="form_pwd"> 
                     <h:outputLabel for="pwd" value="Insert the Key Password:" />  
-                    <h:inputSecret value="#{LoginBean.password}"    
+                    <h:inputSecret value="#{LoginBean.keyPassword}"    
                                    id="pwd" required="true" requiredMessage="Your key password cannot be empty"  label="pwd" />  
-
+                    <!-- inserire le date per il certificato -->
                     <p:commandButton id="createButton" value="Create" update=":edit_form:messages" oncomplete="dlgPswKey.hide()"  
                                      actionListener="#{LoginBean.makeCertificate}"     
                                      /> 
