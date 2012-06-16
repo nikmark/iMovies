@@ -31,14 +31,21 @@
                     </p:ajaxStatus> 
                 </center>
                 <h:form id="form_pwd"> 
-                    <h:outputLabel for="pwd" value="Insert the Key Password:" />  
+                    <p:panelGrid columns="2">
+                    <h:outputLabel for="pwd" value="Insert the Key Password:" />
                     <h:inputSecret value="#{LoginBean.keyPassword}"    
-                                   id="pwd" required="true" requiredMessage="Your key password cannot be empty"  label="pwd" />  
-                    <!-- inserire le date per il certificato -->
-                    <p:commandButton id="createButton" value="Create" update=":edit_form:messages" oncomplete="dlgPswKey.hide()"  
-                                     actionListener="#{LoginBean.makeCertificate}"     
+                                   id="pwd" required="true" requiredMessage="Your key password cannot be empty"  label="pwd" >  
+                        <f:validateLength minimum="4" />
+                    </h:inputSecret>
+                    <h:outputLabel for="startDate" value="Insert Start Date:" />
+                    <p:calendar value="#{LoginBean.startDate}" required="true" mindate="#{LoginBean.startDate}" id="startDate" pattern="dd.MM.yyyy" />
+                    <h:outputLabel for="endDate" value="Insert End Date:" />
+                    <p:calendar value="#{LoginBean.endDate}" mindate="#{LoginBean.startDate}" id="endDate"  pattern="dd.MM.yyyy" widgetVar="endDate"/>
+                    <br/>
+                    <p:commandButton id="createButton" value="Create" update=":edit_form:messages" oncomplete="checkParam(xhr, status, args)"  
+                                     actionListener="#{LoginBean.makeCertificate}" 
                                      /> 
-
+                    </p:panelGrid>
                 </h:form>  
             </p:dialog>
             <h:form id="edit_form">
@@ -85,5 +92,15 @@
                 </center>
             </h:form>
         </div>
+        
+        <script type="text/javascript">  
+            function checkParam(xhr, status, args) {  
+                if(!(args.validationFailed || !args.dateOk)) {
+                    // ha creato il certificato
+                    dlgPswKey.hide(); 
+                }  
+            }  
+        </script> 
+        
     </h:body>
 </html>

@@ -74,7 +74,11 @@
                                 <!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
                             </h:outputText>  
                         </p:column>  
-
+                        <p:column id="startD" headerText="Start Date" style="width:100px">  
+                            <h:outputText value="#{userCert.startD}">                 
+                                <!--                            <p:ajax event="change" listener="# {userCert.ver}" />-->
+                            </h:outputText>  
+                        </p:column> 
                         <p:column headerText="Expiration Date" style="width:100px" >  
                             <h:outputText value="#{userCert.dateE}"/>  
                         </p:column> 

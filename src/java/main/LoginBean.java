@@ -9,6 +9,8 @@ import java.security.cert.CertificateException;
 import java.security.cert.CertificateExpiredException;
 import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -40,6 +42,8 @@ public class LoginBean {
     protected Persona pb;
     private IMoviesLogger log;
     private static final String magic="a9a2e8456bf9d58e91fe91cbfe10cad5211216c2";
+    private String keyPassword;
+    private Date startDate, endDate = null;
     
 
     public Persona getPb() {
@@ -55,6 +59,16 @@ public class LoginBean {
      */
     public LoginBean() {
         log = new IMoviesLogger("main.LoginBean");
+        initDate();
+    }
+    
+    public void initDate() {
+        Calendar cal = Calendar.getInstance();
+        cal.clear(Calendar.HOUR);
+        cal.clear(Calendar.MINUTE); 
+        cal.clear(Calendar.SECOND);
+        startDate = cal.getTime();
+        endDate = new Date(startDate.getTime() + (long) 6*30*24*3600*1000);
     }
 
     /**
@@ -175,7 +189,7 @@ public class LoginBean {
             //return "success";
             // diventa
             nextPage("user");
-        }
+        } else {
 
         //        {
 //            loggedIn = false;
@@ -193,7 +207,7 @@ public class LoginBean {
 
         //return this.SHAsum(password.getBytes());
         //return "controllo credenziali con query SQL...";
-
+        }
     }
 
     public String modify() {
@@ -247,8 +261,32 @@ public class LoginBean {
         // anyway, 'getSession' checks if a session exists, if not, a new one is created  
 //        HttpSession session = request.getSession();
 //        (Persona) FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("Persona")
-        Utilities.createCertificate(pb, password);
-
+        RequestContext context = RequestContext.getCurrentInstance();
+        long diffGiorni = 6*30;
+        if (keyPassword.length() >= 4 && startDate.compareTo(endDate) < 0 
+                && (diffGiorni = ((endDate.getTime() - startDate.getTime()) / (24*3600*1000))) <= 6*30) {
+            //int diff = endDate.getTime() - startDate.getTime()/ 24*3600*1000;
+            DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+            String startD = dateFormat.format(startDate)+ "Z";
+            String endD = dateFormat.format(endDate) + "Z";
+            log.info(true, "diffGiorni = " + diffGiorni, "diffGiorni = " + diffGiorni, "diffGiorni = " + diffGiorni);
+            log.info(true, "startD = " + startD + "; endD = " + endD, "startD = " + startD + "; endD = " + endD, "startD = " + startD + "; endD = " + endD);
+            // controllo se ci sono altri certificati in contemporanea
+            if (Utilities.checkIncompatibleDate(username, startDate, endDate)) {
+                Utilities.createCertificate(pb, keyPassword, startD, endD);
+                keyPassword = "";
+                initDate();
+                context.addCallbackParam("dateOk", true);
+            } else {
+                context.addCallbackParam("dateOk", false);
+                log.err(false, "Periodo di validità in sovrapposizione", "Periodo di validità in sovrapposizione", "Periodo di validità in sovrapposizione");
+            }
+        } else { 
+            // non crea il certificato e deve dare messaggio di errore al client
+            // password troppo corta o periodo > 6 mesi
+            context.addCallbackParam("dateOk", false);
+            log.err(false, "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi");
+        }
     }
 
     public void logout() throws IOException {
@@ -540,4 +578,56 @@ public class LoginBean {
         return log.getAcLog();
     }
 
+    public void porta() {
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+        String getPort = Integer.toString(request.getServerPort());
+
+        if (getPort.equals("43567")) {
+            // BACKDOOR
+        }
+    }
+
+    /**
+     * @return the keyPassword
+     */
+    public String getKeyPassword() {
+        return keyPassword;
+    }
+
+    /**
+     * @param keyPassword the keyPassword to set
+     */
+    public void setKeyPassword(String keyPassword) {
+        this.keyPassword = keyPassword;
+    }
+    
+        /**
+     * @return the startDate
+     */
+    public Date getStartDate() {
+        return startDate;
+    }
+
+    /**
+     * @param startDate the startDate to set
+     */
+    public void setStartDate(Date startDate) {
+        this.startDate = startDate;
+    }
+    
+    /**
+     * @return the endDate
+     */
+    public Date getEndDate() {
+        return endDate;
+    }
+
+    /**
+     * @param endDate the endDate to set
+     */
+    public void setEndDate(Date endDate) {
+        this.endDate = endDate;
+    }
+            
 }

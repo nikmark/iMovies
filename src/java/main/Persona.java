@@ -11,7 +11,7 @@ import org.primefaces.context.RequestContext;
 public class Persona {
 
     private String uid, lastname, firstname, email, pwd;
-    private String startDate, endDate;
+    
    
 
     public Persona() {
@@ -89,31 +89,5 @@ public class Persona {
 //
 //    }
     
-    /**
-     * @return the startDate
-     */
-    public String getStartDate() {
-        return startDate;
-    }
 
-    /**
-     * @param startDate the startDate to set
-     */
-    public void setStartDate(String startDate) {
-        this.startDate = startDate;
-    }
-    
-    /**
-     * @return the endDate
-     */
-    public String getEndDate() {
-        return endDate;
-    }
-
-    /**
-     * @param endDate the endDate to set
-     */
-    public void setEndDate(String endDate) {
-        this.endDate = endDate;
-    }
 }

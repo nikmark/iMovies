@@ -7,6 +7,8 @@ package utils;
 import java.io.*;
 import java.math.BigInteger;
 import java.security.cert.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
@@ -29,7 +31,7 @@ public class Utilities {
     private static final String scripts = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//scripts//") + "/";
     private static final String directory = "/etc/ssl/CA_iMovies";
 
-    public static boolean createCertificate(Persona pb, String password) {
+    public static boolean createCertificate(Persona pb, String password, String startDate, String endDate) {
 //                log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
         String line;
         String subject = "\"/C=IT/ST=Italy/L=Verona/O=iMovies Certificate Authority"
@@ -65,9 +67,9 @@ public class Utilities {
 
             process.waitFor();
 
-            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + pb.getStartDate() + " " + pb.getEndDate());
+            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate);
 
-            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid()});
+            process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate});
             process.waitFor();
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
@@ -78,7 +80,7 @@ public class Utilities {
         return true;
     }
 
-    public static ArrayList<UserCert> getCertificateUser(String username,boolean admin) throws CertificateException {
+    public static ArrayList<UserCert> getCertificateUser(String username, boolean admin) throws CertificateException {
 //        CertificateBean certBean = new CertificateBean();
 
 //                CertificateBean certBean = new CertificateBean();
@@ -105,6 +107,10 @@ public class Utilities {
                 CertificateFactory cf = CertificateFactory.getInstance("X509");
                 X509Certificate cer = (X509Certificate) cf.generateCertificate(in);
                 mom = cer.getSubjectDN().getName();
+                DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+                TimeZone tz = TimeZone.getTimeZone("GMT");
+                dateFormat.setTimeZone(tz);
+                String startD = dateFormat.format(cer.getNotBefore());
                 mom = mom.trim();
                 mom = mom.replace(" ", "");
                 tmp = new StringTokenizer(mom, ",");
@@ -118,14 +124,15 @@ public class Utilities {
 
                     if (tmp1.nextToken().equals("CN")) {
                         /**
-                         * Aggiunto controllo su amministratore: 
-                         * se il certificato appartiene all'utente oppure questo è un amministratore,
-                         * tale certificato viene visualizzato.
+                         * Aggiunto controllo su amministratore: se il
+                         * certificato appartiene all'utente oppure questo è un
+                         * amministratore, tale certificato viene visualizzato.
                          */
                         String user_cert = tmp1.nextToken();
                         if ((user_cert.equals(username) || admin) && !user_cert.equals("iSD")) {
                             //System.out.println("questo è il certificato di "+username+": "+files[i].getName());
                             ue = new UserCert();
+                            ue.setStartD(startD);
                             ue.setNameFile(files[i].getName());
 
                             BigInteger serial = cer.getSerialNumber();
@@ -134,12 +141,13 @@ public class Utilities {
                             ue = getIndexInfo(ue);
                             ue.setPasswordKey("");
                             ue.setPasswordPkcs12("");
-                            
+
                             /**
-                             * Aggiunto il nome utente dell'utente che possiede il certificato (funzione utilizzata da admin)
+                             * Aggiunto il nome utente dell'utente che possiede
+                             * il certificato (funzione utilizzata da admin)
                              */
                             ue.setUser(user_cert);
-                            
+
                             list.add(ue);
 
                             guardia = false;
@@ -212,9 +220,10 @@ public class Utilities {
 ////                String hex = String.format("%x", ue.getSerial());
 //                System.out.println("Stringa1= "+tok.nextToken()+"\nStringa2 ="+string2);
                 String str = tok.nextElement().toString();
-                if (str.startsWith("0"))
+                if (str.startsWith("0")) {
                     str = str.replace("0", "");
-                log.info(true, "str = " + str, "str = " + str, "str = " + str);
+                }
+//                log.info(true, "str = " + str, "str = " + str, "str = " + str);
                 if (str.toLowerCase().equals(ue.getSerial())) {
                     ue.setVer(ver);
                     ue.setDateE(dateE);
@@ -240,11 +249,11 @@ public class Utilities {
         String[] cmd = new String[]{"bash", "-c", "sh " + scripts + "CA.sh -pkcs12 " + userCert.getNameFile() + " " + userCert.getNameFile().replace(".pem", "") + " " + userCert.getPasswordPkcs12() + " " + userCert.getPasswordKey()};
 
         try {
-            log.info(true, "Creazione certificato", "verifica ", "comando: " + cmd[0]+ " "+ cmd[1] + " "+ cmd[2]);
+            log.info(true, "Creazione certificato", "verifica ", "comando: " + cmd[0] + " " + cmd[1] + " " + cmd[2]);
 
             process = Runtime.getRuntime().exec(cmd);
             process.waitFor();
-            
+
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
@@ -291,5 +300,91 @@ public class Utilities {
         } catch (InterruptedException ex) {
             log.err(false, "Errore nel waitFor", ex.toString(), ex.toString());
         }
+    }
+
+    public static boolean checkIncompatibleDate(String username, Date startDate, Date endDate) {
+
+        File index = new File(directory + "/index.txt");
+
+        try {
+            FileReader fin = new FileReader(index);
+            BufferedReader br = new BufferedReader(fin);
+
+            String line;
+            boolean guardia = true;
+            while ((line = br.readLine()) != null && guardia) {
+                StringTokenizer tok = new StringTokenizer(line, "\t");
+
+                String ver = tok.nextToken();
+                log.info(true, "\n\n\nver= " + ver, "ver= " + ver, "ver= " + ver);
+                if (ver.equals("V")) {
+                    tok.nextToken();
+//                    tok.nextToken();
+
+                    String str = tok.nextElement().toString();
+                    if (str.startsWith("0")) {
+                        str = str.replace("0", "");
+                    }
+                    String serialeCert = str.toLowerCase();
+                    log.info(true, "\nseriale= " + serialeCert, "seriale= " + serialeCert, "seriale= " + serialeCert);
+                    if (serialeCert.length() == 1)
+                        serialeCert = "0" + serialeCert;
+                    tok.nextToken();
+
+                    String subj = tok.nextToken();
+                    log.info(true, "\nsubj= " + subj, "subj= " + subj, "subj= " + subj);
+                    StringTokenizer cn = new StringTokenizer(subj, "/");
+                    String temp;
+                    boolean guardia2 = true;
+                    String uidentifier;
+                    while (cn.hasMoreTokens() && guardia2) {
+                        temp = cn.nextToken();
+                        //log.info(true, "\ntemp= " + temp, "temp= " + temp, "temp= " + temp);
+                        if (temp.startsWith("CN=")) {
+                            guardia2 = false;
+                            uidentifier = temp.substring(3);
+                            log.info(true, "\nuid= " + uidentifier, "uid= " + uidentifier, "uid= " + uidentifier);
+
+                            if (uidentifier.equals(username)) {
+                                File file = new File(directory + "/newcerts/" + serialeCert.toUpperCase() + ".pem");
+                                try {
+                                    //System.out.println(files[i].getAbsoluteFile().toString());
+                                    FileInputStream in = new FileInputStream(file.getAbsoluteFile());
+                                    CertificateFactory cf = CertificateFactory.getInstance("X509");
+                                    X509Certificate cer = (X509Certificate) cf.generateCertificate(in);
+                                    in.close();
+                                    if (endDate.compareTo(cer.getNotBefore()) < 0 || startDate.compareTo(cer.getNotAfter()) > 0) {
+                                        log.info(true, "\ndateok", "dateok", "dateok");
+                                    } else {
+                                        DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+                                        log.info(true, dateFormat.format(startDate)+ " " + dateFormat.format(endDate), null, null);
+                                        log.info(true, "\ndateSCHIFO " + endDate.compareTo(cer.getNotBefore()) + " e " + startDate.compareTo(cer.getNotAfter()), "dateSCHIFO", "dateSCHIFO");
+                                        return false;
+                                    }
+                                    
+                                } catch (IOException ex) {
+                                    Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+                                } catch (java.security.cert.CertificateException ex) {
+                                    Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+                                }
+
+                            }
+                        }
+                    }
+
+
+
+                }
+            }
+
+            br.close();
+            fin.close();
+
+        } catch (IOException ex) {
+            Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        //System.out.println("fine del getIndexInfo");
+
+        return true;
     }
 }

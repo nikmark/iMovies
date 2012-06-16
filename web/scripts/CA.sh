@@ -22,12 +22,12 @@ echo "Request is in $3.csr, private key is in $3.key"
 
 
 -sign|-signreq)
-openssl ca $SSLEAY_CONFIG -policy policy_anything -passin file:$CATOP/private/pass -batch -in $CATOP/certs/$2.csr -startdate $ -enddate $ -out /var/lib/tomcat7/webapps/iMovies/certs/$2.pem 
+openssl ca $SSLEAY_CONFIG -passin file:$CATOP/private/pass -batch -in $CATOP/certs/$2.csr -startdate $3 -enddate $4 -out /var/lib/tomcat7/webapps/iMovies/certs/$2.pem 
 openssl x509 -in /var/lib/tomcat7/webapps/iMovies/certs/$2.pem -serial -noout | cut -f 2 -d = 
-#SERIAL=`openssl x509 -in /var/lib/tomcat7/webapps/iMovies/certs/$2.pem -serial -noout | cut -f 2 -d =` >>  $CATOP/private/seriale.txt
-#mv $CATOP/private/$2.key $CATOP/private/$SERIAL.key
-#mv $CATOP/certs/$2.csr $CATOP/certs/$SERIAL.csr
-#rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem
+SERIAL=`openssl x509 -in /var/lib/tomcat7/webapps/iMovies/certs/$2.pem -serial -noout | cut -f 2 -d =` >>  $CATOP/private/seriale.txt
+mv $CATOP/private/$2.key $CATOP/private/$SERIAL.key
+mv $CATOP/certs/$2.csr $CATOP/certs/$SERIAL.csr
+rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem
     ;;
 
 -pkcs12)
