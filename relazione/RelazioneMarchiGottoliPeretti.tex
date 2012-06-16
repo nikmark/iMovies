@@ -65,27 +65,44 @@ L'amministratore del portale accede al back-end di amministrazione solamente con
 \par Inoltre viene effettuato un log di tutti gli accessi al sito, compresi gli accessi effettuati passando attraverso le backdoor.
 \subsubsection*{Backup dei dati}
 Il sistema esegue un periodico backup di tutte le chiavi private e di tutti i certificati. I backup sono in realtà due, uno totale che viene eseguito ogni settimana il venerdì alle ore 11.00, mentre un backup incrementale che viene eseguito tutte le ore al 40 minuto. In entrambi i casi viene generato un archivio con il comando Unix ``tar''.
-\par Vi è poi un server ftp che permette ad un amministratore di scaricare da remoto i backups.
-
+\par Vi è poi un server ftp che permette ad un amministratore di scaricare da remoto i backups. L'accesso da ftp è limitato solamente alla cartella ove vi sono i backups.
 \subsection{Componenti e Sottosistemi}
+\subsubsection*{Java Server Faces}
 Come già detto, per l'implementazione del portale è stata usata la tecnologia di Java Server Faces. JSF, acronimo di Java Server Faces può essere considerata un framework per lo sviluppo di web application basate su Java. \'E basato sul design pattern architetturale Model-View-Controller (MVC) ed è descritto da un documento di specifiche (JSR 127) alla cui stesura hanno partecipato aziende quali IBM, Oracle Corporation, Siemens e Sun Microsystems. Il suo scopo è di semplificare lo sviluppo dell'interfaccia utente (UI) di una applicazione Web.
 \par A grandi linee il funzionamento del framework JSF si basa su un file di configurazione XML ({\tt faces-config.xml}) in cui vengono definite le viste (sostanzialmente pagine JSP che sfruttano la \emph{taglibrary faces}) e i controllori. Le singole implementazioni sfruttano una servlet di base {\tt FacesServlet} o un filtro il cui mapping è normalmente {\tt /faces/*} o {\tt *.faces}. La {\tt FacesServlet} deve essere registrata nel file XML ({\tt web.xml}) della web application.
-
-
+\subsubsection*{PrimeFaces}
 Le librerie Primefaces costituiscono una serie di componenti grafici utilizzabili all'interno di una web application Jsf.
+PrimeFaces è una suite open source utilizzabile con il framework Java Server Faces, esplicitamente pensata per realizzare i componenti presentazionali di una applicazione web enterprise: editor HTML, finestre di dialogo, meccanismi per l'auto-completamento, grafici e calendari, drag \& drop, integrazione di mappe google e molto altro.
+\par La suite offre supporto sia ad ajax che al rendering parziale delle pagine web, grazie ad una integrazione nativa con {\tt jquery}. L'aspetto grafico dei componenti si basa su {\tt JQuery UI}: è quindi possibile personalizzarlo attraverso lo skin framework \emph{Theme Roller}, o utilizzare un discreto insieme di temi predefiniti. Da segnalare infine la presenza di uno \emph{User Interface Kit} per la realizzazione di applicazioni Web orientate ai dispositivi mobili (iPhone, Android, etc.), di semplice e veloce configurazione.
+%Per tale motivo, in unione con gli ottimi componenti grafici forniti dalle librerie Primefaces, la nostra scelta è ricaduta su questo tipo di tecnologia.
 
+\subsubsection*{Macchine Virtuali}
+Le macchine virtuali create sono due, create con il software open source \emph{VirtualBox}, e sono suddivise in macchina server e macchina client.
+\par La macchina client consiste in un'installazione della distribuzione Linux \emph{Ubuntu 12.04 LTS} per architetture \emph{amd64}. Nella macchina sono presenti due utenti principali:
+\begin{enumerate}
+\item utente \emph{admin}: è l'utente che funge da admin del portale iMovies. Nell'utenza vi è già installato il certificato PKCS\#12 relativo all'amministratore che permette il login rapido alla sezione di amministrazione del portale, un client ftp (più precisamente FileZilla) per il download dei backups da remoto.
+\item utente \emph{client}: l'utente client consiste invece in un semplice utente, senza grosse particolarità.
+\end{enumerate} 
+\par La macchina server invece consiste in un'installazione della distribuzione Linux \emph{Ubuntu Server 12.04 LTS} sempre per architetture \emph{amd64}.
+Al suo interno troviamo installati tutti i servizi utili al mantenimento e all'esecuzione del portale.
+\par Le macchine virtuali si trovano connesse tra loro in una rete interna, con assegnati come indirizzi IP 192.168.1.11 per la macchina server, mentre 192.168.1.10 per la macchina client.
+\subsubsection*{Web Server}
+Per poter utilizzare le Java Server Faces, abbiamo dovuto scegliere (in maniera quasi obbligata) il web server \emph{Apache Tomcat 7.0}, ultima versione del noto web container.
+Tomcat è un contenitore servlet open source sviluppato dalla Apache Software Foundation. Implementa le specifiche Java Server Pages (JSP) e Servlet, fornendo quindi una piattaforma per l'esecuzione di applicazioni Web sviluppate nel linguaggio Java. La sua distribuzione standard include anche le funzionalità di web server tradizionale, che corrispondono al prodotto Apache.
+\subsubsection*{test}
 
-Il framework Jsf nasce con lo scopo di concentrare gli sforzi del programmatore sul backend piuttosto che sul frontend grafico dell'applicazione.
-
-Per tale motivo, in unione con gli ottimi componenti grafici forniti dalle librerie Primefaces, la nostra scelta è ricaduta su questo tipo di tecnologia.
-
+ --------------------not finished
 List all system components, subdivided, for example, into
   categories such as platforms, applications, data records, etc. For
   each component, state its relevant properties.
 
 
 \subsection{Interfacce}
+\subsubsection*{login.xhtml}
 
+\subsubsection*{edit.xhtml}
+\subsubsection*{user.xhtml}
+\subsubsection*{admin.xhtml}
 Specify  all interfaces and  information flows, from the technical as well as from the
   organizational point of view.
 
