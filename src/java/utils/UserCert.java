@@ -18,6 +18,8 @@ public class UserCert {
     
     private String ver;
     
+    private String startD;
+    
     private String dateE;
     
     private String dateR;
@@ -120,6 +122,20 @@ public class UserCert {
      */
     public void setUser(String user) {
         this.user = user;
+    }
+
+    /**
+     * @return the startD
+     */
+    public String getStartD() {
+        return startD;
+    }
+
+    /**
+     * @param startD the startD to set
+     */
+    public void setStartD(String startD) {
+        this.startD = startD;
     }
     
 
