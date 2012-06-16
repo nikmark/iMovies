@@ -335,12 +335,12 @@ public class LoginBean {
 
             //FacesContext fc = FacesContext.getCurrentInstance();
 
-            if (uid.equals("iSD")) {
+            if (uid.equals("admin")) {
                 //log.info(false,"dovrei spostarmi in admin","dovrei spostarmi in admin","dovrei spostarmi in admin");
 
-                if (trustedLogin(uid)) {
+                //if (trustedLogin(uid)) {
                     this.admin = true;
-                    log.aclog(pb.getUid(), 2);
+                    log.aclog("admin", 2);
                     /*
                      * ConfigurableNavigationHandler nav =
                      * (ConfigurableNavigationHandler)
@@ -369,10 +369,10 @@ public class LoginBean {
                      * Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE,
                      * null, ex); }
                      */
-                } else {
+                /*} else {
                     log.warn(false, "Login error", "Cannot login with this admin certificate", "Cannot login with this admin certificate");
                     this.admin = false;
-                }
+                }*/
                 //FacesContext.getCurrentInstance().getExternalContext().redirect("admin");
                 //                              return "/faces/resources/pages/admin.xhtml&faces-redirect=true";
             } else {

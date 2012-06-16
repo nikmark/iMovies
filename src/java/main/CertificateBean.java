@@ -1,7 +1,3 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package main;
 
 import java.io.*;
@@ -22,10 +18,10 @@ import utils.IMoviesLogger;
 import utils.UserCert;
 
 /**
+ * Bean di gestione certificati
  *
- * -
- *
- * @author nicolo
+ * @author Gottoli, Marchi, Peretti
+ * @version 1.0
  */
 public class CertificateBean implements Serializable {
 
@@ -36,12 +32,17 @@ public class CertificateBean implements Serializable {
     private IMoviesLogger log = new IMoviesLogger("main.CertificateBean");
     private int num_valid, num_revoked;
 
+    /**
+     * Inizializza il bean dei certificati eseguendo il metodo refreshBean
+     */
     public CertificateBean() {
         refreshBean();
-        num_valid = 0;
-        num_revoked = 0;
     }
 
+    /**
+     *
+     * @return Un oggetto di tipo List che rappresenta gli UserCert
+     */
     public List<UserCert> getUCert() {
         return uCert;
     }
@@ -54,6 +55,11 @@ public class CertificateBean implements Serializable {
         this.selectedUserCert = selectedUserCert;
     }
 
+    /**
+     * Il metodo permette di revocare il certificato selezionato
+     *
+     * @return una stringa di outcome che rappresenta l'azione da svolgere
+     */
     public String revokeCertificate() {
         System.out.println("Revoke Certificate di CertificateBean. Nome file da revocare= " + getSelectedUserCert().getNameFile());
 
@@ -67,10 +73,16 @@ public class CertificateBean implements Serializable {
 //        //setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
 //        return "refresh";
 //    }
+    /**
+     * Il metodo permette di scaricare il certificato impostando lo stream del
+     * file pkcs12 nella variabile globale file
+     *
+     * @throws IOException
+     */
     public void downloadCertificate() throws IOException {
-        System.out.println("sono in downloadCertificate.");
+        //System.out.println("sono in downloadCertificate.");
         utils.Utilities.pkcs12Certificate(getSelectedUserCert());
-        System.out.println("dopo pkcs12!!");
+        //System.out.println("dopo pkcs12!!");
 
         //File f = new File("/pkcs12/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
 
@@ -78,12 +90,18 @@ public class CertificateBean implements Serializable {
         //    this.file = null;
         //} else {
         InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/pkcs12/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
-        System.out.println("test file = " + stream.available() + " esiste? =" + stream.toString());
-        System.out.println("da scaricare= " + path + "/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
+        //System.out.println("test file = " + stream.available() + " esiste? =" + stream.toString());
+        //System.out.println("da scaricare= " + path + "/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
         this.file = new DefaultStreamedContent(stream, "application/x-pkcs12", getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
         //}
     }
 
+    /**
+     * Elimina il certificato selezionando (prima dell'eliminazione esegue la
+     * revoca)
+     *
+     * @return una stringa di outcome che rappresenta l'azione da svolgere
+     */
     public String deleteCertificate() {
         setSelectedUserCert(utils.Utilities.revokeCertificate(getSelectedUserCert()));
         utils.Utilities.deleteCertificate(getSelectedUserCert());
@@ -94,6 +112,12 @@ public class CertificateBean implements Serializable {
 
     }
 
+    /**
+     * Il metodo restituisce lo stream del file impostato
+     *
+     * @return un oggetto di tipo StreamedContent
+     * @throws IOException
+     */
     public StreamedContent getFile() throws IOException {
         System.out.println("adesso ritorno il file da getFile()");
         downloadCertificate();
@@ -113,6 +137,11 @@ public class CertificateBean implements Serializable {
         return file;
     }
 
+    /**
+     * Il metodo imposta la variabile uCert che contiene i certificati
+     * dell'utente attualmente connesso.<br /> Inoltre, imposta le variabili che
+     * rappresentano il numero di certificati rilasciati e revocati.
+     */
     public void refreshBean() {
         try {
             FacesContext.getCurrentInstance().getExternalContext().getSessionMap().get("LoginBean");
@@ -126,8 +155,10 @@ public class CertificateBean implements Serializable {
         /**
          * Controllo sul numero di certficati rilasciati(ma validi) e revocati
          */
+        num_revoked = 0;
+        num_valid = 0;
         for (int i = 0; i < this.uCert.size(); i++) {
-            if (this.uCert.get(i).getDateR().equals("Not Revoked")) {
+            if (!this.uCert.get(i).getDateR().equals("Not Revoked")) {
                 this.num_revoked++;
             } else {
                 this.num_valid++;
@@ -137,21 +168,27 @@ public class CertificateBean implements Serializable {
     }
 
     /**
-     * @return the num_valid
+     * Restituisce il numero di certificati validi
+     *
+     * @return un intero che rappresenta il numero di certificati validi
      */
     public int getNum_valid() {
         return num_valid;
     }
 
     /**
-     * @return the num_revoked
+     * Restituisce il numero di certificati revocati
+     *
+     * @return un intero che rappresenta il numero di certificati revocati
      */
     public int getNum_revoked() {
         return num_revoked;
     }
 
     /**
-     * @return the current_sn
+     * Restituisce il seriale corrente per la generazione di un certificato
+     *
+     * @return una stringa che rappresenta il seriale
      */
     public String getCurrent_sn() {
         String current_sn = "";

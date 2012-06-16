@@ -131,7 +131,7 @@ public class IMoviesLogger {
              * Accesso tramite certificato
              */
             case 2:
-                log += " - New access through certificate credentials by administrator - " + user;
+                log += " - New access through administrator's certificate - " + user;
                 break;
         }
         try {

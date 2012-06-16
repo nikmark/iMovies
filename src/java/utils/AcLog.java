@@ -5,14 +5,21 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 
 /**
- *
- * @author mattia
+ *  Oggetto per gestire una riga del file di log degli accessi
+ *  @author Gottoli, Marchi, Peretti
+ *  @version 1.0
  */
 public class AcLog {
     private Date data;
     private String testo;
     private String uid;
 
+    /**
+     * Inizializza i campi dell'oggett AcLog
+     * @param data un oggetti di tipo date che rappresenta la data in cui un accesso è stato registrato
+     * @param testo una stringa di testo con i dati di accesso
+     * @param uid una stringa con lo userid dell'utente che ha effettuato l'accesso
+     */
     public AcLog(Date data,String testo,String uid)
     {
         this.data = data;

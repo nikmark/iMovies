@@ -23,51 +23,51 @@
 
         </div>
         <center>
-            <p:dataTable id="log" var="log" value="#{LoginBean.acLog}" paginator="true" rows="10" tableStyle="width:960px">  
+            <h:form>
 
-                <f:facet name="header" >
-                    <h:outputText value="Access control log" />
-                </f:facet>
+                <p:dataTable id="aclog" widgetVar="aclog" var="log" value="#{LoginBean.acLog}" paginator="true" rows="10" tableStyle="width:960px">  
 
-                <p:column headerText="Date" style="width:100px" id="name" >  
-                    #{log.data}
-                </p:column>  
+                    <f:facet name="header" >
+                        <h:outputText value="Access control log" />
+                    </f:facet>
 
-                <p:column headerText="Log text" style="width:100px" id="serial" >  
-                    #{log.testo}
-                </p:column>  
+                    <p:column id="name" >  
+                        <f:facet name="header">  
+                            <h:outputText value="Date" />  
+                        </f:facet> 
+                        <h:outputText value="#{log.data}" />
+                    </p:column>  
 
-                <p:column  headerText="User" filterBy="#{log.uid}" style="width:100px" id="user" >  
-                    #{log.uid}
-                </p:column>  
+                    <p:column id="serial" > 
+                        <f:facet name="header">  
+                            <h:outputText value="Log text" />  
+                        </f:facet> 
+                        <h:outputText value="#{log.testo}" />
+                    </p:column>  
 
-                <f:facet name="footer" >
-                    <h:panelGroup>
-                        Export Access log: 
-                        <h:form>
+                    <p:column filterBy="#{log.uid}" id="user" >  
+                        <f:facet name="header">  
+                            <h:outputText value="User" />  
+                        </f:facet> 
+                        <h:outputText value="#{log.uid}" />
+                    </p:column>  
+
+                    <f:facet name="footer" >
+                        <h:panelGroup>
+                            Export Access log:  
                             <h:commandLink>  
                                 <p:graphicImage value="/resources/images/excel.png" />  
-                                <p:dataExporter type="xls" target="log" fileName="access_log" />  
+                                <p:dataExporter type="xls" target="aclog" fileName="access_log" />  
                             </h:commandLink>  
-
                             <h:commandLink>  
                                 <p:graphicImage value="/resources/images/pdf.png" />  
-                                <p:dataExporter type="pdf" target="log" fileName="access_log" />  
+                                <p:dataExporter type="pdf" target="aclog" fileName="access_log" />  
                             </h:commandLink>  
+                        </h:panelGroup>
+                    </f:facet>
+                </p:dataTable>
+            </h:form>
 
-                            <h:commandLink>  
-                                <p:graphicImage value="/resources/images/csv.png" />  
-                                <p:dataExporter type="csv" target="log" fileName="access_log" />  
-                            </h:commandLink>  
-
-                            <h:commandLink>  
-                                <p:graphicImage value="/resources/images/xml.png" />  
-                                <p:dataExporter type="xml" target="log" fileName="access_log" />  
-                            </h:commandLink>  
-                        </h:form>
-                    </h:panelGroup>
-                </f:facet>
-            </p:dataTable>
         </center>
     </h:body>
 </html>
