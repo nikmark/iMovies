@@ -1,13 +1,8 @@
 package main;
 
-import utils.Utilities;
 import java.io.IOException;
-import java.security.Certificate;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.security.cert.CertificateException;
-import java.security.cert.CertificateExpiredException;
-import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -16,7 +11,6 @@ import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
-import javax.faces.context.ExternalContext;
 import javax.faces.context.FacesContext;
 import javax.faces.event.ActionEvent;
 import javax.faces.event.ComponentSystemEvent;
@@ -29,6 +23,7 @@ import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
 import utils.AcLog;
 import utils.IMoviesLogger;
+import utils.Utilities;
 
 /**
  *
@@ -497,7 +492,7 @@ public class LoginBean {
         if (isAdmin()) {
             Thread.sleep(1000);
 
-            nextPage("admin");
+            nextPage("admin/admin");
 
             /*
              * String ref =

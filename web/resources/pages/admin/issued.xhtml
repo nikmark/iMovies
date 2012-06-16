@@ -30,11 +30,11 @@
                         <h:outputText value="Issued certificates" />
                     </f:facet>
 
-                    <p:column headerText="Name" sortBy="#{userCert.nameFile}"  style="width:100px" id="name" >  
+                    <p:column headerText="Name" sortBy="#{userCert.nameFile}" filterBy="#{userCert.nameFile}"  style="width:100px" id="name" >  
                         #{userCert.nameFile}
                     </p:column>  
 
-                    <p:column headerText="Serial" sortBy="#{userCert.serial}"  style="width:100px" id="serial" >  
+                    <p:column headerText="Serial" filterBy="#{userCert.serial}" sortBy="#{userCert.serial}" style="width:100px" id="serial" >  
                         #{userCert.serial}
                     </p:column>  
 

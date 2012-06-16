@@ -35,6 +35,7 @@ public class UserCert {
         this.ver = this.dateE = null;
         this.dateR = null;
         this.passwordKey = this.passwordPkcs12 = "";
+        this.dateR = "";
     }
 //    public UserCert(String nameFile, String serial, String validity){
 //        this.nameFile=nameFile;

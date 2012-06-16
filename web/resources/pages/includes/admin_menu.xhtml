@@ -12,9 +12,13 @@
                 <p:menuitem value="Current serial number" url="#" />  
             </p:submenu>  -->
 
-            <p:menuitem value="Certificates" action="admin/issued" icon="ui-icon-document" />  
+            <p:menuitem value="Certificates" icon="ui-icon-document" actionListener="#{LoginBean.nextPageAction}" > 
+                            <f:attribute name="page" value="admin/issued"/>
+                </p:menuitem> 
 
-            <p:menuitem value="AC log" action="admin/aclog" icon="ui-icon-comment" />  
+            <p:menuitem value="AC log" icon="ui-icon-comment" actionListener="#{LoginBean.nextPageAction}" > 
+                            <f:attribute name="page" value="admin/aclog"/>
+                </p:menuitem> 
 
             <p:menuitem value="Logout" action="#{LoginBean.logout()}" icon="ui-icon-close" />  
         </p:menubar>
