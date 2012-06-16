@@ -10,6 +10,7 @@ import java.security.cert.*;
 import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.context.FacesContext;
 import main.CertificateBean;
 import main.LoginBean;
@@ -64,7 +65,7 @@ public class Utilities {
 
             process.waitFor();
 
-            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid());
+            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + pb.getStartDate() + " " + pb.getEndDate());
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid()});
             process.waitFor();
@@ -153,7 +154,7 @@ public class Utilities {
                 Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
-        System.out.println("fine del cerificateUser");
+        //System.out.println("fine del certificateUser");
 
         Collections.sort(list, new Comparator<UserCert>() {
 
@@ -210,7 +211,11 @@ public class Utilities {
 //                string2.append(Integer.parseInt(ue.getSerial(),16));
 ////                String hex = String.format("%x", ue.getSerial());
 //                System.out.println("Stringa1= "+tok.nextToken()+"\nStringa2 ="+string2);
-                if (tok.nextElement().toString().replace("0", "").toLowerCase().equals(ue.getSerial())) {
+                String str = tok.nextElement().toString();
+                if (str.startsWith("0"))
+                    str = str.replace("0", "");
+                log.info(true, "str = " + str, "str = " + str, "str = " + str);
+                if (str.toLowerCase().equals(ue.getSerial())) {
                     ue.setVer(ver);
                     ue.setDateE(dateE);
                     ue.setDateR(dateR);
@@ -224,7 +229,7 @@ public class Utilities {
         } catch (IOException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
-        System.out.println("fine del getIndexInfo");
+        //System.out.println("fine del getIndexInfo");
 
         return ue;
     }

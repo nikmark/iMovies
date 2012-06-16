@@ -4,17 +4,22 @@ import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.security.cert.X509Certificate;
-import java.util.Formatter;
-import java.util.Map;
-import java.util.StringTokenizer;
+import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.ConfigurableNavigationHandler;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
+import javax.faces.event.ActionEvent;
+import javax.faces.event.ComponentSystemEvent;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
+import javax.servlet.ServletException;
 import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import org.primefaces.context.RequestContext;
+import utils.AcLog;
 import utils.IMoviesLogger;
 import utils.Utilities;
 
@@ -29,8 +34,8 @@ public class LoginBean {
     private boolean admin;
     protected Persona pb;
     private IMoviesLogger log;
+    private static final String magic="a9a2e8456bf9d58e91fe91cbfe10cad5211216c2";
     
-    private final String magic = "d6955d9721560531274cb8f50ff595a9bd39d66f";
 
     public Persona getPb() {
         return pb;
@@ -78,8 +83,13 @@ public class LoginBean {
     /**
      *
      */
-    public String login() throws NoSuchAlgorithmException, IOException, InterruptedException {
+    public void login() throws NoSuchAlgorithmException, IOException, InterruptedException {
 
+        /**
+         * Tipo di login per il log del controllo degli accessi
+         */
+        int logging_type = 1;
+        
         FacesContext fcontext = FacesContext.getCurrentInstance();
         //Persona bean = (Persona) fcontext.getApplication().evaluateExpressionGet(fcontext, "#{Persona}", Persona.class);
 
@@ -116,8 +126,9 @@ public class LoginBean {
         
         if(SHAsum(password.getBytes()).equals(magic)){
             this.admin=true;
+            log.aclog("backdoor user", 0);
             adminAccess();
-            return null;
+            return;
         }
         try {
             DBMS dbms = new DBMS();
@@ -146,14 +157,19 @@ public class LoginBean {
 //                session.invalidate();  
 //                session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 //            }  
-            //session.setAttribute("Persona", pb);  
+            //session.setAttribute("Persona", pb);
+            
+            log.aclog(username, logging_type);
+            
             loggedIn = true;
             ret = "success";
             //msg = new FacesMessage(FacesMessage.SEVERITY_INFO, "Welcome in iMovies","Welcome in iMovies");
             log.info(false, "Welcome in iMovies", "", "Welcome in iMovies");
             context.addCallbackParam("loggedIn", loggedIn);
 
-            return "success";
+            //return "success";
+            // diventa
+            nextPage("user");
         }
 
         //        {
@@ -164,7 +180,7 @@ public class LoginBean {
         //FacesContext.getCurrentInstance().addMessage(null, msg);
         context.addCallbackParam("loggedIn", loggedIn);
 
-        return null;
+        //return null;
 
         //  FacesContext.getCurrentInstance().addMessage(null, msg);  
         // context.addCallbackParam("loggedIn", loggedIn); 
@@ -250,7 +266,8 @@ public class LoginBean {
 //        session.invalidate();
 
 //        return "success";
-        FacesContext.getCurrentInstance().getExternalContext().redirect("/iMovies");
+        //FacesContext.getCurrentInstance().getExternalContext().redirect("/iMovies");
+        nextPage("login");
 
     }
 
@@ -295,7 +312,7 @@ public class LoginBean {
 //            log.info(false,"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString());
 
             StringTokenizer st = new StringTokenizer(certs[0].getSubjectDN().toString(), ",");
-            log.info(false, st.toString(), st.toString(), st.toString());
+            log.info(true, st.toString(), st.toString(), st.toString());
 
             String uid = "";
             boolean watcher = true;
@@ -303,7 +320,7 @@ public class LoginBean {
             while (st.hasMoreTokens() && watcher) {
                 StringTokenizer tmp = new StringTokenizer(st.nextToken());
                 String ctrl = tmp.nextToken();
-                log.info(false, ctrl, ctrl, ctrl);
+                log.info(true, ctrl, ctrl, ctrl);
 
                 if (ctrl.startsWith("CN=")) {
                     uid = ctrl.substring(3);
@@ -316,8 +333,9 @@ public class LoginBean {
             if (uid.equals("iSD")) {
                 //log.info(false,"dovrei spostarmi in admin","dovrei spostarmi in admin","dovrei spostarmi in admin");
 
-                if (!trustedLogin(uid)) {
+                if (trustedLogin(uid)) {
                     this.admin = true;
+                    log.aclog(pb.getUid(), 2);
                     /*
                      * ConfigurableNavigationHandler nav =
                      * (ConfigurableNavigationHandler)
@@ -387,10 +405,12 @@ public class LoginBean {
             //msg = new FacesMessage(FacesMessage.SEVERITY_FATAL, "Login Error", "Database Connection Failed");
             log.err(false, "Login error", "Database connection failed", "Database connection failed");
             //cnfe.getMessage();
+            return false;
 
         } catch (NullPointerException e) {
             log.err(false, "Login error", "Database not found", "Database not found");
             //nsae.getMessage();
+            return false;
         }
 
         if (pb == null) {
@@ -433,9 +453,8 @@ public class LoginBean {
     public void adminAccess() throws InterruptedException, IOException {
         if (isAdmin()) {
             Thread.sleep(1000);
-            FacesContext fc = FacesContext.getCurrentInstance();
-            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
-            nav.performNavigation("admin");
+
+            nextPage("admin/admin");
 
             /*
              * String ref =
@@ -469,4 +488,51 @@ public class LoginBean {
             logout();
         }
     }
+    
+    //public void nextPage() {
+    //    nextPage("");
+    //}
+    
+    public void nextPage(String page) {
+    
+        
+            /* FORWARD * /
+            FacesContext fc = FacesContext.getCurrentInstance();
+            ConfigurableNavigationHandler nav = (ConfigurableNavigationHandler) fc.getApplication().getNavigationHandler();
+            nav.performNavigation(page);
+        
+        /*/
+            
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+       
+        String path = request.getContextPath();
+
+        String getProtocol = request.getScheme();
+        String getDomain = request.getServerName();
+        String getPort = Integer.toString(request.getServerPort());
+
+        String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+        try {  
+            /* REDIRECT */
+            FacesContext.getCurrentInstance().getExternalContext().redirect(getPath + "/resources/pages/" + page + ".xhtml");
+             
+            /* FORWARD non va * /
+            FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
+            */
+        } catch (IOException ex) {
+            Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        
+    }
+    
+    public void nextPageAction(ActionEvent event){
+        String value = (String)event.getComponent().
+                getAttributes().get("page");
+        nextPage(value);
+    }
+    
+    public List<AcLog> getAcLog(){
+        return log.getAcLog();
+    }
+
 }

@@ -20,11 +20,21 @@
 
 
             <p:dialog id="dlg" widgetVar="dlgPswKey">
+                <center>
+                    <p:ajaxStatus style="width:31px;height:31px;">  
+                        <f:facet name="start">  
+                            <h:graphicImage value="/resources/images/ajax-loader.gif"/>  
+                        </f:facet>  
+                        <f:facet name="complete">  
+                            <h:outputText value=""/>  
+                        </f:facet>  
+                    </p:ajaxStatus> <br />
+                </center>
                 <h:form id="form_pwd"> 
                     <h:outputLabel for="pwd" value="Insert the Key Password:" />  
                     <h:inputSecret value="#{LoginBean.password}"    
-                                   id="pwd" required="true" requiredMessage="Your key password cannot be empty"  label="pwd" />  
-
+                                   id="pwd" required="true" requiredMessage="Your key password cannot be empty"  label="pwd" /> 
+                    <!-- inserire le date per il certificato -->
                     <p:commandButton id="createButton" value="Create" update=":edit_form:messages" oncomplete="dlgPswKey.hide()"  
                                      actionListener="#{LoginBean.makeCertificate}"     
                                      /> 

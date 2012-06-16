@@ -1,7 +1,12 @@
 package utils;
 
-import java.util.Queue;
-import java.util.concurrent.ArrayBlockingQueue;
+import java.io.*;
+import java.text.DateFormat;
+import java.text.SimpleDateFormat;
+import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
+import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -18,10 +23,7 @@ public class IMoviesLogger {
      * Oggetto per il logging
      */
     private Logger log;
-    /**
-     * Oggetto per mantenere una coda con gli ultimi messaggi di errore
-     */
-   // private Queue<FacesMessage> err_messages;
+    private final File ac_file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("//logs//access.log"));
 
     /**
      * Costruttore di default
@@ -97,12 +99,83 @@ public class IMoviesLogger {
         }
     }
 
-    /*public void printErrMessages() {
-        FacesMessage msg = err_messages.poll();
-
-        while (msg != null) {
-            FacesContext.getCurrentInstance().addMessage(null, msg);
-            msg = err_messages.poll();
+    public void aclog(String user, int type) {
+        FileWriter stream = null;
+        try {
+            stream = new FileWriter(ac_file,true);
+        } catch (IOException ex) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
         }
-    }*/
+
+        BufferedWriter out = new BufferedWriter(stream);
+        DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
+        Date date = new Date();
+        String log = dateFormat.format(date);
+
+        switch (type) {
+            /**
+             * Accesso tramite login
+             */
+            case 0:
+                log += " - New access through backdoor - "+user;
+                break;
+
+            /**
+             * Accesso tramite login
+             */
+            case 1:
+                log += " - New access through login credentials by user - " + user;
+                break;
+
+            /**
+             * Accesso tramite certificato
+             */
+            case 2:
+                log += " - New access through certificate credentials by administrator - " + user;
+                break;
+        }
+        try {
+            out.append(log + "\n");
+        } catch (IOException ex) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        try {
+            out.close();
+            //stream.close();
+        } catch (IOException ex) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
+
+    public List<AcLog> getAcLog() {
+        FileReader stream = null;
+        try {
+            stream = new FileReader(ac_file);
+        } catch (IOException ex) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        BufferedReader in = new BufferedReader(stream);
+        List<AcLog> log = new ArrayList<AcLog>();
+        String line;
+
+        try {
+            while ((line = in.readLine()) != null) {
+                log.add(new AcLog(new Date(line.substring(0, line.indexOf('-') - 1)),
+                        line.substring(line.indexOf('-') + 1, line.lastIndexOf('-') - 1),
+                        line.substring(line.lastIndexOf('-') + 1)));
+            }
+        } catch (IOException e) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        try {
+            in.close();
+            //stream.close();
+        } catch (IOException e) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
+        }
+        
+        return log;
+    }
 }

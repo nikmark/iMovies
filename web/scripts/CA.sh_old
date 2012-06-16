@@ -98,7 +98,7 @@ $REQ -new -key $CATOP/private/$3.key -out $CATOP/certs/$3.csr $DAYS -passin file
 
 -sign|-signreq)
     $CA  -policy policy_anything -passin file:$CATOP/private/pass -policy policy_anything -batch -in $CATOP/certs/$2.csr -out /var/lib/tomcat7/webapps/iMovies/certs/$2.pem 
-SERIAL=	`$X509 -in /var/lib/tomcat7/webapps/iMovies/certs/$2.pem -serial -noout | cut -f 2 -d =`
+SERIAL=`$X509 -in /var/lib/tomcat7/webapps/iMovies/certs/$2.pem -serial -noout | cut -f 2 -d =`
 mv $CATOP/private/$2.key $CATOP/private/$SERIAL.key
 mv $CATOP/certs/$2.csr $CATOP/certs/$SERIAL.csr
 rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem

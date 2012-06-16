@@ -4,12 +4,11 @@
  */
 package main;
 
-import java.io.File;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.Serializable;
+import java.io.*;
 import java.security.cert.CertificateException;
 import java.util.ArrayList;
+import java.util.Date;
+import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.faces.context.FacesContext;
@@ -18,6 +17,7 @@ import javax.swing.text.Utilities;
 import org.primefaces.context.RequestContext;
 import org.primefaces.model.DefaultStreamedContent;
 import org.primefaces.model.StreamedContent;
+import utils.AcLog;
 import utils.IMoviesLogger;
 import utils.UserCert;
 
@@ -29,17 +29,20 @@ import utils.UserCert;
  */
 public class CertificateBean implements Serializable {
 
-    private ArrayList<UserCert> uCert = new ArrayList<UserCert>();
+    private List<UserCert> uCert = new ArrayList<UserCert>();
     private UserCert selectedUserCert;
     private StreamedContent file;
     private String path = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//pkcs12//");
     private IMoviesLogger log = new IMoviesLogger("main.CertificateBean");
+    private int num_valid, num_revoked;
 
     public CertificateBean() {
         refreshBean();
+        num_valid = 0;
+        num_revoked = 0;
     }
 
-    public ArrayList<UserCert> getUCert() {
+    public List<UserCert> getUCert() {
         return uCert;
     }
 
@@ -119,5 +122,65 @@ public class CertificateBean implements Serializable {
         } catch (CertificateException ex) {
             Logger.getLogger(CertificateBean.class.getName()).log(Level.SEVERE, null, ex);
         }
+
+        /**
+         * Controllo sul numero di certficati rilasciati(ma validi) e revocati
+         */
+        for (int i = 0; i < this.uCert.size(); i++) {
+            if (this.uCert.get(i).getDateR().equals("Not Revoked")) {
+                this.num_revoked++;
+            } else {
+                this.num_valid++;
+            }
+        }
+
+    }
+
+    /**
+     * @return the num_valid
+     */
+    public int getNum_valid() {
+        return num_valid;
+    }
+
+    /**
+     * @return the num_revoked
+     */
+    public int getNum_revoked() {
+        return num_revoked;
+    }
+
+    /**
+     * @return the current_sn
+     */
+    public String getCurrent_sn() {
+        String current_sn = "";
+
+        FileReader stream = null;
+        try {
+            stream = new FileReader("/etc/ssl/CA_iMovies/serial");
+        } catch (IOException ex) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
+        }
+
+        BufferedReader in = new BufferedReader(stream);
+        String line;
+
+        try {
+            while ((line = in.readLine()) != null) {
+                current_sn = line;
+            }
+        } catch (IOException e) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        try {
+            in.close();
+            //stream.close();
+        } catch (IOException e) {
+            Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
+        }
+
+        return current_sn;
     }
 }
