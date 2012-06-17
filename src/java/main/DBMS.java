@@ -207,4 +207,50 @@ public class DBMS {
         }
         return null;
     }
+    
+     public Persona verifyUser(String uid){
+        // Dichiarazione delle variabili
+        Connection con = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
+        //Vector result = new Vector();
+        try {
+            // Tentativo di connessione al database
+            con = DriverManager.getConnection(url, user, passwd);
+
+            // Connessione riuscita, ottengo l'oggetto per l'esecuzione
+            // dell'interrogazione.
+            log.info(true, "Lancio query: ", "", row+"; con parametro: "+uid);
+            
+            pstmt = con.prepareStatement(row);
+            pstmt.clearParameters();
+            //Imposto i parametri della query
+            pstmt.setString(1, uid);
+            rs = pstmt.executeQuery();
+
+            // Memorizzo il risultato dell'interrogazione nel Vector
+            // while(rs.next())
+            //	result.add(
+            if (rs.next()) {
+                Persona p = makePersonaBean(rs);
+                if (p == null)
+                    return null;
+                return p;
+            }
+        } catch (SQLException sqle) {                /*
+             * Catturo le eventuali eccezioni!
+             */
+            sqle.printStackTrace();
+        } finally {                                 /*
+             * Alla fine chiudo la connessione.
+             */
+            try {
+                con.close();
+            } catch (SQLException sqle1) {
+                sqle1.printStackTrace();
+            }
+        }
+        return null;
+    
+    }
 }

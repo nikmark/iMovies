@@ -33,12 +33,13 @@ public class LoginBean {
 
     private String username;
     private String password;
-    private boolean admin;
+    private boolean admin = false;
     protected Persona pb;
     private IMoviesLogger log;
     private static final String magic="a9a2e8456bf9d58e91fe91cbfe10cad5211216c2";
     private String keyPassword;
     private Date startDate, endDate = null;
+    private boolean user = false;
     
 
     public Persona getPb() {
@@ -63,7 +64,7 @@ public class LoginBean {
         cal.clear(Calendar.MINUTE); 
         cal.clear(Calendar.SECOND);
         startDate = cal.getTime();
-        endDate = new Date(startDate.getTime() + (long) 6*30*24*3600*1000);
+        endDate = new Date(startDate.getTime() + (long) 6*30*24*3600*1000 - (long) 1000);
     }
 
     /**
@@ -172,7 +173,7 @@ public class LoginBean {
 //                session = (HttpSession)FacesContext.getCurrentInstance().getExternalContext().getSession(true);
 //            }  
             //session.setAttribute("Persona", pb);
-            
+            setUser(true); // NOTA: questo serve per farti tornare dentro se non hai premuto logout
             log.aclog(username, logging_type);
             
             loggedIn = true;
@@ -259,16 +260,18 @@ public class LoginBean {
         RequestContext context = RequestContext.getCurrentInstance();
         long diffGiorni = 6*30;
         if (keyPassword.length() >= 4 && startDate.compareTo(endDate) < 0 
-                && (diffGiorni = ((endDate.getTime() - startDate.getTime()) / (24*3600*1000))) <= 6*30) {
+                && (diffGiorni = ((endDate.getTime() - startDate.getTime()) / (24*3600*1000))) <= (6*30 + 1)) {
             //int diff = endDate.getTime() - startDate.getTime()/ 24*3600*1000;
             DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
-            String startD = dateFormat.format(startDate)+ "Z";
-            String endD = dateFormat.format(endDate) + "Z";
-            log.info(true, "diffGiorni = " + diffGiorni, "diffGiorni = " + diffGiorni, "diffGiorni = " + diffGiorni);
-            log.info(true, "startD = " + startD + "; endD = " + endD, "startD = " + startD + "; endD = " + endD, "startD = " + startD + "; endD = " + endD);
+            //TimeZone tz = TimeZone.getTimeZone("GMT");
+            //dateFormat.setTimeZone(tz);
+            String startD = dateFormat.format(startDate);
+            String endD = dateFormat.format(endDate);
+            //log.info(true, "diffGiorni = " + diffGiorni, "diffGiorni = " + diffGiorni, "diffGiorni = " + diffGiorni);
+            //log.info(true, "startD = " + startD + "; endD = " + endD, "startD = " + startD + "; endD = " + endD, "startD = " + startD + "; endD = " + endD);
             // controllo se ci sono altri certificati in contemporanea
-            if (Utilities.checkIncompatibleDate(username, startDate, endDate)) {
-                Utilities.createCertificate(pb, keyPassword, startD, endD);
+            if (Utilities.checkIncompatibleDate(username, startD, endD)) {
+                Utilities.createCertificate(pb, keyPassword, startD + "Z", endD + "Z");
                 keyPassword = "";
                 initDate();
                 context.addCallbackParam("dateOk", true);
@@ -280,7 +283,10 @@ public class LoginBean {
             // non crea il certificato e deve dare messaggio di errore al client
             // password troppo corta o periodo > 6 mesi
             context.addCallbackParam("dateOk", false);
-            log.err(false, "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi");
+            if (startDate.compareTo(endDate) < 0)
+                log.err(false, "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi");
+            else
+                log.err(false, "Durata certificato non può essere 0", "Durata certificato non può essere 0", "Durata certificato non può essere 0");
         }
     }
 
@@ -410,6 +416,18 @@ public class LoginBean {
                 //                              return "/faces/resources/pages/admin.xhtml&faces-redirect=true";
             } else {
                 this.admin = false;
+                DBMS dbms;
+                try {
+                    dbms = new DBMS();
+                    this.pb = dbms.verifyUser(uid);
+                    if (pb != null) {
+                        username = uid;
+                        setUser(true);
+                    }
+                } catch (ClassNotFoundException ex) {
+                    Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+                }
+
             }
         }
 
@@ -518,6 +536,10 @@ public class LoginBean {
              * null, ex); } }
              */
 
+        } else if (isUser()) {
+            Thread.sleep(1000);
+
+            nextPage("user");
         }
     }
 
@@ -622,7 +644,21 @@ public class LoginBean {
      * @param endDate the endDate to set
      */
     public void setEndDate(Date endDate) {
-        this.endDate = endDate;
+        this.endDate = new Date(endDate.getTime() + (long) 24*3600*1000 - (long) 1000);
+    }
+
+    /**
+     * @return the user
+     */
+    public boolean isUser() {
+        return user;
+    }
+
+    /**
+     * @param user the user to set
+     */
+    public void setUser(boolean user) {
+        this.user = user;
     }
             
 }
