@@ -17,8 +17,6 @@
     </h:head>
     <h:body onload="dlg.show()" >
 
-        <p:growl id="growl" showDetail="true" life="4000" sticky="true" />  
-
         <p:dialog id="dialog_admin" rendered="#{LoginBean.admin || LoginBean.user}" header="Redirect in progress..." widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <center>
                 <h:graphicImage value="/resources/images/ajax-loader.gif"/>
@@ -31,7 +29,7 @@
 
         <p:dialog id="dialog_user" rendered="#{!(LoginBean.admin || LoginBean.user)}" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <h:form id="form_user">  
-
+                <p:growl id="growl" showDetail="true" life="4000" sticky="true" /> 
                 <h:panelGrid columns="2" cellpadding="5">  
                     <f:facet name="header" >
                         <center>
@@ -57,7 +55,7 @@
                     <f:facet name="footer">
                         <br />
                         <center>
-                            <p:commandButton id="loginButton" value="Login" update=":growl"   
+                            <p:commandButton id="loginButton" value="Login" update=":form_user:growl"   
                                              actionListener="#{LoginBean.login}"   
                                              oncomplete="handleLoginRequest(xhr, status, args)"/> 
                         </center>
@@ -65,8 +63,8 @@
                 </h:panelGrid>  
 
             </h:form>  
-        </p:dialog>  
-
+        </p:dialog>
+ 
         <script type="text/javascript">  
             function handleLoginRequest(xhr, status, args) {  
                 if(args.validationFailed || !args.loggedIn) {  

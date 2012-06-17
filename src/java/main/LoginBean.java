@@ -193,6 +193,7 @@ public class LoginBean {
 //        } 
 //        else 
         //FacesContext.getCurrentInstance().addMessage(null, msg);
+            log.err(false, "Login error", "Username and Password don't match", "Username and Password don't match");
         context.addCallbackParam("loggedIn", loggedIn);
 
         //return null;
