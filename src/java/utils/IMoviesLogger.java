@@ -116,9 +116,9 @@ public class IMoviesLogger {
             /**
              * Accesso tramite login
              */
-            case 0:
+/*            case 0:
                 log += " - New access through backdoor - "+user;
-                break;
+                break;*/
 
             /**
              * Accesso tramite login
