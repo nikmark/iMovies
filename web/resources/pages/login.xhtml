@@ -17,9 +17,7 @@
     </h:head>
     <h:body onload="dlg.show()" >
 
-        <p:growl id="growl" showDetail="true" life="4000" sticky="true" />  
-
-        <p:dialog id="dialog_admin" rendered="#{LoginBean.admin}" header="Redirect in progress..." widgetVar="dlg" closable="false" resizable="false" draggable="false">  
+        <p:dialog id="dialog_admin" rendered="#{LoginBean.admin || LoginBean.user}" header="Redirect in progress..." widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <center>
                 <h:graphicImage value="/resources/images/ajax-loader.gif"/>
             </center>   
@@ -29,9 +27,9 @@
             </h:form>
         </p:dialog>
 
-        <p:dialog id="dialog_user" rendered="#{!LoginBean.admin}" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
+        <p:dialog id="dialog_user" rendered="#{!(LoginBean.admin || LoginBean.user)}" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <h:form id="form_user">  
-
+                <p:growl id="growl" showDetail="true" life="4000" sticky="true" /> 
                 <h:panelGrid columns="2" cellpadding="5">  
                     <f:facet name="header" >
                         <center>
@@ -47,17 +45,17 @@
                     </f:facet> 
 
                     <h:outputLabel for="username" value="Username:" />  
-                    <p:inputText value="#{LoginBean.username}"   
+                    <p:inputText value="#{LoginBean.username}" autocomplete="false"  
                                  id="username" required="false" label="username" />  
 
                     <h:outputLabel for="password" value="Password:" />  
-                    <p:password value="#{LoginBean.password}"    
+                    <p:password value="#{LoginBean.password}" autocomplete="false"
                                 id="password" required="true" requiredMessage="Your iMovies password cannot be empty"  label="password" />  
 
                     <f:facet name="footer">
                         <br />
                         <center>
-                            <p:commandButton id="loginButton" value="Login" update=":growl"   
+                            <p:commandButton id="loginButton" value="Login" update=":form_user:growl"   
                                              actionListener="#{LoginBean.login}"   
                                              oncomplete="handleLoginRequest(xhr, status, args)"/> 
                         </center>
@@ -65,8 +63,8 @@
                 </h:panelGrid>  
 
             </h:form>  
-        </p:dialog>  
-
+        </p:dialog>
+ 
         <script type="text/javascript">  
             function handleLoginRequest(xhr, status, args) {  
                 if(args.validationFailed || !args.loggedIn) {  

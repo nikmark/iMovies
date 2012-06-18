@@ -1,17 +1,13 @@
-/*
- * To change this template, choose Tools | Templates
- * and open the template in the editor.
- */
 package main;
 
 import java.sql.*;
 import java.util.*;
 import utils.IMoviesLogger;
 
-
 /**
+ * Classe per la connessione al database
  *
- * @author ale
+ * @author Gottoli, Marchi, Peretti
  */
 public class DBMS {
 
@@ -24,7 +20,6 @@ public class DBMS {
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
      */
     private String url = "jdbc:mysql://127.0.0.1:3306/iMoviesDB";
-    
     /**
      * Driver da utilizzare per la connessione e l'esecuzione delle query.
      */
@@ -92,8 +87,14 @@ public class DBMS {
         }
         return null;
     }
-    
-    public Persona getUser(String uid){
+
+    /**
+     * Restituisce un oggetto di tipo Persona tramite lo user id
+     *
+     * @param uid identificativo della persona nel database
+     * @return Un oggetti di tipo Persona con i dati dell'utente
+     */
+    public Persona getUser(String uid) {
         // Dichiarazione delle variabili
         Connection con = null;
         PreparedStatement pstmt;
@@ -105,8 +106,8 @@ public class DBMS {
 
             // Connessione riuscita, ottengo l'oggetto per l'esecuzione
             // dell'interrogazione.
-            log.info(true, "Lancio query: ", "", row+"; con parametro: "+uid);
-            
+            log.info(true, "Lancio query: ", "", row + "; con parametro: " + uid);
+
             pstmt = con.prepareStatement(row);
             pstmt.clearParameters();
             //Imposto i parametri della query
@@ -133,29 +134,29 @@ public class DBMS {
             }
         }
         return null;
-    
+
     }
 
     private Persona makePersonaBean(ResultSet rs) throws SQLException {
         Persona bean = null;
-            try {
-                bean = new Persona();
+        try {
+            bean = new Persona();
 
-                bean.setUid(rs.getString("uid"));
-                bean.setLastname(rs.getString("lastname"));
-                bean.setFirstname(rs.getString("firstname"));
-                bean.setEmail(rs.getString("email"));
-                bean.setPwd(rs.getString("pwd"));
-            } catch (SQLException e) {
-                throw new SQLException(e.getMessage());
-            }
+            bean.setUid(rs.getString("uid"));
+            bean.setLastname(rs.getString("lastname"));
+            bean.setFirstname(rs.getString("firstname"));
+            bean.setEmail(rs.getString("email"));
+            bean.setPwd(rs.getString("pwd"));
+        } catch (SQLException e) {
+            throw new SQLException(e.getMessage());
+        }
         return bean;
 
     }
 
     public Persona change(Persona pb) {
-        
-        
+
+
         // Dichiarazione delle variabili
         Connection con = null;
         PreparedStatement pstmt;
@@ -178,7 +179,7 @@ public class DBMS {
             pstmt.setString(5, pb.getUid());
 
             IMoviesLogger log = new IMoviesLogger("main.DBMS");
-            log.info(false, "stampa email= "+pb.getEmail(), "stampa email= "+pb.getEmail(), "stampa email= "+pb.getEmail());
+            log.info(false, "stampa email= " + pb.getEmail(), "stampa email= " + pb.getEmail(), "stampa email= " + pb.getEmail());
             result = pstmt.executeUpdate();
 
             pstmt = con.prepareStatement(row);
@@ -206,5 +207,58 @@ public class DBMS {
             }
         }
         return null;
+    }
+
+    /**
+     * Restituisce un oggetto di tipo Persona tramite lo user id
+     *
+     * @param uid identificativo della persona nel database
+     * @return Un oggetti di tipo Persona con i dati dell'utente
+     */
+    public Persona verifyUser(String uid) {
+        // Dichiarazione delle variabili
+        Connection con = null;
+        PreparedStatement pstmt;
+        ResultSet rs;
+        //Vector result = new Vector();
+        try {
+            // Tentativo di connessione al database
+            con = DriverManager.getConnection(url, user, passwd);
+
+            // Connessione riuscita, ottengo l'oggetto per l'esecuzione
+            // dell'interrogazione.
+            log.info(true, "Lancio query: ", "", row + "; con parametro: " + uid);
+
+            pstmt = con.prepareStatement(row);
+            pstmt.clearParameters();
+            //Imposto i parametri della query
+            pstmt.setString(1, uid);
+            rs = pstmt.executeQuery();
+
+            // Memorizzo il risultato dell'interrogazione nel Vector
+            // while(rs.next())
+            //	result.add(
+            if (rs.next()) {
+                Persona p = makePersonaBean(rs);
+                if (p == null) {
+                    return null;
+                }
+                return p;
+            }
+        } catch (SQLException sqle) {                /*
+             * Catturo le eventuali eccezioni!
+             */
+            sqle.printStackTrace();
+        } finally {                                 /*
+             * Alla fine chiudo la connessione.
+             */
+            try {
+                con.close();
+            } catch (SQLException sqle1) {
+                sqle1.printStackTrace();
+            }
+        }
+        return null;
+
     }
 }

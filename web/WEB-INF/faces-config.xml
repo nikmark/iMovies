@@ -164,4 +164,9 @@
                 <redirect />
             </navigation-case>
         </navigation-rule> -->
+        
+    <lifecycle>
+        <phase-listener>LifeCycleListener</phase-listener>
+    </lifecycle>
+        
 </faces-config>

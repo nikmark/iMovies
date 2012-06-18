@@ -55,19 +55,19 @@ public class Utilities {
         } catch (IOException ex) {
             Logger.getLogger(Utilities.class.getName()).log(Level.SEVERE, null, ex);
         }
-        log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
+        log.info(true, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
 
         Process process;
 
         try {
-            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
-            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw");
+            log.info(true, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
+            log.info(true, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw");
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -newreq " + subject + " " + pb.getUid() + " " + scripts + "psw"});
 
             process.waitFor();
 
-            log.info(false, "Creazione certificato", "Gcomando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate);
+            log.info(false, "Creazione certificato", "Comando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate);
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate});
             process.waitFor();
@@ -302,7 +302,7 @@ public class Utilities {
         }
     }
 
-    public static boolean checkIncompatibleDate(String username, Date startDate, Date endDate) {
+    public static boolean checkIncompatibleDate(String username, String startD, String endD) {
 
         File index = new File(directory + "/index.txt");
 
@@ -316,7 +316,7 @@ public class Utilities {
                 StringTokenizer tok = new StringTokenizer(line, "\t");
 
                 String ver = tok.nextToken();
-                log.info(true, "\n\n\nver= " + ver, "ver= " + ver, "ver= " + ver);
+                //log.info(true, "\n\n\nver= " + ver, "ver= " + ver, "ver= " + ver);
                 if (ver.equals("V")) {
                     tok.nextToken();
 //                    tok.nextToken();
@@ -326,13 +326,13 @@ public class Utilities {
                         str = str.replace("0", "");
                     }
                     String serialeCert = str.toLowerCase();
-                    log.info(true, "\nseriale= " + serialeCert, "seriale= " + serialeCert, "seriale= " + serialeCert);
+                    //log.info(true, "\nseriale= " + serialeCert, "seriale= " + serialeCert, "seriale= " + serialeCert);
                     if (serialeCert.length() == 1)
                         serialeCert = "0" + serialeCert;
                     tok.nextToken();
 
                     String subj = tok.nextToken();
-                    log.info(true, "\nsubj= " + subj, "subj= " + subj, "subj= " + subj);
+                    //log.info(true, "\nsubj= " + subj, "subj= " + subj, "subj= " + subj);
                     StringTokenizer cn = new StringTokenizer(subj, "/");
                     String temp;
                     boolean guardia2 = true;
@@ -343,7 +343,7 @@ public class Utilities {
                         if (temp.startsWith("CN=")) {
                             guardia2 = false;
                             uidentifier = temp.substring(3);
-                            log.info(true, "\nuid= " + uidentifier, "uid= " + uidentifier, "uid= " + uidentifier);
+                            //log.info(true, "\nuid= " + uidentifier, "uid= " + uidentifier, "uid= " + uidentifier);
 
                             if (uidentifier.equals(username)) {
                                 File file = new File(directory + "/newcerts/" + serialeCert.toUpperCase() + ".pem");
@@ -353,12 +353,21 @@ public class Utilities {
                                     CertificateFactory cf = CertificateFactory.getInstance("X509");
                                     X509Certificate cer = (X509Certificate) cf.generateCertificate(in);
                                     in.close();
-                                    if (endDate.compareTo(cer.getNotBefore()) < 0 || startDate.compareTo(cer.getNotAfter()) > 0) {
-                                        log.info(true, "\ndateok", "dateok", "dateok");
-                                    } else {
-                                        DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
-                                        log.info(true, dateFormat.format(startDate)+ " " + dateFormat.format(endDate), null, null);
-                                        log.info(true, "\ndateSCHIFO " + endDate.compareTo(cer.getNotBefore()) + " e " + startDate.compareTo(cer.getNotAfter()), "dateSCHIFO", "dateSCHIFO");
+//                                    if (endDate.compareTo(cer.getNotBefore()) <= 0 || startDate.compareTo(cer.getNotAfter()) >= 0) {
+//                                        //log.info(true, "\ndate OK", "date OK", "date OK");
+//                                    } else {
+//                                        //DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+//                                        //log.info(true, dateFormat.format(startDate)+ " " + dateFormat.format(endDate), null, null);
+//                                        //log.info(true, "\ndate BAD " + endDate.compareTo(cer.getNotBefore()) + " e " + startDate.compareTo(cer.getNotAfter()), "date BAD", "date BAD");
+//                                        return false;
+//                                    }
+                
+                                    DateFormat dateFormat = new SimpleDateFormat("yyMMddHHmmss");
+                                    TimeZone tz = TimeZone.getTimeZone("GMT");
+                                    dateFormat.setTimeZone(tz);
+                                    //String startD = dateFormat.format(cer.getNotBefore());
+                                    log.info(true, "end=" + endD + " < di notBefore=" + dateFormat.format(cer.getNotBefore()) + " POI start=" + startD + " > di notAfter=" + dateFormat.format(cer.getNotAfter()), null, null);
+                                    if (!(endD.compareTo(dateFormat.format(cer.getNotBefore())) < 0 || startD.compareTo(dateFormat.format(cer.getNotAfter())) > 0)) {
                                         return false;
                                     }
                                     
