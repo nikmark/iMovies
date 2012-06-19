@@ -203,13 +203,19 @@ Una volta scaricato l'archivio e decompresso, è stato sufficiente lanciare il c
 
 Il software analizza il portale, individua le vulnerabilità e genera un report sotto forma di html all'interno della folder {\tt report\_folder}.
 
-Il report è visualizzato nella figura \ref{wapiti}.
+Il report di iMovies è visualizzato nella figura \ref{wapiti}.
 \begin{figure}[h!]\label{wapiti}
 \centering
 \includegraphics[width=\textwidth]{img/wapiti}
 \caption{Il report generato dal tool Wapiti}
 \end{figure}
 
+Sono state individuate in tutto 57 vulnerabilità.
+Ognuna delle vulnerabilità segnala che, ad una richiesta particolare, il server ha risposto con un codice d'errore \emph{500}\footnote{Questo codice d'errore indica un errore generico avvenuto sul server a seguito di una richiesta impossibile da risolvere(Internal server error).}.
+
+\item \textbf{Exploit-me}\footnote{http://labs.securitycompass.com/exploit-me/}\\
+Access-me non compatibile con Firefox 13
+\item \textbf{Skipfish}\footnote{http://code.google.com/p/skipfish/}\\
 
 \end{itemize}
 
