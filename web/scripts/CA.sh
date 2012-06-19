@@ -37,7 +37,9 @@ rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem
 
 -revoke)
 
-   openssl ca -revoke $2 -passin file:$CATOP/private/pass
+    openssl ca -revoke $2 -passin file:$CATOP/private/pass
+    openssl ca -gencrl -out $CATOP/crl/iMoviesCrl.pem -passin file:$CATOP/private/pass 
+    cat $CATOP/iMoviesCert.pem $CATOP/crl/iMoviesCrl.crl > $CATOP/iMoviesRevoked.pem
     RET=$?
 	;;
 
@@ -46,8 +48,10 @@ rm /var/lib/tomcat7/webapps/iMovies/certs/$2.pem
     SERIAL=`openssl x509 -in $2 -serial -noout | cut -f 2 -d =`
 
     openssl ca -revoke $2 -passin file:$CATOP/private/pass
+    openssl ca -gencrl -out $CATOP/crl/iMoviesCrl.pem -passin file:$CATOP/private/pass
+    cat $CATOP/iMoviesCert.pem $CATOP/crl/iMoviesCrl.pem > $CATOP/iMoviesRevoked.pem
     rm $2 
-    rm $CATOP/private/$SERIAL.key
+    rm $CATOP/private/$SERIAL.key 
     rm $CATOP/certs/$SERIAL.csr
    ;;
 
