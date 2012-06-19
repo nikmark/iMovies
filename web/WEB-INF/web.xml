@@ -33,9 +33,24 @@
         <error-code>500</error-code>
         <location>/resources/pages/error.xhtml</location>
     </error-page>
-    <!-- Redirect in caso di sessione scaduta -->
+    <!-- Redirect in caso di sessione scaduta (grazie a omnifaces) -->
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
         <location>/resources/pages/expired.xhtml</location>
     </error-page>
+    
+    <!-- https -->
+    
+    <security-constraint>
+        
+        <web-resource-collection>
+            <web-resource-name>Protected Context</web-resource-name>
+            <url-pattern>/*</url-pattern>
+        </web-resource-collection>
+            
+        <user-data-constraint>
+            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
+        </user-data-constraint>
+            
+    </security-constraint>
 </web-app>

@@ -177,7 +177,41 @@ List all potential threats and the
   corresponding countermeasure. For this purpose, use the following three
   tables.
 
-%\subsubsection{Tools}
+\subsubsection{Tools}
+Una volta effettuata l'implementazione del sistema, sono stati utilizzati differenti tool per il test delle vulnerabilità del sistema.
+
+\begin{itemize}
+\item \textbf{Websecurify}\footnote{http://www.websecurify.com}\\
+Websecurify è una potente applicazione per rilevare velocemente e in modo accurato le vulnerabilità di una web application.
+
+L'applicazione è disponibile come plugin per browser e software standalone per sistemi Windows, Mac e Linux.
+
+Data la release prematura disponibile per sistemi Linux è stato deciso di utilizzare il plugin per Google Chrome.
+
+risultati...!
+
+\item \textbf{Wapiti}\footnote{http://www.ict-romulus.eu/web/wapiti/home}\\
+Wapiti è uno scanner di vulnerabilità di una web application.
+Non esamina il codice sorgente delle pagine della web application ma si occupa di scansionare le pagine alla ricerca di form o campi di testo attraverso i quali eseguire delle injections. Per questo motivo, è definito come un \emph{fuzzer}\footnote{Un fuzzer è un software che sfrutta il fuzzing. Quest'ultimo è una tecnica di testing, automatica o semiautomatica, attraverso la quale vengono inviati input invalidi, inaspettati o casuali ad un programma con lo scopo di trovare vulnerabilità attraverso un monitoring delle risposte dello stesso.}.
+
+La release di Wapiti utilizzata per questo test è la 2.2.1.
+Una volta scaricato l'archivio e decompresso, è stato sufficiente lanciare il comando dalla cartella estratta:
+\begin{center}
+\small
+{\tt python wapiti.py http://www.imovies.org -o report\_folder -f html}
+\end{center}
+
+Il software analizza il portale, individua le vulnerabilità e genera un report sotto forma di html all'interno della folder {\tt report\_folder}.
+
+Il report è visualizzato nella figura \ref{wapiti}.
+\begin{figure}[h!]\label{wapiti}
+\centering
+\includegraphics[width=\textwidth]{img/wapiti}
+\caption{Il report generato dal tool Wapiti}
+\end{figure}
+
+
+\end{itemize}
 
 \begin{center}
 \begin{tabular}{|l|l|}
