@@ -34,7 +34,7 @@
                     <p:panelGrid columns="2">
                     <h:outputLabel for="pwd" value="Insert the Key Password:" />
                     <h:inputSecret value="#{LoginBean.keyPassword}"    
-                                   id="pwd" required="true" requiredMessage="Your key password cannot be empty"  label="pwd" >  
+                                   id="pwd" required="true" requiredMessage="Your key password must be long at least 4 character"  label="pwd" >  
                         <f:validateLength minimum="4" />
                     </h:inputSecret>
                     <h:outputLabel for="startDate" value="Insert Start Date:" />
@@ -47,10 +47,11 @@
                                      /> 
                     </p:panelGrid>
                 </h:form>  
+                <br /><br />
             </p:dialog>
             <h:form id="edit_form">
 
-                <p:growl id="messages" />
+                <p:growl id="growl" showDetail="true" life="4000" sticky="true" /> 
 
                 <center>
                     <p:panelGrid columns="2" style="width:960px">

@@ -297,16 +297,16 @@ public class LoginBean {
                 context.addCallbackParam("dateOk", true);
             } else {
                 context.addCallbackParam("dateOk", false);
-                log.err(false, "Periodo di validità in sovrapposizione", "Periodo di validità in sovrapposizione", "Periodo di validità in sovrapposizione");
+                log.err(false, "Error","Cannot overlap certificate's period of validity", "Periodo di validità in sovrapposizione");
             }
         } else { 
             // non crea il certificato e deve dare messaggio di errore al client
             // password troppo corta o periodo > 6 mesi
             context.addCallbackParam("dateOk", false);
             if (startDate.compareTo(endDate) < 0)
-                log.err(false, "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi");
+                log.err(false, "Error", "Certificate's period of validity cannot be bigger than 6 months", "Durata certificato deve essere minore di 6 mesi");
             else
-                log.err(false, "Durata certificato non può essere 0", "Durata certificato non può essere 0", "Durata certificato non può essere 0");
+                log.err(false, "Error", "Certificate's period of validity cannot be 0", "Durata certificato non può essere 0");
         }
     }
 

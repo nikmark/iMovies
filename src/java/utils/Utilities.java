@@ -20,8 +20,8 @@ import main.Persona;
 import utils.IMoviesLogger;
 
 /**
- *
- * @author nicolo
+ * Classe di utilità
+ * @author Gottoli, Marchi, Peretti
  */
 public class Utilities {
 
@@ -31,6 +31,14 @@ public class Utilities {
     private static final String scripts = FacesContext.getCurrentInstance().getExternalContext().getRealPath("//scripts//") + "/";
     private static final String directory = "/etc/ssl/CA_iMovies";
 
+    /**
+     * Crea il certificato(chiave privata + certificate signing request)
+     * @param pb L'utente per il quale il certificato va creato
+     * @param password La password della chiave privata
+     * @param startDate La data di inizio di validità del certificato selezionata dall'utente
+     * @param endDate La data di termine validità del certificato selezionata dall'utente
+     * @return true se la creazione è andata a buon fine, false altrimenti
+     */
     public static boolean createCertificate(Persona pb, String password, String startDate, String endDate) {
 //                log.info(false, "Creazione certificato", "Entrata nel costruttore di Utilities", "Entrata nel costruttore di Utilities");
         String line;
@@ -80,14 +88,22 @@ public class Utilities {
         return true;
     }
 
-    public static ArrayList<UserCert> getCertificateUser(String username, boolean admin) throws CertificateException {
+    /**
+     * Restituisce la lista dei certificati dell'utente
+     * @param username lo username dell'utente
+     * @param admin true se questo utente è un amministratore, false altrimenti
+     * @return un oggetto di tipo List contenente tutti i certificati appartenenti all'utente. 
+     * Nel caso l'utente sia anche un amministratore verranno restituiti tutti i certificati rilasciati
+     * @throws CertificateException 
+     */
+    public static List<UserCert> getCertificateUser(String username, boolean admin) throws CertificateException {
 //        CertificateBean certBean = new CertificateBean();
 
 //                CertificateBean certBean = new CertificateBean();
 //FacesContext.getCurrentInstance().getExternalContext().getSessionMap().put("CertificateBean",certBean);  
 
 
-        ArrayList<UserCert> list = new ArrayList<UserCert>();
+        List<UserCert> list = new ArrayList<UserCert>();
         File cartella = new File(directory + "/newcerts");
         File[] files = null;
         StringTokenizer tmp, tmp1;
@@ -180,6 +196,11 @@ public class Utilities {
         return list;
     }
 
+    /**
+     * Restituisce il certificato dell'utente
+     * @param ue 
+     * @return 
+     */
     public static UserCert getIndexInfo(UserCert ue) {
 
 //            HashMap<String,ArrayList<String>> map=new HashMap<String, ArrayList<String>>();

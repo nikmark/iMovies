@@ -164,9 +164,7 @@
                 <redirect />
             </navigation-case>
         </navigation-rule> -->
-        
-    <lifecycle>
-        <phase-listener>LifeCycleListener</phase-listener>
-    </lifecycle>
-        
+    <factory>
+        <exception-handler-factory>org.omnifaces.exceptionhandler.FullAjaxExceptionHandlerFactory</exception-handler-factory>
+    </factory>
 </faces-config>

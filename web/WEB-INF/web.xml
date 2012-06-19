@@ -15,9 +15,7 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            5
-        </session-timeout>
+        <session-timeout>5</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>/resources/pages/login.xhtml</welcome-file>
@@ -34,5 +32,10 @@
     <error-page>
         <error-code>500</error-code>
         <location>/resources/pages/error.xhtml</location>
+    </error-page>
+    <!-- Redirect in caso di sessione scaduta -->
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/resources/pages/expired.xhtml</location>
     </error-page>
 </web-app>

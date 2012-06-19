@@ -1,0 +1,13 @@
+/* 
+    Document   : login
+    Created on : 11-giu-2012, 17.36.40
+    Author     : mattia
+    Description:
+        Purpose of the stylesheet follows.
+*/
+
+body
+{
+    background-image: url(../resources/images/expired.jpg);
+    background-size: 100%;
+}
