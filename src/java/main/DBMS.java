@@ -18,7 +18,7 @@ public class DBMS {
     //Dati di identificazione dell'utente (da personalizzare)
     private String user = "imovies";
     private String passwd = "imovies";
-    private IMoviesLogger log = new IMoviesLogger("mani.DBMS");
+    private IMoviesLogger log = new IMoviesLogger("main.DBMS");
     /**
      * URL per la connessione alla base di dati e' formato dai seguenti
      * componenti: <protocollo>://<host del server>/<nome base di dati>.
@@ -57,6 +57,7 @@ public class DBMS {
         Connection con = null;
         PreparedStatement pstmt;
         ResultSet rs;
+        Persona pers = null;
         //Vector result = new Vector();
         try {
             // Tentativo di connessione al database
@@ -75,7 +76,7 @@ public class DBMS {
             // while(rs.next())
             //	result.add(
             if (rs.next()) {
-                return makePersonaBean(rs);//);
+                pers = makePersonaBean(rs);//);
             }
         } catch (SQLException sqle) {                /*
              * Catturo le eventuali eccezioni!
@@ -90,7 +91,7 @@ public class DBMS {
                 sqle1.printStackTrace();
             }
         }
-        return null;
+        return pers;
     }
     
     public Persona getUser(String uid){
@@ -98,6 +99,7 @@ public class DBMS {
         Connection con = null;
         PreparedStatement pstmt;
         ResultSet rs;
+        Persona pers = null;
         //Vector result = new Vector();
         try {
             // Tentativo di connessione al database
@@ -117,7 +119,7 @@ public class DBMS {
             // while(rs.next())
             //	result.add(
             if (rs.next()) {
-                return makePersonaBean(rs);//);
+                pers = makePersonaBean(rs);//);
             }
         } catch (SQLException sqle) {                /*
              * Catturo le eventuali eccezioni!
@@ -132,7 +134,7 @@ public class DBMS {
                 sqle1.printStackTrace();
             }
         }
-        return null;
+        return pers;
     
     }
 
@@ -160,6 +162,7 @@ public class DBMS {
         Connection con = null;
         PreparedStatement pstmt;
         ResultSet rs;
+        Persona pers = null;
         int result;
         //Vector result = new Vector();
         try {
@@ -190,7 +193,7 @@ public class DBMS {
             // while(rs.next())
             //	result.add(
             if (rs.next()) {
-                return makePersonaBean(rs);//);
+                pers = makePersonaBean(rs);//);
             }
         } catch (SQLException sqle) {                /*
              * Catturo le eventuali eccezioni!
@@ -205,7 +208,7 @@ public class DBMS {
                 sqle1.printStackTrace();
             }
         }
-        return null;
+        return pers;
     }
     
      public Persona verifyUser(String uid){
@@ -213,6 +216,7 @@ public class DBMS {
         Connection con = null;
         PreparedStatement pstmt;
         ResultSet rs;
+        Persona pers = null;
         //Vector result = new Vector();
         try {
             // Tentativo di connessione al database
@@ -233,9 +237,8 @@ public class DBMS {
             //	result.add(
             if (rs.next()) {
                 Persona p = makePersonaBean(rs);
-                if (p == null)
-                    return null;
-                return p;
+                if (p != null)
+                    pers = p;
             }
         } catch (SQLException sqle) {                /*
              * Catturo le eventuali eccezioni!
@@ -250,7 +253,7 @@ public class DBMS {
                 sqle1.printStackTrace();
             }
         }
-        return null;
+        return pers;
     
     }
 }

@@ -3,6 +3,8 @@ package main;
 import java.io.IOException;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.security.cert.CertificateExpiredException;
+import java.security.cert.CertificateNotYetValidException;
 import java.security.cert.X509Certificate;
 import java.text.DateFormat;
 import java.text.SimpleDateFormat;
@@ -352,10 +354,22 @@ public class LoginBean {
          */
 
         if (certs != null && certs.length > 0) {
+            
+                //        try {
+                //            log.info(false,"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString());
 
-//        try {
-//            log.info(false,"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString(),"nome cert?? = "+certs[0].toString());
-
+            // Controllo se il certificato è valido (inutile)
+            try {
+                certs[0].checkValidity();
+            } catch (CertificateExpiredException ex) {
+                log.err(false, "Certificate has expired", "Certificate has expired", "Certificate has expired");
+                return;
+            } catch (CertificateNotYetValidException ex) {
+                log.err(false, "Certificate is not yet valid", "Certificate is not yet valid", "Certificate is not yet valid");
+                return;
+            }
+            
+            
             StringTokenizer st = new StringTokenizer(certs[0].getSubjectDN().toString(), ",");
             log.info(true, st.toString(), st.toString(), st.toString());
 
