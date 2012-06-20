@@ -148,6 +148,10 @@ Specify  all interfaces and  information flows, from the technical as well as fr
 
 \subsection{Backdoors}
 
+\subsubsection{Backdoor ``facile''}
+\subsubsection{Backdoor ``difficile''}
+Questa backdoor consiste
+
 Describe the implemented backdoors. {\bfseries Do not add
     this section to the version of your report that is handed over to
     the team that reviews your system!}
@@ -195,9 +199,9 @@ Low   & \hspace*{20pt}\ldots \\
 \hline
 \end{tabular}
 %
-%\vspace{5mm}
+\vspace{5mm}
 %
-%\noindent \hspace*{10pt}
+\noindent \hspace*{10pt}
 \begin{tabular}{|l|l|}
 \hline
 \multicolumn{2}{|c|}{\bf Likelihood} \\
@@ -221,7 +225,7 @@ Low   & \hspace*{20pt}\ldots \\
 \hline
 \multicolumn{4}{|c|}{{\bf Risk Level}} \\
 \hline
-{{\bf Likelihood}} & \multicolumn{3}{c|}{{\bf Impact}} \\ %\cline{2-4}
+{{\bf Likelihood}} & \multicolumn{3}{c|}{{\bf Impact}} \\ \cline{2-4}
      & Low & Medium & High \\  \hline
  High & Low & Medium & High  \\
 \hline
@@ -237,12 +241,14 @@ Low   & \hspace*{20pt}\ldots \\
 Evaluate the likelihood, impact and the resulting risk,  after implementation of the corresponding countermeasures.
 
 \begin{footnotesize}
-\begin{prettytablex}{lXp{6.5cm}lll}
-No. & Threat & Implemented/planned countermeasure(s) & L & I & Risk \\
+\begin{prettytablex}{llllll}
+No. & Threat & Impl./planned countermeasure(s) & L & I & Risk \\
 \hline
-1 & ... & ... & {\it Low} & {\it Low} & {\it Low} \\
+1 & CSRF & ... & {\it Basso} & {\it Alto} & {\it Basso} \\
 \hline
-2 & ... & ...& {\it Medium} & {\it High} & {\it Medium} \\
+2 & XSS & ...& {\it Medium} & {\it High} & {\it Medium} \\
+\hline
+3 & Sql Injection & .. & {\it } & {\it } & {\it }\\
 \hline
 \end{prettytablex}
 \end{footnotesize}
