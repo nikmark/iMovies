@@ -133,6 +133,13 @@ public class IMoviesLogger {
             case 2:
                 log += " - New access through administrator's certificate - " + user;
                 break;
+
+            /**
+             * Accesso tramite certificato utente
+             */
+            case 3:
+                log += " - New access through client's certificate - " + user;
+                break;
         }
         try {
             out.append(log + "\n");
