@@ -39,18 +39,24 @@
         <location>/resources/pages/expired.xhtml</location>
     </error-page>
     
-    <!-- https -->
     
-    <security-constraint>
-        
+    <!--<security-constraint>
+        <display-name>Clienti</display-name>
         <web-resource-collection>
-            <web-resource-name>Protected Context</web-resource-name>
-            <url-pattern>/*</url-pattern>
+            <web-resource-name>resources</web-resource-name>
+            <description>Risorse della webapp</description>
+            <url-pattern>/resources/*</url-pattern>
         </web-resource-collection>
-            
-        <user-data-constraint>
-            <transport-guarantee>CONFIDENTIAL</transport-guarantee>
-        </user-data-constraint>
-            
+        <auth-constraint>
+            <description/>
+            <role-name>client</role-name>
+        </auth-constraint>
     </security-constraint>
+    <login-config>
+        <auth-method>DIGEST</auth-method>
+    </login-config>
+    <security-role>
+        <description>Ruolo per tutti i clienti</description>
+        <role-name>client</role-name>
+    </security-role>-->
 </web-app>
