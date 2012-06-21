@@ -67,10 +67,12 @@ public class Utilities {
 
             process.waitFor();
 
-            log.info(false, "Creazione certificato", "Comando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate);
+            log.info(true, "Creazione certificato", "Comando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate);
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate});
             process.waitFor();
+            
+            log.info(false, "Certificate Created", "Certificate Created", "Certificate Created");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
