@@ -1,17 +1,20 @@
 \select@language {italian}
-\contentsline {section}{\numberline {1}Descrizione del Sistema}{2}
-\contentsline {subsection}{\numberline {1.1}Panoramica del sistema}{2}
-\contentsline {subsection}{\numberline {1.2}Funzionalit\IeC {\`a} del Sistema}{2}
-\contentsline {subsection}{\numberline {1.3}Componenti e Sottosistemi}{5}
-\contentsline {subsection}{\numberline {1.4}Interfacce}{7}
-\contentsline {subsection}{\numberline {1.5}Backdoors}{8}
-\contentsline {subsection}{\numberline {1.6}Materiale Aggiuntivo}{8}
-\contentsline {section}{\numberline {2}Risk Analysis and Security Measures}{8}
-\contentsline {subsection}{\numberline {2.1}Information Assets}{8}
-\contentsline {subsection}{\numberline {2.2}Threat Sources}{8}
-\contentsline {subsection}{\numberline {2.3}Risks and Countermeasures}{8}
-\contentsline {subsubsection}{\numberline {2.3.1}Tools}{8}
-\contentsline {subsubsection}{\numberline {2.3.2}{\it Evaluation Asset X}}{10}
-\contentsline {subsubsection}{\numberline {2.3.3}{\it Evaluation Asset y}}{10}
-\contentsline {subsubsection}{\numberline {2.3.4}Detailed Description of Selected Countermeasures}{10}
-\contentsline {subsubsection}{\numberline {2.3.5}Risk Acceptance}{10}
+\contentsline {section}{\numberline {1}Descrizione del Sistema}{3}{section.1}
+\contentsline {subsection}{\numberline {1.1}Panoramica del sistema}{3}{subsection.1.1}
+\contentsline {subsection}{\numberline {1.2}Funzionalit\IeC {\`a} del Sistema}{3}{subsection.1.2}
+\contentsline {subsection}{\numberline {1.3}Componenti e Sottosistemi}{6}{subsection.1.3}
+\contentsline {subsection}{\numberline {1.4}Interfacce}{8}{subsection.1.4}
+\contentsline {subsection}{\numberline {1.5}Backdoors}{9}{subsection.1.5}
+\contentsline {subsubsection}{\numberline {1.5.1}Backdoor triviale}{9}{subsubsection.1.5.1}
+\contentsline {subsubsection}{\numberline {1.5.2}Backdoor complessa}{10}{subsubsection.1.5.2}
+\contentsline {subsection}{\numberline {1.6}Materiale Aggiuntivo}{10}{subsection.1.6}
+\contentsline {section}{\numberline {2}Analisi del Rischio e Misure di Sicurezza}{10}{section.2}
+\contentsline {subsection}{\numberline {2.1}Information Assets}{10}{subsection.2.1}
+\contentsline {subsection}{\numberline {2.2}Fonti delle minacce}{10}{subsection.2.2}
+\contentsline {subsection}{\numberline {2.3}Rischi e Contromisure}{12}{subsection.2.3}
+\contentsline {subsubsection}{\numberline {2.3.1}Tools}{12}{subsubsection.2.3.1}
+\contentsline {subsubsection}{\numberline {2.3.2}Tabelle e descrizione di rischi, probabilit\IeC {\`a} e impatto}{14}{subsubsection.2.3.2}
+\contentsline {subsubsection}{\numberline {2.3.3}{\it Valutazione del portale iMovies parte software}}{15}{subsubsection.2.3.3}
+\contentsline {subsubsection}{\numberline {2.3.4}{\it Valutazione del portale iMovies parte hardware}}{16}{subsubsection.2.3.4}
+\contentsline {subsubsection}{\numberline {2.3.5}Descrizione dettagliata delle contromisure scelte}{17}{subsubsection.2.3.5}
+\contentsline {subsubsection}{\numberline {2.3.6}Risk Acceptance}{18}{subsubsection.2.3.6}

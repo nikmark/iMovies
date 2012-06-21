@@ -1,0 +1,19 @@
+\BOOKMARK [1][-]{section.1}{Descrizione del Sistema}{}
+\BOOKMARK [2][-]{subsection.1.1}{Panoramica del sistema}{section.1}
+\BOOKMARK [2][-]{subsection.1.2}{Funzionalit\340 del Sistema}{section.1}
+\BOOKMARK [2][-]{subsection.1.3}{Componenti e Sottosistemi}{section.1}
+\BOOKMARK [2][-]{subsection.1.4}{Interfacce}{section.1}
+\BOOKMARK [2][-]{subsection.1.5}{Backdoors}{section.1}
+\BOOKMARK [3][-]{subsubsection.1.5.1}{Backdoor triviale}{subsection.1.5}
+\BOOKMARK [3][-]{subsubsection.1.5.2}{Backdoor complessa}{subsection.1.5}
+\BOOKMARK [2][-]{subsection.1.6}{Materiale Aggiuntivo}{section.1}
+\BOOKMARK [1][-]{section.2}{Analisi del Rischio e Misure di Sicurezza}{}
+\BOOKMARK [2][-]{subsection.2.1}{Information Assets}{section.2}
+\BOOKMARK [2][-]{subsection.2.2}{Fonti delle minacce}{section.2}
+\BOOKMARK [2][-]{subsection.2.3}{Rischi e Contromisure}{section.2}
+\BOOKMARK [3][-]{subsubsection.2.3.1}{Tools}{subsection.2.3}
+\BOOKMARK [3][-]{subsubsection.2.3.2}{Tabelle e descrizione di rischi, probabilit\340 e impatto}{subsection.2.3}
+\BOOKMARK [3][-]{subsubsection.2.3.3}{Valutazione del portale iMovies parte software}{subsection.2.3}
+\BOOKMARK [3][-]{subsubsection.2.3.4}{Valutazione del portale iMovies parte hardware}{subsection.2.3}
+\BOOKMARK [3][-]{subsubsection.2.3.5}{Descrizione dettagliata delle contromisure scelte}{subsection.2.3}
+\BOOKMARK [3][-]{subsubsection.2.3.6}{Risk Acceptance}{subsection.2.3}
