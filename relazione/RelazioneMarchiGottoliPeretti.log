@@ -1,17 +1,11 @@
-This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.6.14)  15 JUN 2012 11:59
+This is pdfTeX, Version 3.1415926-1.40.10 (TeX Live 2009/Debian) (format=pdflatex 2012.6.4)  19 JUN 2012 19:03
 entering extended mode
  %&-line parsing enabled.
 **RelazioneMarchiGottoliPeretti.tex
 (./RelazioneMarchiGottoliPeretti.tex
 LaTeX2e <2009/09/24>
 Babel <v3.8l> and hyphenation patterns for english, usenglishmax, dumylang, noh
-yphenation, farsi, arabic, croatian, bulgarian, ukrainian, russian, czech, slov
-ak, danish, dutch, finnish, french, basque, ngerman, german, german-x-2009-06-1
-9, ngerman-x-2009-06-19, ibycus, monogreek, greek, ancientgreek, hungarian, san
-skrit, italian, latin, latvian, lithuanian, mongolian2a, mongolian, bokmal, nyn
-orsk, romanian, irish, coptic, serbian, turkish, welsh, esperanto, uppersorbian
-, estonian, indonesian, interlingua, icelandic, kurmanji, slovenian, polish, po
-rtuguese, spanish, galician, catalan, swedish, ukenglish, pinyin, loaded.
+yphenation, loaded.
 (/usr/share/texmf-texlive/tex/latex/base/article.cls
 Document Class: article 2007/10/19 v1.4h Standard LaTeX document class
 (/usr/share/texmf-texlive/tex/latex/base/size10.clo
@@ -54,6 +48,20 @@ File: pdftex.def 2010/03/12 v0.04p Graphics/color for pdfTeX
 \Gin@req@height=\dimen103
 \Gin@req@width=\dimen104
 )
+(/usr/share/texmf-texlive/tex/latex/caption/caption.sty
+Package: caption 2009/10/09 v3.1k Customizing captions (AR)
+
+(/usr/share/texmf-texlive/tex/latex/caption/caption3.sty
+Package: caption3 2009/10/09 v3.1k caption3 kernel (AR)
+\captionmargin=\dimen105
+\captionmargin@=\dimen106
+\captionwidth=\dimen107
+\caption@indent=\dimen108
+\caption@parindent=\dimen109
+\caption@hangindent=\dimen110
+)
+\c@ContinuedFloat=\count88
+)
 (/usr/share/texmf-texlive/tex/latex/base/alltt.sty
 Package: alltt 1997/06/16 v2.0g defines alltt environment
 )
@@ -66,18 +74,18 @@ Package: tabularx 1999/01/07 v2.07 `tabularx' package (DPC)
 
 (/usr/share/texmf-texlive/tex/latex/tools/array.sty
 Package: array 2008/09/09 v2.4c Tabular extension package (FMi)
-\col@sep=\dimen105
-\extrarowheight=\dimen106
+\col@sep=\dimen111
+\extrarowheight=\dimen112
 \NC@list=\toks15
 \extratabsurround=\skip43
 \backup@length=\skip44
 )
-\TX@col@width=\dimen107
-\TX@old@table=\dimen108
-\TX@old@col=\dimen109
-\TX@target=\dimen110
-\TX@delta=\dimen111
-\TX@cols=\count88
+\TX@col@width=\dimen113
+\TX@old@table=\dimen114
+\TX@old@col=\dimen115
+\TX@target=\dimen116
+\TX@delta=\dimen117
+\TX@cols=\count89
 \TX@ftn=\toks16
 )
 (/usr/share/texmf-texlive/tex/latex/tools/longtable.sty
@@ -86,16 +94,16 @@ Package: longtable 2004/02/01 v4.11 Multi-page Table package (DPC)
 \LTright=\skip46
 \LTpre=\skip47
 \LTpost=\skip48
-\LTchunksize=\count89
-\LTcapwidth=\dimen112
+\LTchunksize=\count90
+\LTcapwidth=\dimen118
 \LT@head=\box26
 \LT@firsthead=\box27
 \LT@foot=\box28
 \LT@lastfoot=\box29
-\LT@cols=\count90
-\LT@rows=\count91
-\c@LT@tables=\count92
-\c@LT@chunks=\count93
+\LT@cols=\count91
+\LT@rows=\count92
+\c@LT@tables=\count93
+\c@LT@chunks=\count94
 \LT@p@ftn=\toks17
 )
 (/usr/share/texmf-texlive/tex/latex/base/inputenc.sty
@@ -315,7 +323,7 @@ Now handling font encoding U ...
    defining Unicode char U+2122 (decimal 8482)
    defining Unicode char U+2423 (decimal 9251)
 ))
-(/var/lib/texmf/tex/generic/babel/babel.sty
+(/usr/share/texmf-texlive/tex/generic/babel/babel.sty
 Package: babel 2008/07/06 v3.8l The Babel package
 
 (/usr/share/texmf-texlive/tex/generic/babel/italian.ldf
@@ -323,56 +331,68 @@ Language: italian 2008/03/14 v1.2t Italian support from the babel system
 
 (/usr/share/texmf-texlive/tex/generic/babel/babel.def
 File: babel.def 2008/07/06 v3.8l Babel common definitions
-\babel@savecnt=\count94
-\U@D=\dimen113
+\babel@savecnt=\count95
+\U@D=\dimen119
 )
+
+Package babel Warning: No hyphenation patterns were loaded for
+(babel)                the language `Italian'
+(babel)                I will use the patterns loaded for \language=0 instead.
+
+\l@italian = a dialect from \language0
 Package babel Info: Making " an active character on input line 94.
 Now handling font encoding LGR ...
 ... no UTF-8 mapping file for font encoding LGR
-))
-(./RelazioneMarchiGottoliPeretti.aux)
+)) (./RelazioneMarchiGottoliPeretti.aux)
 \openout1 = `RelazioneMarchiGottoliPeretti.aux'.
 
-LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 23.
-LaTeX Font Info:    ... okay on input line 23.
-LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 23.
-LaTeX Font Info:    Try loading font information for LGR+cmr on input line 23.
+LaTeX Font Info:    Checking defaults for OML/cmm/m/it on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for T1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OT1/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMS/cmsy/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for OMX/cmex/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for U/cmr/m/n on input line 24.
+LaTeX Font Info:    ... okay on input line 24.
+LaTeX Font Info:    Checking defaults for LGR/cmr/m/n on input line 24.
+LaTeX Font Info:    Try loading font information for LGR+cmr on input line 24.
 
-(/usr/share/texmf-texlive/tex/latex/cbfonts/lgrcmr.fd
-File: lgrcmr.fd 2008/01/04 v1.0 Greek Computer Modern
+(/usr/share/texmf-texlive/tex/generic/babel/lgrcmr.fd
+File: lgrcmr.fd 2008/06/17 v2.3 Greek Computer Modern
 )
-LaTeX Font Info:    ... okay on input line 23.
+LaTeX Font Info:    ... okay on input line 24.
 
 (/usr/share/texmf-texlive/tex/context/base/supp-pdf.mkii
 [Loading MPS to PDF converter (version 2006.09.02).]
-\scratchcounter=\count95
-\scratchdimen=\dimen114
+\scratchcounter=\count96
+\scratchdimen=\dimen120
 \scratchbox=\box30
-\nofMPsegments=\count96
-\nofMParguments=\count97
+\nofMPsegments=\count97
+\nofMParguments=\count98
 \everyMPshowfont=\toks20
-\MPscratchCnt=\count98
-\MPscratchDim=\dimen115
-\MPnumerator=\count99
+\MPscratchCnt=\count99
+\MPscratchDim=\dimen121
+\MPnumerator=\count100
 \everyMPtoPDFconversion=\toks21
 )
+Package caption Info: Begin \AtBeginDocument code.
+Package caption Info: longtable package is loaded.
+ (/usr/share/texmf-texlive/tex/latex/caption/ltcaption.sty
+Package: ltcaption 2008/03/28 v1.2 longtable captions (AR)
+)
+Package caption Info: End \AtBeginDocument code.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <12> on input line 24.
+(Font)              <12> on input line 25.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <8> on input line 24.
+(Font)              <8> on input line 25.
 LaTeX Font Info:    External font `cmex10' loaded for size
-(Font)              <6> on input line 24.
- (./RelazioneMarchiGottoliPeretti.toc
+(Font)              <6> on input line 25.
+
+(./RelazioneMarchiGottoliPeretti.toc
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <7> on input line 3.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -381,72 +401,135 @@ LaTeX Font Info:    External font `cmex10' loaded for size
 \tf@toc=\write3
 \openout3 = `RelazioneMarchiGottoliPeretti.toc'.
 
- [1
+ (./RelazioneMarchiGottoliPeretti.lof)
+\tf@lof=\write4
+\openout4 = `RelazioneMarchiGottoliPeretti.lof'.
 
-{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}] [2]
+
+[1
+
+{/var/lib/texmf/fonts/map/pdftex/updmap/pdftex.map}]
+LaTeX Font Info:    Try loading font information for OMS+cmr on input line 45.
+
+(/usr/share/texmf-texlive/tex/latex/base/omscmr.fd
+File: omscmr.fd 1999/05/25 v2.5h Standard LaTeX font definitions
+)
+LaTeX Font Info:    Font shape `OMS/cmr/m/n' in size <10> not available
+(Font)              Font shape `OMS/cmsy/m/n' tried instead on input line 45.
+
+<img/login.jpg, id=11, 895.345pt x 554.07pt>
+File: img/login.jpg Graphic file (type jpg)
+ <use img/login.jpg>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[2] <img/edit.jpg, id=19, 1014.79124pt x 285.065pt>
+File: img/edit.jpg Graphic file (type jpg)
+ <use img/edit.jpg> [3 <./img/login.jpg> <./img/edit.jpg>]
+<img/revokedownload.jpg, id=26, 1033.8625pt x 334.24875pt>
+File: img/revokedownload.jpg Graphic file (type jpg)
+
+<use img/revokedownload.jpg> <img/certs.jpg, id=27, 1196.47pt x 358.33875pt>
+File: img/certs.jpg Graphic file (type jpg)
+
+<use img/certs.jpg>
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[4 <./img/revokedownload.jpg>] [5 <./img/certs.jpg>]
+<img/prime.jpg, id=35, 327.2225pt x 79.29625pt>
+File: img/prime.jpg Graphic file (type jpg)
+ <use img/prime.jpg>
+Overfull \hbox (3.944pt too wide) in paragraph at lines 126--127
+\OT1/cmr/m/n/10 seg-nati come in-d-i-rizzi IP 192.168.1.11 per la macchi-na ser
+v-er, men-tre 192.168.1.10
+ []
+
+[6 <./img/prime.jpg>] [7] [8]
+
+Package caption Warning: \label before \caption on input line 207.
+See the caption package documentation for explanation.
+
+
+LaTeX Warning: Reference `wapiti' on page 9 undefined on input line 206.
+
+<img/wapiti.png, id=46, 1129.21875pt x 459.7175pt>
+File: img/wapiti.png Graphic file (type png)
+ <use img/wapiti.png>
+[9 <./img/wapiti.png (PNG copy)>]
 
 Package tabularx Warning: X Columns too narrow (table too wide)
-(tabularx)                 on input line 163.
+(tabularx)                 on input line 281.
 
 
-Overfull \hbox (17.00719pt too wide) in paragraph at lines 163--163
+Overfull \hbox (17.00719pt too wide) in paragraph at lines 281--281
 []|\OT1/cmr/m/n/8 Threat| 
  []
 
 
-Overfull \hbox (13.47127pt too wide) in alignment at lines 163--163
+Overfull \hbox (13.47127pt too wide) in alignment at lines 281--281
 [][][][][][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 156--165
+Underfull \hbox (badness 10000) in paragraph at lines 274--283
 
  []
 
 
 Package tabularx Warning: X Columns too narrow (table too wide)
-(tabularx)                 on input line 178.
+(tabularx)                 on input line 296.
 
 
-Overfull \hbox (17.00719pt too wide) in paragraph at lines 178--178
+Overfull \hbox (17.00719pt too wide) in paragraph at lines 296--296
 []|\OT1/cmr/m/n/8 Threat| 
  []
 
 
-Overfull \hbox (13.47127pt too wide) in alignment at lines 178--178
+Overfull \hbox (13.47127pt too wide) in alignment at lines 296--296
 [][][][][][] 
  []
 
 
-Underfull \hbox (badness 10000) in paragraph at lines 171--180
+Underfull \hbox (badness 10000) in paragraph at lines 289--298
 
  []
 
-[3]
-Underfull \hbox (badness 10000) in paragraph at lines 192--201
+
+Underfull \hbox (badness 10000) in paragraph at lines 310--319
 
  []
 
-[4] (./RelazioneMarchiGottoliPeretti.aux) ) 
+[10] (./RelazioneMarchiGottoliPeretti.aux)
+
+LaTeX Warning: There were undefined references.
+
+ ) 
 Here is how much of TeX's memory you used:
- 1813 strings out of 493848
- 22577 string characters out of 1152823
- 83050 words of memory out of 3000000
- 5083 multiletter control sequences out of 15000+50000
- 9492 words of font info for 33 fonts, out of 3000000 for 9000
- 714 hyphenation exceptions out of 8191
- 25i,9n,24p,380b,215s stack positions out of 5000i,500n,10000p,200000b,50000s
-</usr/share/texmf-texlive/fonts/type
-1/public/amsfonts/cm/cmbx10.pfb></usr/share/texmf-texlive/fonts/type1/public/am
-sfonts/cm/cmbx12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
-mr10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr12.pfb></u
-sr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/texm
-f-texlive/fonts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texmf-texlive
-/fonts/type1/public/amsfonts/cm/cmti10.pfb></usr/share/texmf-texlive/fonts/type
-1/public/amsfonts/cm/cmti8.pfb>
-Output written on RelazioneMarchiGottoliPeretti.pdf (4 pages, 121218 bytes).
+ 2844 strings out of 495061
+ 41067 string characters out of 1182622
+ 100777 words of memory out of 3000000
+ 5989 multiletter control sequences out of 15000+50000
+ 10772 words of font info for 38 fonts, out of 3000000 for 9000
+ 28 hyphenation exceptions out of 8191
+ 36i,9n,38p,604b,377s stack positions out of 5000i,500n,10000p,200000b,50000s
+</usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx10.pfb></usr/sha
+re/texmf-texlive/fonts/type1/public/amsfonts/cm/cmbx12.pfb></usr/share/texmf-te
+xlive/fonts/type1/public/amsfonts/cm/cmcsc10.pfb></usr/share/texmf-texlive/font
+s/type1/public/amsfonts/cm/cmr10.pfb></usr/share/texmf-texlive/fonts/type1/publ
+ic/amsfonts/cm/cmr12.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/
+cm/cmr6.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr7.pfb><
+/usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmr8.pfb></usr/share/te
+xmf-texlive/fonts/type1/public/amsfonts/cm/cmr9.pfb></usr/share/texmf-texlive/f
+onts/type1/public/amsfonts/cm/cmssbx10.pfb></usr/share/texmf-texlive/fonts/type
+1/public/amsfonts/cm/cmsy10.pfb></usr/share/texmf-texlive/fonts/type1/public/am
+sfonts/cm/cmti10.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/c
+mti8.pfb></usr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmti9.pfb></u
+sr/share/texmf-texlive/fonts/type1/public/amsfonts/cm/cmtt10.pfb></usr/share/te
+xmf-texlive/fonts/type1/public/amsfonts/cm/cmtt9.pfb>
+Output written on RelazioneMarchiGottoliPeretti.pdf (10 pages, 477429 bytes).
 PDF statistics:
- 47 PDF objects out of 1000 (max. 8388607)
+ 105 PDF objects out of 1000 (max. 8388607)
  0 named destinations out of 1000 (max. 500000)
- 1 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 31 words of extra memory for PDF output out of 10000 (max. 10000000)
 

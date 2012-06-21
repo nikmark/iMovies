@@ -15,9 +15,7 @@
         <url-pattern>*.xhtml</url-pattern>
     </servlet-mapping>
     <session-config>
-        <session-timeout>
-            5
-        </session-timeout>
+        <session-timeout>5</session-timeout>
     </session-config>
     <welcome-file-list>
         <welcome-file>/resources/pages/login.xhtml</welcome-file>
@@ -27,12 +25,38 @@
          
 </login-config>-->
     <!--    faces/resources/pages-->
-    <!--<error-page>
+    <error-page>
         <error-code>404</error-code>
         <location>/resources/pages/error.xhtml</location>
     </error-page>
-    <error-page>
+    <!--<error-page>
         <error-code>500</error-code>
         <location>/resources/pages/error.xhtml</location>
     </error-page>-->
+    <!-- Redirect in caso di sessione scaduta (grazie a omnifaces) -->
+    <error-page>
+        <exception-type>javax.faces.application.ViewExpiredException</exception-type>
+        <location>/resources/pages/expired.xhtml</location>
+    </error-page>
+    
+    
+    <!--<security-constraint>
+        <display-name>Clienti</display-name>
+        <web-resource-collection>
+            <web-resource-name>resources</web-resource-name>
+            <description>Risorse della webapp</description>
+            <url-pattern>/resources/*</url-pattern>
+        </web-resource-collection>
+        <auth-constraint>
+            <description/>
+            <role-name>client</role-name>
+        </auth-constraint>
+    </security-constraint>
+    <login-config>
+        <auth-method>DIGEST</auth-method>
+    </login-config>
+    <security-role>
+        <description>Ruolo per tutti i clienti</description>
+        <role-name>client</role-name>
+    </security-role>-->
 </web-app>

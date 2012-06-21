@@ -28,7 +28,7 @@
         </p:dialog>
 
         <p:dialog id="dialog_user" rendered="#{!(LoginBean.admin || LoginBean.user)}" header="Login" widgetVar="dlg" closable="false" resizable="false" draggable="false">  
-            <h:form id="form_user">  
+            <h:form id="form_user" >  
                 <p:growl id="growl" showDetail="true" life="4000" sticky="true" /> 
                 <h:panelGrid columns="2" cellpadding="5">  
                     <f:facet name="header" >
@@ -45,11 +45,11 @@
                     </f:facet> 
 
                     <h:outputLabel for="username" value="Username:" />  
-                    <p:inputText value="#{LoginBean.username}"   
+                    <p:inputText value="#{LoginBean.username}" autocomplete="false"  
                                  id="username" required="false" label="username" />  
 
                     <h:outputLabel for="password" value="Password:" />  
-                    <p:password value="#{LoginBean.password}"    
+                    <p:password value="#{LoginBean.password}" autocomplete="false"
                                 id="password" required="true" requiredMessage="Your iMovies password cannot be empty"  label="password" />  
 
                     <f:facet name="footer">

