@@ -29,10 +29,10 @@
         <error-code>404</error-code>
         <location>/resources/pages/error.xhtml</location>
     </error-page>
-    <!--<error-page>
+    <error-page>
         <error-code>500</error-code>
         <location>/resources/pages/error.xhtml</location>
-    </error-page>-->
+    </error-page>
     <!-- Redirect in caso di sessione scaduta (grazie a omnifaces) -->
     <error-page>
         <exception-type>javax.faces.application.ViewExpiredException</exception-type>
