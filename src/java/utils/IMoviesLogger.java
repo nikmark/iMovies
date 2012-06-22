@@ -23,7 +23,7 @@ public class IMoviesLogger {
      * Oggetto per il logging
      */
     private Logger log;
-    private final File ac_file = new File(FacesContext.getCurrentInstance().getExternalContext().getRealPath("//logs//access.log"));
+    private final File ac_file = new File("/var/log/tomcat7/iMovies_access.log");
 
     /**
      * Costruttore di default
@@ -116,9 +116,9 @@ public class IMoviesLogger {
             /**
              * Accesso tramite login
              */
-/*            case 0:
+            case 0:
                 log += " - New access through backdoor - "+user;
-                break;*/
+                break;
 
             /**
              * Accesso tramite login
@@ -132,6 +132,13 @@ public class IMoviesLogger {
              */
             case 2:
                 log += " - New access through administrator's certificate - " + user;
+                break;
+
+            /**
+             * Accesso tramite certificato utente
+             */
+            case 3:
+                log += " - New access through client's certificate - " + user;
                 break;
         }
         try {

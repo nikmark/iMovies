@@ -1,7 +1,11 @@
 \select@language {italian}
 \contentsline {figure}{\numberline {1}{\ignorespaces Differenza tra il login che viene mostrato al cliente (immagine a sinistra) e il login automatico tramite certificato per l'amministratore.\relax }}{4}{figure.caption.4}
-\contentsline {figure}{\numberline {2}{\ignorespaces Le tabella contenente le informazioni personali modificabili dell'utente \emph {a3}.\relax }}{4}{figure.caption.6}
-\contentsline {figure}{\numberline {3}{\ignorespaces Tabella per il download, la revoca e l'eliminazione dei certificati.\relax }}{5}{figure.caption.11}
+\contentsline {figure}{\numberline {2}{\ignorespaces Le tabella contenente le informazioni personali modificabili dell'utente \emph {a3}.\relax }}{5}{figure.caption.6}
+\contentsline {figure}{\numberline {3}{\ignorespaces Tabella per il download, la revoca e l'eliminazione dei certificati.\relax }}{6}{figure.caption.11}
 \contentsline {figure}{\numberline {4}{\ignorespaces Tabella per la visualizzazione di tutti i certificati rilasciati con contatori e prossimo serial number.\relax }}{6}{figure.caption.13}
 \contentsline {figure}{\numberline {5}{\ignorespaces Il logo delle librerie Primefaces.\relax }}{7}{figure.caption.17}
-\contentsline {figure}{\numberline {6}{\ignorespaces Il report generato dal tool Wapiti\relax }}{13}{figure.caption.29}
+\contentsline {figure}{\numberline {6}{\ignorespaces Use case che mostra un possibile caso d'uso per il managin dei certificati.\relax }}{10}{figure.caption.29}
+\contentsline {figure}{\numberline {7}{\ignorespaces Scansione di tutte le porte della macchina server, con alla porta 43567 un servizion \emph {unknown}\relax }}{11}{figure.caption.30}
+\contentsline {figure}{\numberline {8}{\ignorespaces Il report generato dal tool Wapiti\relax }}{15}{figure.caption.31}
+\contentsline {figure}{\numberline {9}{\ignorespaces La schermata di benvenuto con le prime informazioni sugli attacchi che saranno effettuati.\relax }}{16}{figure.caption.32}
+\contentsline {figure}{\numberline {10}{\ignorespaces L'esecuzione del tool Skipfish al 92.74\% con un tempo di scansione di poco superiore alle 9 ore.\relax }}{18}{figure.caption.33}

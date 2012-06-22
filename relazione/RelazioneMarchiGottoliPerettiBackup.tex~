@@ -5,7 +5,6 @@
 \usepackage[centerlast,small,sc]{caption}
 \usepackage{alltt}
 \usepackage{url}
-\usepackage{amsmath}
 \usepackage{tabularx}
 \usepackage{hyperref}
 \usepackage{listings}
@@ -23,7 +22,7 @@
   breaklines=true                % sets automatic line breaking
 }
 
-\title{\huge\sffamily\bfseries iMovies Certificate Authority {\huge\sffamily\bfseries Descrizione del sistema e Analisi del Rischio}}
+\title{\huge\sffamily\bfseries Descrizione del sistema e Analisi del Rischio}
 \author{Nicolò Marchi \and Alessandro Gottoli \and Mattia Peretti}
 \date{\today}
 
@@ -138,11 +137,13 @@ Al suo interno troviamo installati tutti i servizi utili al mantenimento e all'e
 Per poter utilizzare le Java Server Faces, abbiamo dovuto scegliere (in maniera quasi obbligata) il web server \emph{Apache Tomcat 7.0}, ultima versione del noto web container.
 Tomcat è un contenitore servlet open source sviluppato dalla Apache Software Foundation. Implementa le specifiche Java Server Pages (JSP) e Servlet, fornendo quindi una piattaforma per l'esecuzione di applicazioni Web sviluppate nel linguaggio Java. La sua distribuzione standard include anche le funzionalità di web server tradizionale, che corrispondono al prodotto Apache.
 \subsubsection*{vsftpd}
-vsftpd, che sta per ``Very Secure FTP Daemon'', è un server FTP per sistemi Unix-like, rilasciato sotto licenza GNU General Public. Questo demone supporta IPv6 e SSL.
+\subsubsection*{test}
 
-\'E stato scelto per come server FTP per la nostra CA perchè è un demone molto sicuro, che permette di abilitare il {\tt chroot()} della cartella in cui si trovano i backups da far vedere in remoto. Questo significa che chi si connette in remoto al server FTP, dopo aver inserito le apposite credenziali (che corrispondo a quelle dell'utenza di admin) vedrà come cartella di root (la famosa {\tt /} ) la sola cartella in cui sono presenti i backups, come da impostazione del {\tt chroot}.
+ --------------------not finished
+List all system components, subdivided, for example, into
+  categories such as platforms, applications, data records, etc. For
+  each component, state its relevant properties.
 
-Una piccola curiosità è che nel luglio 2011 si è scoperto che la versione vsftpd 2.3.4 scaricabile dal sito principale era stata compromessa. Gli utenti che accedevano a un server compromesso vsftpd-2.3.4 potevano inserire uno  smileyface ``:)'' come nome utente e ottenere una shell di comando sulla porta 6200. Da allora, il sito è stato spostato a Google App Engine.
 
 \subsection{Interfacce}
 \subsubsection*{login.xhtml}
@@ -159,41 +160,37 @@ Questa è la sezione dedicata all'amministratore del portale. Da qui l'amministr
 L'amministratore in questa pagina può vedere tutti i certificati creati dagli utenti della CA. Può inoltre visualizzare il numero totale di certificati revocati, e il numero seriale corrente. Da un menù può inoltre muoversi nell'altra sezione dell'amministrazione, che è quella riguardante il controllo degli accessi.
 \subsubsection*{aclog.xhtml}
 Da questa pagina l'amministratore può vedere in tempo reale gli accessi al sito. Può vedere chi si è connesso, a che ora, e anche chi si è connesso passando attraverso le backdoor. La pagina offre inoltre la possibilità di esportare tutti i dati in formato \emph{.pdf} o \emph{.xls}.
-
-\subsubsection*{Possibile caso d'uso}
-Diagramma use-cases che mostra un tipico caso d'uso del portale, in cui un utente può richiedere un certificato, scaricarlo, revocarlo o cancellarlo.
-
-\begin{figure}[h!]
-\centering
-\centerline{\includegraphics[scale=0.35,keepaspectratio]{img/use_case_certificato}}
-\caption{Use case che mostra un possibile caso d'uso per il managin dei certificati.}
-\end{figure}
+\\ \\
+---------------------------------------
+possibile use case
+------------------------
+\\
+\\
 
 \subsection{Backdoors}
 
 \subsubsection{Backdoor triviale}
-Questa backdoor consiste nell'avere Apache Tomcat in ascolto su una porta particolare scelta da noi, e cioè la porta 43567.
-La porta è rilevabile tramite l'applicazione {\tt nmap} (Network Mapper) scansionando tutte le porte della macchina server. Si specifica ``tutte'' perchè {\tt nmap} di base non scansiona tutte le porte. Individuato il servizio (che viene identificato come \emph{unknown} è lecito quindi cercare di connettersi. L'avvenuta connessione alla porta 43567 esegue immediatamente il redirect verso l'area di amministrazione del portale, dove verrà visualizzata una web shell (\emph{MindTerm}) in un pop-up, con la possibilità di connettersi in SSH alla macchina server, anche con privilegi di root.
-\begin{figure}[h!]
-\centering
-\centerline{\includegraphics[scale=0.4,keepaspectratio]{img/nmap_scan.png}}
-\caption{Scansione di tutte le porte della macchina server, con alla porta 43567 un servizion \emph{unknown}}
-\end{figure}
+Questa backdoor consiste nell'avere Apache Tomcat in ascolto su una porta particolare, scelta da noi, e cioè la porta 43567.
+La porta è rilevabile tramite l'applicazione {\tt nmap} (Network Mapper). Cercando quindi di connettersi alla porta 43567 viene eseguito immediatamente il redirect verso il back-end di amministrazione del portale, dove verrà visualizzata una web shell (\emph{MindTerm}) in un pop-up, connessa in SSH alla macchina server con privilegi di root.
+\\ \\
+immagine sca nmap (sempre se lo facciamo funzionare)
 
 \subsubsection{Backdoor complessa}
 Questa backdoor consiste nell'implementazione di una semplice password segreta. Citando un film del 1983, ``Wargames'' diretto da John Badham, la backdoor consiste nell'inserire la parola "Joshua" nel solo campo password del form di login. La password inserita viene poi trasformata in un hash SHA-1.
 
 All'interno del codice Java, nella classe relativa al controllo delle credenziali passate come input, vi è un campo privato, statico, e costante di nome \emph{magic}. Questo campo contiene l'hash SHA-1 della parola ``Joshua''. Quando nel form di login viene inserita la password e lo username resta vuoto, viene confrontato lo SHA-1 della parola inserita col campo \emph{magic}. Se il controllo da esito positivo viene fatto il redirect su una pagina contenente un'applet Java che avvia una shell, che connettendosi in SSH con le credenziali di Root, da accesso da super user sulla macchina server.
+
 Riportiamo qui sotto lo spezzone di codice:
 
 \begin{lstlisting}
+
 (...)
 
 private static final String magic="a9a2e8456bf9d58e91fe91cbfe10cad5211216c2";
 
 (...)
 
-if(SHAsum(password.getBytes()).equals(magic) && username == null){
+if(SHAsum(password.getBytes()).equals(magic)){
 	this.admin=true;
 	log.aclog("backdoor user", 0);
 	adminAccess();
@@ -201,34 +198,25 @@ if(SHAsum(password.getBytes()).equals(magic) && username == null){
 }
 
 (...)
+
 \end{lstlisting}
 
-%\subsection{Materiale Aggiuntivo}
+\subsection{Materiale Aggiuntivo}
 
-%You may have additional sections according to your needs.
+You may have additional sections according to your needs.
 
 
 \section{Analisi del Rischio e Misure di Sicurezza}
 
 \subsection{Information Assets}
-Un ``information asset'' è un corpo di informazioni, definito e gestito come una singola unità in modo che possa essere compreso, condiviso, protetto e sfruttato efficacemente.
-Essi hanno un valore di rischio, contenuto, e ciclo di vita riconoscibile e gestibile.
 
-Un information asset è definito ad un livello di granularità che permette di gestire con facilità gli elementi che lo compongono come una singola unità: troppo ampia e non avrà sufficiente dettaglio, troppo fine e si avranno migliaia di asset.
+Describe the relevant assets and their required security
+  properties. For example, data objects, access restrictions,
+  configurations, etc.
 
-Nel caso della nostra Certificate Authority possiamo individuare alcuni principali information assets come:
-\begin{itemize}
-\item \emph{database degli utenti}: prendiamo come information asset tutto il database; ogni singola entry hanno rischi simili, associati alla privacy dei dati e alla conservazione delle informazioni personali; questo ci permette di trattare tutto il database come information asset;
-\item \emph{chiavi private}: l'insieme di tutte le chiavi private è l'asset che richiede più attenzione in tutta la CA; le chiavi private devono essere trattate tutte con la stessa cura, e nella maniera più sicura possibile perchè se vengono compromesse l'integrità di tutti i dati firmati con le chiavi pubbliche corrispondenti verrebbe distrutta.
-\item \emph{certificati}: i certificati costituiscono un asset perchè anch'essi possono essere trattati in gruppo. 
-\end{itemize}
+\subsection{Fonti delle minacce}
 
-Queste sono tutte informazioni ``di valore'' per la CA, e quindi vanno trattate in maniera particolare, in modo da garantirne l'integrità, la disponibilità e la riservatezza.
-%Analizzate le informazioni che dobbiamo trattare all'interno della Certificate Authority analizziamo ora le fonti di minaccia e rischi ai nostri information assets.
-
-\subsection{Fonti di minaccia}
-
-Le fonti di minacce sono ciò che può minacciare la sicurezza della CA. Queste potrebbe essere ad esempio un agente, che vuole qualcosa dalla CA, come ad esempio un certificato. Individuare gli agenti di minaccia è molto importante per arrivare poi alle fonti.
+Le fonti delle minacce sono ciò che può minacciare la sicurezza della CA. Una fonte di minaccia potrebbe essere ad esempio un agente, che vuole qualcosa dalla CA, come ad esempio un certificato. Individuare gli agenti di minaccia è molto importante per poi poter individuare le fonti di minaccia.
 
 Le fonti di minaccia principali per la CA, e anche per la maggior parte dei portali esistenti, si possono suddividere in alcune categorie:
 \begin{itemize}
@@ -301,7 +289,9 @@ Ognuna delle vulnerabilità segnala che, ad una richiesta particolare, il server
 \item \textbf{Exploit-me}\footnote{\url{http://labs.securitycompass.com/exploit-me/}}\\
 Access-me non compatibile con Firefox 13
 \item \textbf{Skipfish}\footnote{\url{http://code.google.com/p/skipfish/}}\\
-Skipfish è un applicazione per il riconoscimento attivo della sicurezza delle web application. Esso prepara una sitemap interattiva per il sito di destinazione effettuando una scansione ricorsiva e tramite ``sonde'' basate su dizionari di parole. La mappa risultante è poi annotata con l'output di un numero attivo di controlli di sicurezza. La relazione finale generata dallo strumento è destinata ad essere utilizzata come base per le valutazioni professionali di sicurezza delle applicazioni web. La versione testata di SkipFish è la 2.07b.
+Skipfish è un software ...
+
+La versione testata è la 2.07b.
 
 Per il corretto funzionamento dell'applicazione è stato necessario compilare i sorgenti con i seguenti comandi:
 
@@ -320,7 +310,7 @@ Una volta apprese le caratteristiche di Skipfish, è stato lanciato il comando:
 {\tt \# ./skipfish -S dictionaries/complete.wl -W dictionaries/new\_dict.wl -o report\_skipfish https://www.imovies.com
 }
 
-\begin{figure}[h!]
+\begin{figure}[h!]\label{wapiti}
 \centering
 \includegraphics[width=\textwidth]{img/skipfish_welcome}
 \caption{La schermata di benvenuto con le prime informazioni sugli attacchi che saranno effettuati.}
@@ -393,7 +383,6 @@ Infine, la colonna {\tt last\_age} indica il numero totale di cicli di scansione
 \`E facilmente intuibile che le parole chiave inserite riguardano solo il sito target e, si riesce a notare, come il software esegua un test non solo sul percorso indicato come parametro ({\tt https://www.imovies.org} è puramente indicativo, è stato utilizzato un percorso composto da indirizzo ip, numero di porta e percorso dell'applicazione) ma anche sull'intero host (troviamo parole chiave come {\tt ROOT}, {\tt tomcat7} o {\tt catalina} che riguardano esclusivamente l'ambiente tomcat). Infatti, tale tool, esegue una scansione sull'intero host, inclusi i servizi presenti su altre porte.
 
 \begin{figure}[h!]
-\centering
 \centerline{\includegraphics[scale=0.4,keepaspectratio]{img/skipfish_run}}
 \caption{L'esecuzione del tool Skipfish al 92.74\% con un tempo di scansione di poco superiore alle 9 ore.}
 \end{figure}
@@ -509,6 +498,8 @@ No. & Threat & Implemented/planned countermeasure(s) & L & I & Risk \\
 \hline
 3 & dobbiamo pensarci & insieme domani & {\it Media} & {\it Alto} & {\it Medio} \\
 \hline
+3 & dobbiamo pensarci & insieme domani & {\it Media} & {\it Alto} & {\it Medio} \\
+\hline
 \end{longtable}
 \end{footnotesize}
 
@@ -517,75 +508,49 @@ La scelta di Java Server Faces non è stata del tutto casuale, o dettata dalla p
 
 L'utilizzare un framework è stata una scelta dovuta anche al fatto di avere a disposizione uno strumento che già implementasse delle contromisure agli attacchi più diffusi. Questo ci ha permesso oltre che ovviare all'implementazione ``personale'' di contromisure (come nel caso del CSRF) ma anche di disporre di contromisure già implementate e relativamente sicure, perchè già testate da molti utenti, e create appunto dagli stessi sviluppatori e progettisti.
 
-In particolare ci soffermeremo sull'implementazione di JSF di una delle contromisure sul Cross Site Request Forgery. 
+In particolare avremmo piacere di soffermarci sull'implementazione di JSF di una delle contromisure sul Cross Site Request Forgery. \\ \\ \\
+---------------------------------------------------------------\\
+Spiegazione di un paio di contromisure nel dettaglio.\\
 
-Durante la fase di testing Federico De Meo ha cercato di eseguire un attacco di Cross-Site Request Forgery alla Certificate Authority iMovies. Per eseguire questo attacco è stato utilizzato principalmente il tool \emph{WebScarab}. 
+\subsubsection{Risk Acceptance}
 
-Per portare questo attacco innanzi tutto è stata intercettata la richiesta che la pagina \emph{edit.xhtml} faceva per eseguire la modifica dei dati di un utente. Analizzata e catturata la richiesta, la stessa è stata eseguita ``brutalmente'' con WebScarab e si è visto che veniva soddisfatta dal sistema.
-Quindi è stata creata una pagina web ad hoc per replicare la richiesta. Qui è sorto un problema, e cioè che nella richiesta replicata non era possibile inserire il simbolo di ``:'' senza che quest'ultimo venisse codificato in URL encoding, simbolo che invece nella richiesta originale era presente e non codificato.
-Cercando quindi una possibile soluzione, e cioè fare in modo che la richiesta venisse eseguita in Javascript, è stata notata l'esistenza di un campo particolare, tal {\tt javax.faces.ViewState}, che conteneva un numero random molto lungo che variava ad ogni richiesta. 
-
-Investingando ulteriormente si è scoperto che questo campo è una misura di sicurezza di JSF contro il Cross-Site Request Forgery.
-Questo campo è un campo che viene inserito ad esempio in un form in maniera automatica dal sistema in fase di creazione della pagina. Se la richiesta di submit inviata dal client non contiene lo stesso token inviato dal server, la richiesta viene rifiutata.
-
-Ringraziamo quindi Federico De Meo per l'aiuto nei testing alla sicurezza del portale.
-
-%\quote{\emph{
-%Per portare questo attacco innanzi tutto ho intercettato la richiesta che la pagina \emph{edit.xhtml} faceva per eseguire la modifica dei dati di un utente. Analizzata e catturata la richiesta, ho eseguito la stessa ``brutalmente'' con WebScarab e ho visto che veniva soddisfatta dal sistema.
-%Quindi ho creata una pagina web ad hoc per replicare la richiesta. Qui è sorto un problema, e cioè che nella richiesta replicata non era possibile inserire il simbolo di ``:'' senza che quest'ultimo venisse codificato in URL encoding, simbolo che invece nella richiesta originale era presente e non codificato.
-%Ho cercato quindi una possibile soluzione, e cioè fare in modo che la richiesta venisse eseguita in Javascript, e nella ricerca ho notato l'esistenza di un campo particolare, tal {\tt javax.faces.ViewState}, che conteneva un numero random molto lungo che variava ad ogni richiesta.}}
-
-\subsubsection{Rischio accettato}
-Alla luce dei report generati dai vari tool, nelle scelte di implementazione dell'applicazione, e nei tempi dello sviluppo, abbiamo dovuto ``accettare'' alcuni rischi, che a noi sembravano di minore importanza e che non generassero una falla rilevante nel sistema.
-%Le considerazioni finali che si possono fare, in merito all'implementazione di iMovies che è stata eseguita e alla luce dei report generati dai vari tool, sono di vario tipo:
-%\begin{enumerate}
-%\item Prevenzione dell'errore 500 (internal server error).\\
-%Tale errore generico, segnala la presenza di un comportamento anomalo del server, a seguito di una richiesta particolare. Nel nostro caso, l'errore viene generato quando il campo {\tt javax.faces.ViewState} di tipo \emph{hidden} presente nel form di login viene compilato con un valore che Tomcat non è in grado di gestire. Tale campo viene inserito automaticamente dal framework JSF in ogni form per prevenire attacchi del tipo XSS e CSRF.
-%Gli errori di SQL-Injection individuati dai tool si riferiscono quasi esclusivamente a tale campo.
-%\item Protezione delle directory.\\
-%I report di Skipfish segnalano chiaramente come le risorse della web application siano facilmente rintracciabili. Una protezione accurata delle cartelle contenenti immagini, pagine da includere oppure aree private sarebbe da implementare. Ad esempio sarebbe possibile, conoscendo il percorso, visualizzare il file xhtml che contiene il menu dell'utente o dell'amministratore (file che viene incluso nelle pagine principali della webapp impossibili da interpretare se l'attaccante non è loggato perché dotate di un controllo di \emph{preRender} attraverso i java bean). Chiaramente, una volta ottenuto tale file, si potrebbe conoscere solo che tipo di azioni è in grado di svolgere l'amministratore ma senza il backend costituito dai java bean e la pagina principale, non si è in grado di fare nulla.
-%Per implementare una funzionalità che permetta una rigida protezione delle directory è necessario affidarsi ai \emph{Realms}\footnote{
-%I \emph{Realms} sono delle strutture interne di Tomcat create ad-hoc per la protezione e gestione di aree ad accesso limitato. I Realms permettono di creare delle aree protette accessibili attraverso un metodo di autenticazione. Esistono differenti tipi di realms (con accesso a database tramite controllo RBAC-like, attraverso server LDAP, ecc.) e differenti tipi di autenticazione (con prompt di username e password in stile .htaccess con hashing della password, con un form definito dall'utente, con user certificate).} di Tomcat.
-%L'idea è quella di creare un'implementazione di un realm (estendendo la classe \emph{RealmBase}) che rifletta i requisiti di: accesso tramite credenziali per il cliente, accesso tramite certificato per amministratore e controllo incrociato su database se necessario. In questo modo, specificato il nuovo realm (che potrebbe chiamarsi \emph{iMoviesRealm}) nel file di configurazione di Tomcat {\tt server.xml} si dovrebbe essere in grado di mantenere la stessa funzionalità del sistema con una rigida protezione di files e cartelle.
-%\item Protezione del percorso nella barra degli indirizzi.\\
-%Nella barra degli indirizzi sono visualizzate troppe informazioni sul %percorso in cui la pagina attualmente visualizzata è situata.
-%Eseguendo un forward anziché un redirect verso la pagina successiva, si evita di fornire troppe informazioni all'utente sulla struttura delle directory della webapp.
-%\end{enumerate}
-
-\begin{footnotesize}
-\begin{longtable}{p{0.3cm}p{4cm}p{7cm}}
-No. & Rischio accettato & Contromisura e implementazione proposta  \\
-\hline
-1 & Errore 500 (Internal Server Error) & Tale errore generico, segnala la presenza di un comportamento anomalo del server, a seguito di una richiesta particolare. Nel nostro caso, l'errore viene generato quando il campo {\tt javax.faces.ViewState} di tipo \emph{hidden} presente nel form di login viene compilato con un valore che Tomcat non è in grado di gestire. Gli errori di SQL-Injection individuati dai tool si riferiscono quasi esclusivamente a tale campo. \\
-\hline
-2 & Protezione delle directory.  
-
-Riferimento al rischio no. 7 & I report di Skipfish segnalano come le risorse della web application siano facilmente rintracciabili. Una protezione accurata delle cartelle contenenti immagini, pagine da includere oppure aree private sarebbe da implementare. Sarebbe quindi possibile, conoscendo il percorso, visualizzare il file xhtml che contiene il menu dell'utente o dell'amministratore (file che viene incluso nelle pagine principali della webapp impossibili da interpretare se l'attaccante non è loggato perché dotate di un controllo di \emph{preRender} attraverso i Java Bean). Chiaramente, una volta ottenuto tale file, si potrebbe conoscere solo che tipo di azioni è in grado di svolgere l'amministratore ma senza il backend costituito dai java bean e la pagina principale, non si è in grado di fare nulla.
-
+Le considerazioni finali che si possono fare, in merito all'implementazione di iMovies che è stata eseguita e alla luce dei report generati dai vari tool, sono di vario tipo:
+\begin{enumerate}
+\item Prevenzione dell'errore 500 (internal server error).\\
+Tale errore generico, segnala la presenza di un comportamento anomalo del server, a seguito di una richiesta particolare. Nel nostro caso, l'errore viene generato quando il campo {\tt javax.faces.ViewState} di tipo \emph{hidden} presente nel form di login viene compilato con un valore che Tomcat non è in grado di gestire. Tale campo viene inserito automaticamente dal framework JSF in ogni form per prevenire attacchi del tipo XSS e CSRF.
+Gli errori di SQL-Injection individuati dai tool si riferiscono quasi esclusivamente a tale campo.
+\item Protezione delle directory.\\
+I report di Skipfish segnalano chiaramente come le risorse della web application siano facilmente rintracciabili. Una protezione accurata delle cartelle contenenti immagini, pagine da includere oppure aree private sarebbe da implementare. Ad esempio sarebbe possibile, conoscendo il percorso, visualizzare il file xhtml che contiene il menu dell'utente o dell'amministratore (file che viene incluso nelle pagine principali della webapp impossibili da interpretare se l'attaccante non è loggato perché dotate di un controllo di \emph{preRender} attraverso i java bean). Chiaramente, una volta ottenuto tale file, si potrebbe conoscere solo che tipo di azioni è in grado di svolgere l'amministratore ma senza il backend costituito dai java bean e la pagina principale, non si è in grado di fare nulla.
 Per implementare una funzionalità che permetta una rigida protezione delle directory è necessario affidarsi ai \emph{Realms}\footnote{
-I \emph{Realms} sono delle strutture interne di Tomcat create ad-hoc per la protezione e gestione di aree ad accesso limitato. Permettono di creare aree protette accessibili attraverso un metodo di autenticazione. Vi sono differenti tipi di realms (accesso a database tramite controllo RBAC-like, attraverso server LDAP, ecc.) e diversi tipi di autenticazione (con prompt in stile .htaccess, con hashing della password, con un form definito dall'utente, con user certificate).} di Tomcat.
+I \emph{Realms} sono delle strutture interne di Tomcat create ad-hoc per la protezione e gestione di aree ad accesso limitato. I Realms permettono di creare delle aree protette accessibili attraverso un metodo di autenticazione. Esistono differenti tipi di realms (con accesso a database tramite controllo RBAC-like, attraverso server LDAP, ecc.) e differenti tipi di autenticazione (con prompt di username e password in stile .htaccess con hashing della password, con un form definito dall'utente, con user certificate).} di Tomcat.
+L'idea è quella di creare un'implementazione di un realm (estendendo la classe \emph{RealmBase}) che rifletta i requisiti di: accesso tramite credenziali per il cliente, accesso tramite certificato per amministratore e controllo incrociato su database se necessario. In questo modo, specificato il nuovo realm (che potrebbe chiamarsi \emph{iMoviesRealm}) nel file di configurazione di Tomcat {\tt server.xml} si dovrebbe essere in grado di mantenere la stessa funzionalità del sistema con una rigida protezione di files e cartelle.
+\item Protezione del percorso nella barra degli indirizzi.\\
+Nella barra degli indirizzi sono visualizzate troppe informazioni sul percorso in cui la pagina attualmente visualizzata è situata.
+Eseguendo un forward anziché un redirect verso la pagina successiva, si evita di fornire troppe informazioni all'utente sulla struttura delle directory della webapp.
+\end{enumerate}
 
-L'idea è quella di creare un'implementazione di un realm (estendendo la classe \emph{RealmBase}) che rifletta i requisiti di: accesso tramite credenziali per il cliente, accesso tramite certificato per amministratore e controllo incrociato su database se necessario. In questo modo, specificato il nuovo realm (che potrebbe chiamarsi \emph{iMoviesRealm}) nel file di configurazione di Tomcat {\tt server.xml} si dovrebbe essere in grado di mantenere la stessa funzionalità del sistema con una rigida protezione di files e cartelle.\\ 
-\hline
-3 & Protezione del percorso nella barra degli indirizzi. 
 
-Riferimento al rischio no. 8 & Nella barra degli indirizzi sono visualizzate troppe informazioni sul percorso in cui la pagina attualmente visualizzata è situata.
-Eseguendo un forward anziché un redirect verso la pagina successiva, si evita di fornire troppe informazioni all'utente sulla struttura delle directory della webapp.\\
-%\hline
-\end{longtable}
-\end{footnotesize}
+List all medium and high risks, according to the evaluation above. For each risk, propose additional countermeasures that could be implemented to further reduce the risks.
 
-\section{Conclusioni}
-Il progetto del corso di Sicurezza delle Reti si è rivelato una importante parte del corso stesso. La possibilità di applicare nella realtà tutte le metodologie i protezione dei dati e delle informazioni ci ha permesso una migliore e maggiore comprensione di tutti i paradigmi teorici esposti a lezione.
-
-Inolte il libro consigliato per il corso \cite{applied security} si è rivelato un valido alleato nell'implementazione della CA, e di tutto il portale in sè.
-La parte dedicata all'analisi dei rischi ci ha fatto capire come valutare le minacce e i rischi che possono intaccare la sicurezza della CA, mostrandoci inoltre la correlazione tra rischio, impatto e probabilità, data dalla formula:
-$$ Rischio( e ) = Probabilita( e ) * Impatto( e ) $$
-dove $e$ identifica un possibile evento.
+meo docet:
+meo ha provato a fare attaco csrf. per farlo sei andato a guardare che tipo di richiesta la pagina edit.xhtml faceva per modificare i dati di un utente. dopo questa analisi ho preso brutalmente la richiesta e l'ho fatta a mano con webscarab e si è visto che veniva soddisfatta.
+la richiesta aveva da qualche parte dei : non codificati in urlencoded. 
+dopodiche ho provato a replicarla creando una pagina web ad hoc e mi ero arenato in un problema di difficoltà nell'invio del simbolo di : perche continuava a codificarli e io non li volevo codificati. 
+giunto alla mezza conclusione che non si potesse fare in html ma solo tramite una richiesta javascrpt ho notato che c'era un campo che si chiama javax. state ecc che contenteva un numeraccio che variava ad ogni richiesta. sono andato a investigare quel campo e a ricercare se jsf implementasse gia sistemi contro csrfe ho scoperto che lo fa. 
 \\ \\ 
------------------------
-\\ da completare
- 
+-------------------------------------------
+\\ \\ 
+
+%\begin{footnotesize}
+%\begin{prettytablex}{p{2cm}X}
+%No. of threat & Proposed countermeasure including expected impact  \\
+%\hline
+%... & ... \\
+%\hline
+%... & ... \\
+%\hline
+%\end{prettytablex}
+%\end{footnotesize}
 \begin{thebibliography}{9}
 \bibitem{applied security}
 David Basin, Patrick Schaller, Micheal Schl\"apfer - Springer - \textit {Applied Information Security - A Hands-on Approach}
