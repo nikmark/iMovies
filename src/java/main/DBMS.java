@@ -1,13 +1,15 @@
 package main;
 
 import java.sql.*;
-import java.util.*;
 import utils.IMoviesLogger;
 
 /**
  * Classe per la connessione al database
  *
- * @author Gottoli, Marchi, Peretti
+ * @author Alessandro Gottoli
+ * @author Nicolò Marchi
+ * @author Mattia Peretti
+ * @version 1.0
  */
 public class DBMS {
 
@@ -29,12 +31,6 @@ public class DBMS {
     private String change = "UPDATE users SET lastname=?, firstname=?, email=?, pwd=? WHERE uid=?";
     private String row = "SELECT uid,lastname,firstname,email,pwd FROM users WHERE uid=?";
 
-    /*
-     * private String changeLast = "UPDATE users SET lastname=? WHERE uid=?";
-     * private String changeFirst = "UPDATE users SET firstname=? WHERE uid=?";
-     * private String changeEmail = "UPDATE users SET email=? WHERE uid=?";
-     * private String changePwd = "UPDATE users SET pwd=? WHERE uid=?";
-     */
     /**
      * Costruttore della classe. Carica i driver da utilizzare per la
      * connessione alla base di dati.
@@ -53,7 +49,6 @@ public class DBMS {
         PreparedStatement pstmt;
         ResultSet rs;
         Persona pers = null;
-        //Vector result = new Vector();
         try {
             // Tentativo di connessione al database
             con = DriverManager.getConnection(url, user, passwd);
@@ -68,18 +63,14 @@ public class DBMS {
             rs = pstmt.executeQuery();
 
             // Memorizzo il risultato dell'interrogazione nel Vector
-            // while(rs.next())
-            //	result.add(
             if (rs.next()) {
-                pers = makePersonaBean(rs);//);
+                pers = makePersonaBean(rs);
             }
-        } catch (SQLException sqle) {                /*
-             * Catturo le eventuali eccezioni!
-             */
+        } catch (SQLException sqle) {
+            //Catturo le eventuali eccezioni!
             sqle.printStackTrace();
-        } finally {                                 /*
-             * Alla fine chiudo la connessione.
-             */
+        } finally {
+            //Alla fine chiudo la connessione.
             try {
                 con.close();
             } catch (SQLException sqle1) {
@@ -101,7 +92,6 @@ public class DBMS {
         PreparedStatement pstmt;
         ResultSet rs;
         Persona pers = null;
-        //Vector result = new Vector();
         try {
             // Tentativo di connessione al database
             con = DriverManager.getConnection(url, user, passwd);
@@ -117,18 +107,15 @@ public class DBMS {
             rs = pstmt.executeQuery();
 
             // Memorizzo il risultato dell'interrogazione nel Vector
-            // while(rs.next())
-            //	result.add(
             if (rs.next()) {
-                pers = makePersonaBean(rs);//);
+                pers = makePersonaBean(rs);
             }
-        } catch (SQLException sqle) {                /*
-             * Catturo le eventuali eccezioni!
-             */
+        } catch (SQLException sqle) {
+            //Catturo le eventuali eccezioni!
+
             sqle.printStackTrace();
-        } finally {                                 /*
-             * Alla fine chiudo la connessione.
-             */
+        } finally {
+            //Alla fine chiudo la connessione.
             try {
                 con.close();
             } catch (SQLException sqle1) {
@@ -136,7 +123,7 @@ public class DBMS {
             }
         }
         return pers;
-    
+
     }
 
     private Persona makePersonaBean(ResultSet rs) throws SQLException {
@@ -156,16 +143,22 @@ public class DBMS {
 
     }
 
+    /**
+     * Metodo che esegue la query per il cambio dei dati personali di un utente
+     * nel database. Viene passato un oggetto Persona con tutte le nuove
+     * informazioni riguardanti l'utente, e tramite una query di UPDATE vengono
+     * aggiornate nel database.
+     *
+     * @param pb Persona con i dati dell'utente
+     * @return Persona con i nuovi dati dell'utente
+     */
     public Persona change(Persona pb) {
-
-
         // Dichiarazione delle variabili
         Connection con = null;
         PreparedStatement pstmt;
         ResultSet rs;
         Persona pers = null;
         int result;
-        //Vector result = new Vector();
         try {
             // Tentativo di connessione al database
             con = DriverManager.getConnection(url, user, passwd);
@@ -191,18 +184,14 @@ public class DBMS {
             rs = pstmt.executeQuery();
 
             // Memorizzo il risultato dell'interrogazione nel Vector
-            // while(rs.next())
-            //	result.add(
             if (rs.next()) {
-                pers = makePersonaBean(rs);//);
+                pers = makePersonaBean(rs);
             }
-        } catch (SQLException sqle) {                /*
-             * Catturo le eventuali eccezioni!
-             */
+        } catch (SQLException sqle) {
+            //Catturo le eventuali eccezioni!
             sqle.printStackTrace();
-        } finally {                                 /*
-             * Alla fine chiudo la connessione.
-             */
+        } finally {
+            //Alla fine chiudo la connessione.
             try {
                 con.close();
             } catch (SQLException sqle1) {
@@ -240,20 +229,17 @@ public class DBMS {
             rs = pstmt.executeQuery();
 
             // Memorizzo il risultato dell'interrogazione nel Vector
-            // while(rs.next())
-            //	result.add(
             if (rs.next()) {
                 Persona p = makePersonaBean(rs);
-                if (p != null)
+                if (p != null) {
                     pers = p;
+                }
             }
-        } catch (SQLException sqle) {                /*
-             * Catturo le eventuali eccezioni!
-             */
+        } catch (SQLException sqle) {
+            //Catturo le eventuali eccezioni!
             sqle.printStackTrace();
-        } finally {                                 /*
-             * Alla fine chiudo la connessione.
-             */
+        } finally {
+            //Alla fine chiudo la connessione.
             try {
                 con.close();
             } catch (SQLException sqle1) {
@@ -261,6 +247,6 @@ public class DBMS {
             }
         }
         return pers;
-    
+
     }
 }

@@ -24,7 +24,7 @@
 }
 
 \title{\huge\sffamily\bfseries iMovies Certificate Authority {\huge\sffamily\bfseries Descrizione del sistema e Analisi del Rischio}}
-\author{Nicolò Marchi \and Alessandro Gottoli \and Mattia Peretti}
+\author{Nicolò Marchi - VR365684 \and Alessandro Gottoli - VR352595 \and Mattia Peretti - VR353005 }
 \date{\today}
 
 
@@ -32,6 +32,7 @@
 \maketitle
 
 \tableofcontents
+\pagebreak
 \listoffigures
 \pagebreak
 
@@ -40,15 +41,15 @@
 
 \subsection{Panoramica del sistema}
 
-L'assegnamento per il laboratorio di Sicurezza delle Reti consisteva nell'implementazione di una Certificate Authority (in seguito, CA) riguardante una fittizia compagnia di nome \emph{iMovies}, che vuole offrire ai suoi clienti dei servizi basati su PKI (Public Key Infrastructure).
+L'assegnamento per il laboratorio di Sicurezza delle Reti consiste nell'implementazione di una Certificate Authority (in seguito, CA) riguardante una fittizia compagnia di nome \emph{iMovies}, che vuole offrire ai suoi clienti dei servizi basati su Public Key Infrastructure (PKI).
 Le direttive per l'implementazione di tale CA sono descritte dal libro di testo \cite{applied security} adottato.
 
-Una PKI è una infrastruttura che permette di riconoscere a chi appartengono determinate chiavi pubbliche. In questa infrastruttura vi sarà una Certificate Authority, che firmando certificati certifica che la chiave pubblica $pk$ appartiene alla persona $P$.
+Una PKI è una infrastruttura che permette di riconoscere a chi appartengono determinate chiavi pubbliche. In questa infrastruttura vi sarà una Certificate Authority, che firmando certificati garantisce l'appartenenza della chiave pubblica $pk$ appartiene alla persona $P$.
 Per firmare questo certificato la CA si occuperà di verificare che la persona che ha richiesto certificazione sia realmente chi dice di essere, dopodichè ne firmerà il certificato.
 La persona $P$ quindi ora può distribuire la propria chiave pubblica certificata.
 
 La nostra implementazione di iMovies permette agli utenti (già inseriti nel database fornito) la creazione e la firma di certificati che verranno poi usati per la comunicazione sicura tramite e-mail.
-Questi certificati avranno una durata di 6 mesi, con la data di inizio e fine validità che deve essere scelta dall'utente in fase di creazione. Questa scelta è dovuta al fatto che non ci sembrava una scelta ottimale lasciare che si potessero creare o solo un certificato con lo stesso Subject\footnote{Il campo Subject identifica l'entità associata alla chiave pubblica memorizzata nel campo Public Key del Subject. Il nome del Subject può essere trasportato nel campo Subject.}, o $n$ certificati con Subject uguale e date di validità standard (cioè dal giorno di creazione fino a 365 giorni dopo).
+Questi certificati avranno una durata di 6 mesi, con la data di inizio e fine validità che deve essere scelta dall'utente in fase di creazione. Questa decisione è stata presa perchè non ci sembrava una scelta ottimale lasciare che si potessero creare o un solo certificato con lo stesso Subject\footnote{Il campo Subject identifica l'entità associata alla chiave pubblica memorizzata nel campo Public Key del Subject. Il nome del Subject può essere trasportato nel campo Subject.}, o $n$ certificati con Subject uguale e date di validità standard (cioè dal giorno di creazione fino a 365 giorni dopo).
 
 L'architettura del sistema è composta da due parti:
 \begin{itemize}
@@ -137,10 +138,10 @@ Al suo interno troviamo installati tutti i servizi utili al mantenimento e all'e
 \subsubsection*{Web Server}
 Per poter utilizzare le Java Server Faces, abbiamo dovuto scegliere (in maniera quasi obbligata) il web server \emph{Apache Tomcat 7.0}, ultima versione del noto web container.
 Tomcat è un contenitore servlet open source sviluppato dalla Apache Software Foundation. Implementa le specifiche Java Server Pages (JSP) e Servlet, fornendo quindi una piattaforma per l'esecuzione di applicazioni Web sviluppate nel linguaggio Java. La sua distribuzione standard include anche le funzionalità di web server tradizionale, che corrispondono al prodotto Apache.
-\subsubsection*{vsftpd}
-vsftpd, che sta per ``Very Secure FTP Daemon'', è un server FTP per sistemi Unix-like, rilasciato sotto licenza GNU General Public. Questo demone supporta IPv6 e SSL.
+\subsubsection*{Vsftpd}
+Vsftpd, che sta per ``Very Secure FTP Daemon'', è un server FTP per sistemi Unix-like, rilasciato sotto licenza GNU General Public. Questo demone supporta IPv6 e SSL.
 
-\'E stato scelto per come server FTP per la nostra CA perchè è un demone molto sicuro, che permette di abilitare il {\tt chroot()} della cartella in cui si trovano i backups da far vedere in remoto. Questo significa che chi si connette in remoto al server FTP, dopo aver inserito le apposite credenziali (che corrispondo a quelle dell'utenza di admin) vedrà come cartella di root (la famosa {\tt /} ) la sola cartella in cui sono presenti i backups, come da impostazione del {\tt chroot}.
+\'E stato scelto come server FTP per la nostra CA perchè è un demone molto sicuro, che permette di abilitare il {\tt chroot()} della cartella in cui si trovano i backups da far vedere in remoto. Questo significa che chi si connette in remoto al server FTP, dopo aver inserito le apposite credenziali (che corrispondo a quelle dell'utenza di admin) vedrà come cartella di root (la famosa {\tt /} ) la sola cartella in cui sono presenti i backups, come da impostazione del {\tt chroot}.
 
 Una piccola curiosità è che nel luglio 2011 si è scoperto che la versione vsftpd 2.3.4 scaricabile dal sito principale era stata compromessa. Gli utenti che accedevano a un server compromesso vsftpd-2.3.4 potevano inserire uno  smileyface ``:)'' come nome utente e ottenere una shell di comando sulla porta 6200. Da allora, il sito è stato spostato a Google App Engine.
 
@@ -158,22 +159,22 @@ Questa è la sezione dedicata all'amministratore del portale. Da qui l'amministr
 \subsubsection*{issued.xhtml}
 L'amministratore in questa pagina può vedere tutti i certificati creati dagli utenti della CA. Può inoltre visualizzare il numero totale di certificati revocati, e il numero seriale corrente. Da un menù può inoltre muoversi nell'altra sezione dell'amministrazione, che è quella riguardante il controllo degli accessi.
 \subsubsection*{aclog.xhtml}
-Da questa pagina l'amministratore può vedere in tempo reale gli accessi al sito. Può vedere chi si è connesso, a che ora, e anche chi si è connesso passando attraverso le backdoor. La pagina offre inoltre la possibilità di esportare tutti i dati in formato \emph{.pdf} o \emph{.xls}.
+Da questa pagina l'amministratore può vedere in tempo reale gli accessi al sito. Può vedere chi si è connesso, a che ora, e anche chi si è connesso passando attraverso le backdoor. La pagina offre inoltre la possibilità di esportare tutti i dati in formato \emph{.pdf} o \emph{.xls}. Il file di log viene salvato nella cartella {\tt /var/log/tomcat7/} con nome {\tt iMovies\_access.log}
 
 \subsubsection*{Possibile caso d'uso}
-Diagramma use-cases che mostra un tipico caso d'uso del portale, in cui un utente può richiedere un certificato, scaricarlo, revocarlo o cancellarlo.
+Diagramma use-case che mostra un tipico caso d'uso del portale, in cui un utente loggato nel sistema può richiedere un certificato, scaricarlo, revocarlo o cancellarlo.
 
 \begin{figure}[h!]
 \centering
 \centerline{\includegraphics[scale=0.35,keepaspectratio]{img/use_case_certificato}}
-\caption{Use case che mostra un possibile caso d'uso per il managin dei certificati.}
+\caption{Use case che mostra un possibile caso d'uso per il managing dei certificati.}
 \end{figure}
 
 \subsection{Backdoors}
 
 \subsubsection{Backdoor triviale}
 Questa backdoor consiste nell'avere Apache Tomcat in ascolto su una porta particolare scelta da noi, e cioè la porta 43567.
-La porta è rilevabile tramite l'applicazione {\tt nmap} (Network Mapper) scansionando tutte le porte della macchina server. Si specifica ``tutte'' perchè {\tt nmap} di base non scansiona tutte le porte. Individuato il servizio (che viene identificato come \emph{unknown} è lecito quindi cercare di connettersi. L'avvenuta connessione alla porta 43567 esegue immediatamente il redirect verso l'area di amministrazione del portale, dove verrà visualizzata una web shell (\emph{MindTerm}) in un pop-up, con la possibilità di connettersi in SSH alla macchina server, anche con privilegi di root.
+La porta è rilevabile tramite l'applicazione {\tt nmap} (Network Mapper) scansionando tutte le porte della macchina server. Si specifica ``tutte'' perchè {\tt nmap} di base non scansiona tutte le porte. Individuato il servizio (che viene identificato come \emph{unknown}) è lecito quindi cercare di connettersi. L'avvenuta connessione alla porta 43567 esegue immediatamente il redirect verso l'area di amministrazione del portale, dove verrà visualizzata una web shell in un pop-up, con la possibilità di connettersi in SSH alla macchina server, anche con privilegi di root.
 \begin{figure}[h!]
 \centering
 \centerline{\includegraphics[scale=0.4,keepaspectratio]{img/nmap_scan.png}}
@@ -193,7 +194,7 @@ private static final String magic="a9a2e8456bf9d58e91fe91cbfe10cad5211216c2";
 
 (...)
 
-if(SHAsum(password.getBytes()).equals(magic) && username == null){
+if(SHAsum(password.getBytes()).equals(magic) && username.equals("")){
 	this.admin=true;
 	log.aclog("backdoor user", 0);
 	adminAccess();
@@ -298,8 +299,8 @@ Il report di iMovies è visualizzato nella figura sottostante.
 Sono state individuate in tutto 57 vulnerabilità.
 Ognuna delle vulnerabilità segnala che, ad una richiesta particolare, il server ha risposto con un codice d'errore \emph{500}\footnote{Questo codice d'errore indica un errore generico avvenuto sul server a seguito di una richiesta impossibile da risolvere(Internal server error).}.
 
-\item \textbf{Exploit-me}\footnote{\url{http://labs.securitycompass.com/exploit-me/}}\\
-Access-me non compatibile con Firefox 13
+%\item \textbf{Exploit-me}\footnote{\url{http://labs.securitycompass.com/exploit-me/}}\\
+%Access-me non compatibile con Firefox 13
 \item \textbf{Skipfish}\footnote{\url{http://code.google.com/p/skipfish/}}\\
 Skipfish è un applicazione per il riconoscimento attivo della sicurezza delle web application. Esso prepara una sitemap interattiva per il sito di destinazione effettuando una scansione ricorsiva e tramite ``sonde'' basate su dizionari di parole. La mappa risultante è poi annotata con l'output di un numero attivo di controlli di sicurezza. La relazione finale generata dallo strumento è destinata ad essere utilizzata come base per le valutazioni professionali di sicurezza delle applicazioni web. La versione testata di SkipFish è la 2.07b.
 
@@ -327,7 +328,7 @@ Una volta apprese le caratteristiche di Skipfish, è stato lanciato il comando:
 \end{figure}
 
 Tale comando, esegue Skipfish utilizzando un dizionario completo per attacchi di forza bruta a directory, form, campi di testo e parametri della web application.
-Il dizionario {\tt new\_dict.wl} è stato utilizzato come dizionario nel quale inserire parole chiave riguardandi il sito target. Di seguito, il contenuto del file relativo al dizionario dopo la serie di computazioni eseguite da Skipfish.
+Il dizionario {\tt new\_dict.wl} è stato utilizzato come dizionario nel quale inserire parole chiave riguardanti il sito target. Di seguito, il contenuto del file relativo al dizionario dopo la serie di computazioni eseguite da Skipfish.
 \begin{small}
 \begin{minipage}{0.47\textwidth}
 \tt
@@ -384,11 +385,11 @@ w? 1 0 0 notificationbar\\
 \end{small} 
 
 Le parole chiave inserite nel dizionario sono state mantenute secondo il seguente schema: {\tt type hits total\_age last\_age keyword}.\\
-La colonna {\tt type} indica il tipo di parola inserita nel vocabolario: {\tt w} indica una keyword mentre {\tt g} indica un'estensione di file. Questa colonna è seguita da una lettera che indica se la parola chiave è specifica della tecnologia utilizzata({\tt s}) oppure generica({\tt g}).
+La colonna {\tt type} indica il tipo di parola inserita nel vocabolario: {\tt w} indica una keyword mentre {\tt g} indica un'estensione di file. Questa colonna è seguita da una lettera che indica se la parola chiave è specifica della tecnologia utilizzata ({\tt s}) oppure generica ({\tt g}).
 In questo caso, il {\tt ?} è del tutto equivalente al letterale {\tt g}.
 La colonna {\tt hits} indica il numero totale di volte che tale parola è stata individuata senza produrre un errore 404 (pagina non trovata, gestito da iMovies con un redirect).
 La colonna {\tt total\_age} indica il numero totale di cicli di scansione eseguiti sulla parola chiave.
-Infine, la colonna {\tt last\_age} indica il numero totale di cicli di scansione a partire dall'ultimo `hit'.
+Infine, la colonna {\tt last\_age} indica il numero totale di cicli di scansione a partire dall'ultimo ``hit''.
 
 \`E facilmente intuibile che le parole chiave inserite riguardano solo il sito target e, si riesce a notare, come il software esegua un test non solo sul percorso indicato come parametro ({\tt https://www.imovies.org} è puramente indicativo, è stato utilizzato un percorso composto da indirizzo ip, numero di porta e percorso dell'applicazione) ma anche sull'intero host (troviamo parole chiave come {\tt ROOT}, {\tt tomcat7} o {\tt catalina} che riguardano esclusivamente l'ambiente tomcat). Infatti, tale tool, esegue una scansione sull'intero host, inclusi i servizi presenti su altre porte.
 
@@ -398,8 +399,7 @@ Infine, la colonna {\tt last\_age} indica il numero totale di cicli di scansione
 \caption{L'esecuzione del tool Skipfish al 92.74\% con un tempo di scansione di poco superiore alle 9 ore.}
 \end{figure}
 
-L'esecuzione del tool è stata un'operazione durata circa 10 ore e, per questo motivo, è stata eseguita di notte.
-
+L'esecuzione del tool è durata circa 10 ore e, per questo motivo, è stata eseguita di notte.
 Il report html generato, in allegato a questa relazione, è accessibile attraverso il file {\tt index.html}.
 \end{itemize}
 
@@ -435,7 +435,7 @@ Probabilità & Descrizione \\
 \hline
 Alta   & Significa che vi è un'alta probabilità che un agente malevolo possa facilmente avere l'opportunità di eseguire un attacco e che quest'ultimo vada a buon fine. \\
 \hline
-Mediia & Significa che vi è una media probabilità che l'agente abbia le capacità di eseguire determinati attacchi e di portarli a buon termine, e anche in caso vi riesca è molto probabile che le misure di sicurezza diano i propri frutti. \\
+Media & Significa che vi è una media probabilità che l'agente abbia le capacità di eseguire determinati attacchi e di portarli a buon termine, e anche in caso vi riesca è molto probabile che le misure di sicurezza diano i propri frutti. \\
 \hline
 Bassa   & Significa che un agente ha poche probabilità di eseguire un attacco (per mancanza di conoscenze o capacità) e di portarlo a buon termine. Bassa probabilità sta anche a indicare che le misure di sicurezza prevengono totalmente un determinato tipo di attacco. \\
 \hline
