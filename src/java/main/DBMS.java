@@ -182,7 +182,7 @@ public class DBMS {
             pstmt.setString(5, pb.getUid());
 
             IMoviesLogger log = new IMoviesLogger("main.DBMS");
-            log.info(false, "stampa email= " + pb.getEmail(), "stampa email= " + pb.getEmail(), "stampa email= " + pb.getEmail());
+            //log.info(false, "stampa email= " + pb.getEmail(), "stampa email= " + pb.getEmail(), "stampa email= " + pb.getEmail());
             result = pstmt.executeUpdate();
 
             pstmt = con.prepareStatement(row);
