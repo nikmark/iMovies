@@ -20,11 +20,6 @@
     <welcome-file-list>
         <welcome-file>/resources/pages/login.xhtml</welcome-file>
     </welcome-file-list>
-    <!--    <login-config>
-        <auth-method>CLIENT-CERT</auth-method>
-         
-</login-config>-->
-    <!--    faces/resources/pages-->
     <error-page>
         <error-code>404</error-code>
         <location>/resources/pages/error.xhtml</location>
