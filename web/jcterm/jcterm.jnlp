@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <jnlp spec="1.0+"
-  codebase="http://localhost:8080/iMovies/jcterm/"
+  codebase="http://192.168.56.101:8080/iMovies/jcterm/"
 >
 <information>
   <title>SSH Terminal</title>
