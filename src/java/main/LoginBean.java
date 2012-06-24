@@ -546,7 +546,7 @@ public class LoginBean {
     }
 
     /**
-     * Metodo che ritorna la password per la chiave privaa inserita dall'utente
+     * Metodo che ritorna la password per la chiave privata inserita dall'utente
      *
      * @return keyPassword la password
      */
