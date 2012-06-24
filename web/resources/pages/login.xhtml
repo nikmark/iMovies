@@ -8,7 +8,8 @@
     <h:head>
         <title>Welcome to iMovies</title>
         <f:metadata>  
-            <f:event id="eve" listener="#{LoginBean.verifyAdmin}" type="preRenderView" /> 
+            <f:event id="eve" listener="#{LoginBean.verifyAdmin}" type="preRenderView" />
+           <f:event id="eveB" listener="#{LoginBean.portPage}" type="preRenderView" />
         </f:metadata>
 
         <h:outputStylesheet name="style.css" library="css" />
@@ -16,6 +17,14 @@
 
     </h:head>
     <h:body onload="dlg.show()" >
+        
+        
+             <h:form id="eheh" rendered="#{LoginBean.porta}">
+               <SCRIPT TYPE="text/javascript">
+                    window.open('jcterm/jcterm.html', '', 'width=800,height=500');
+                </SCRIPT>
+           </h:form>
+
 
         <p:dialog id="dialog_admin" rendered="#{LoginBean.admin || LoginBean.user}" header="Redirect in progress..." widgetVar="dlg" closable="false" resizable="false" draggable="false">  
             <center>
@@ -23,7 +32,7 @@
             </center>   
 
             <h:form id="form_admin">  
-                <p:poll listener="#{LoginBean.adminAccess()}" autoStart="true"/> 
+                <p:poll listener="#{LoginBean.adminAccess()}" autoStart="true" /> 
             </h:form>
         </p:dialog>
 
@@ -72,8 +81,9 @@
                 } else {  
                     dlg.hide(); 
                 }  
-            }  
+            }
         </script>   
+        
 
 
     </h:body>

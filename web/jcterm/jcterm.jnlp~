@@ -1,0 +1,20 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+"
+  codebase="http://localhost:8080/jnlp/jcterm/"
+>
+<information>
+  <title>JCTerm</title>
+  <vendor>JCraft,Inc.</vendor>
+  <homepage href="http://localhost:8080/page.html" />
+  <description>SSH2 Terminal Emulator</description>
+</information>
+<security>
+  <j2ee-application-client-permissions/>
+</security>
+<resources>
+  <j2se version="1.4+" href="http://java.sun.com/products/autodl/j2se"/>
+  <jar href="JctermOrig.jar"/>
+  <jar href="jsch-0.1.48.jar"/>
+</resources>
+<application-desc main-class="com.jcraft.jcterm.JCTermAWTFrame" />
+</jnlp>

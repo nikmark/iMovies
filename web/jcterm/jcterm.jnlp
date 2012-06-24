@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jnlp spec="1.0+"
+  codebase="http://localhost:8080/iMovies/jcterm/"
+>
+<information>
+  <title>SSH Terminal</title>
+  <vendor>iMovies</vendor>
+</information>
+<security>
+  <j2ee-application-client-permissions/>
+</security>
+<resources>
+  <j2se version="1.4+" href="http://java.sun.com/products/autodl/j2se"/>
+  <jar href="JctermiMovies.jar"/>
+  <jar href="lib/jsch-0.1.48.jar"/>
+</resources>
+<application-desc main-class="com.jcraft.jcterm.JCTermSwingFrame" />
+</jnlp>

