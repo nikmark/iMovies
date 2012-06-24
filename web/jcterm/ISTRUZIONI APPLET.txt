@@ -1,0 +1,12 @@
+le applet vanno firmate altrimenti non hanno permessi per fare niente
+
+fase 1:
+compilazione e creazione del jar per l'applet
+
+fase 2:
+keytool -genkey -alias firmaApplet -keystore keystore
+
+(password: scatenato)
+
+fase 3:
+jarsigner -keystore keystore -signedjar SignedJctermiMovies.jar NotSignedJctermiMovies.jar firmaApplet

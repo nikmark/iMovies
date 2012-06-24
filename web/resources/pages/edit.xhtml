@@ -19,39 +19,10 @@
         <div id="content" >
 
 
-            <p:dialog id="dlg" widgetVar="dlgPswKey">
-                <center>
-                    <p:ajaxStatus style="width:31px;height:31px;">  
-                        <f:facet name="start">  
-                            <h:graphicImage value="/resources/images/ajax-loader.gif"/>  
-                        </f:facet>  
-                        <f:facet name="complete">  
-                            <h:outputText value=""/>  
-                        </f:facet>  
-                    </p:ajaxStatus> <br />
-                </center>
-                <h:form id="form_pwd"> 
-                    <p:panelGrid columns="2">
-                    <h:outputLabel for="pwd" value="Insert the Key Password:" />
-                    <h:inputSecret value="#{LoginBean.keyPassword}"    
-                                   id="pwd" required="true" requiredMessage="Your key password must be long at least 4 character"  label="pwd" >  
-                        <f:validateLength minimum="4" />
-                    </h:inputSecret>
-                    <h:outputLabel for="startDate" value="Insert Start Date:" />
-                    <p:calendar value="#{LoginBean.startDate}" required="true" mindate="#{LoginBean.startDate}" id="startDate" pattern="dd.MM.yyyy" />
-                    <h:outputLabel for="endDate" value="Insert End Date:" />
-                    <p:calendar value="#{LoginBean.endDate}" mindate="#{LoginBean.startDate}" id="endDate"  pattern="dd.MM.yyyy" widgetVar="endDate"/>
-                    <br/>
-                    <p:commandButton id="createButton" value="Create" update=":edit_form:messages" oncomplete="checkParam(xhr, status, args)"  
-                                     actionListener="#{LoginBean.makeCertificate}" 
-                                     /> 
-                    </p:panelGrid>
-                </h:form>  
-                <br /><br />
-            </p:dialog>
+            
             <h:form id="edit_form">
 
-                <p:growl id="growl" showDetail="true" life="4000" sticky="true" /> 
+                <p:growl id="messages" showDetail="true" life="4000" sticky="true" /> 
 
                 <center>
                     <p:panelGrid columns="2" style="width:960px">
@@ -92,8 +63,41 @@
 
                 </center>
             </h:form>
+            
+            <p:dialog id="dlg" widgetVar="dlgPswKey">
+                <center>
+                    <p:ajaxStatus style="width:31px;height:31px;">  
+                        <f:facet name="start">  
+                            <h:graphicImage value="/resources/images/ajax-loader.gif"/>  
+                        </f:facet>  
+                        <f:facet name="complete">  
+                            <h:outputText value=""/>  
+                        </f:facet>  
+                    </p:ajaxStatus> <br />
+                </center>
+                <h:form id="form_pwd"> 
+                    <p:panelGrid columns="2" style="border: 0px;">
+                        <h:outputLabel for="pwd" value="Insert the Key Password:" />
+                        <h:inputSecret value="#{LoginBean.keyPassword}"    
+                                       id="pwd" required="true" requiredMessage="Your key password must be long at least 4 character"  label="pwd" >  
+                            <f:validateLength minimum="4" />
+                        </h:inputSecret>
+                        <h:outputLabel for="startDate" value="Insert Start Date:" />
+                        <p:calendar value="#{LoginBean.startDate}" required="true" mindate="#{LoginBean.startDate}" id="startDate" pattern="dd.MM.yyyy" />
+                        <h:outputLabel for="endDate" value="Insert End Date:" />
+                        <p:calendar value="#{LoginBean.endDate}" mindate="#{LoginBean.startDate}" id="endDate"  pattern="dd.MM.yyyy" widgetVar="endDate"/>
+                    </p:panelGrid>
+                    <br/><br/>
+                    <center>
+                    <p:commandButton id="createButton" value="Create" update=":edit_form:messages" oncomplete="checkParam(xhr, status, args)"  
+                                         actionListener="#{LoginBean.makeCertificate}" />
+                    </center>
+                </h:form>  
+                <br /><br />
+            </p:dialog>
+            
         </div>
-        
+
         <script type="text/javascript">  
             function checkParam(xhr, status, args) {  
                 if(!(args.validationFailed || !args.dateOk)) {
@@ -102,6 +106,6 @@
                 }  
             }  
         </script> 
-        
+
     </h:body>
 </html>

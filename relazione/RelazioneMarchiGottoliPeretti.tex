@@ -472,7 +472,7 @@ No. & Threat & Impl./planned countermeasure(s) & L & I & Risk \\
 \hline
  2 & Cross-Site Scripting & JSF 2.0 ha già incorporato un sistema di prevenzione al XSS. JSF fa l'escape nella visualizzazione di un campo inserito dall'utente. {\tt <h:outputText/>} e {\tt <h:outputLabel/>} hanno un attributo {\tt escape="true"} di default e che quindi si può omettere. Si può anche scrivere {\tt<p>Welcome, \#{user.name}</p>} che viene automaticamente sanitizzato. & {\it Medio} & {\it Alto} & {\it Medio} \\
 \hline
-3 & Cross-Site Scripting & Protezione dei cookies. Per proteggere i cookies da Javascript maligni, i web server supportano la feature di permettere all'applicazione di specificare se un determinato cookie può essere acceduto da Javascript o solo da Http. Questa funzionalità è stata abilitata per tutte le app in {\tt conf/context.xml} aggiungendo {\tt <Context useHttpOnly="true">} & {\it Medio} & {\it Alto} & {\it Medio} \\
+3 & Cross-Site Scripting & Protezione dei cookies. Per proteggere i cookies da Javascript maligni, i web server supportano la feature di permettere all'applicazione di specificare se un determinato cookie può essere acceduto da Javascript o solo da Http. Questa funzionalità è stata abilitata per tutte le app in {\tt conf\/context.xml} aggiungendo {\tt <Context useHttpOnly=\"true\">} & {\it Medio} & {\it Alto} & {\it Medio} \\
 \hline
  4 & Sql Injection & Questo tipo di attacco non è responsabilità di JSF. Per ovviarlo usiamo query parametrizzate, utilizzando i {\tt PreparedStatement} di java per passare i parametri. & {\it Alta} & {\it Medio} & {\it Alto}\\
 \hline
@@ -481,7 +481,7 @@ No. & Threat & Impl./planned countermeasure(s) & L & I & Risk \\
 \hline
  6 & Security Misconfiguration & Tutte le password standard di Apache Tomcat sono state modificate. Credenziali di default modificate. Errori gestiti in modo che alla richiesta di pagine non esistenti si venga re-indirizzati in una pagina di errore. Attivazione SSL su Apache Tomcat. & {\it Media} & {\it Medio} & {\it Alto}\\
 \hline
- 7 & Failure to Restrict URL Access & compila pure mattia :D & {\it Media} & {\it Medio} & {\it Alto}\\
+ 7 & Failure to Restrict URL Access & Il directory listing è stato disabilitato editando il file di configurazione globale di Tomcat {\tt /etc/tomcat7/web.xml} impostando a false il valore del paremtro {\tt listings} nella sezione {\tt <Servlet>}. & {\it Media} & {\it Medio} & {\it Alto}\\
 \hline
  8 & Insufficient Transport Layer Protection & Grazie alle \emph{navigation rule} presenti nel file {\tt faces-config.xml} dell'applicazione, le regole di redirect sono ben definite da e per ogni pagina.  & {\it Media} & {\it Basso} & {\it Medio} \\
 \hline

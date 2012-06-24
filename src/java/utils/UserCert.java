@@ -1,17 +1,19 @@
+/*
+ * To change this template, choose Tools | Templates
+ * and open the template in the editor.
+ */
 package utils;
 
 /**
  * Classe di gestione del certificato dell'utente
  *
- * @author Alessandro Gottoli
- * @author Nicolò Marchi
- * @author Mattia Peretti
- * @version 1.0
+ * @author Gottoli, Marchi, Peretti
  */
 public class UserCert {
 
     private String nameFile;
     private String serial;
+//    private String validity;
     private String ver;
     private String startD;
     private String dateE;
@@ -29,6 +31,13 @@ public class UserCert {
         this.passwordKey = this.passwordPkcs12 = "";
         this.dateR = "";
     }
+//    public UserCert(String nameFile, String serial, String validity){
+//        this.nameFile=nameFile;
+//        this.serial=serial;
+//        this.validity=validity;
+//        this.ver = this.dateE = null;
+//        this.dateR = "Not Revoked";
+//    }
 
     /**
      * Restituisce la data di scadenza del certificato
@@ -67,21 +76,13 @@ public class UserCert {
     }
 
     /**
-     * Metodo che restituisce l'attributo di validità, espirazione, revocazione
-     * contentuto nel file index.txt
      *
-     * @return l'attributo V o E o R
+     * @return
      */
     public String getVer() {
         return ver;
     }
 
-    /**
-     * Metodo che assegna l'attributo di validità, espirazione, revocazione
-     * contentuto nel file index.txt all'oggetto UserCert
-     *
-     * @param l'attributo V o E o R
-     */
     public void setVer(String ver) {
         this.ver = ver;
     }
@@ -97,7 +98,6 @@ public class UserCert {
 
     /**
      * Imposta il nome del file
-     *
      * @param nameFile una stringa che rappresenta il nome del file
      */
     public void setNameFile(String nameFile) {
@@ -106,7 +106,6 @@ public class UserCert {
 
     /**
      * Restituisce il seriale assegnato al certificato
-     *
      * @return una stringa che rappresenta il seriale
      */
     public String getSerial() {
@@ -115,16 +114,22 @@ public class UserCert {
 
     /**
      * Imposta il seriale da assegnare al certificato
-     *
      * @param serial una stringa che rappresenta il seriale
      */
     public void setSerial(String serial) {
         this.serial = serial;
     }
 
+//    public String getValidity() {
+//        return validity;
+//    }
+//
+//    public void setValidity(String validity) {
+//        this.validity = validity;
+//    }
+    
     /**
      * Restituisce la password del file pkcs12
-     *
      * @return una stringa che rappresenta la password
      */
     public String getPasswordPkcs12() {
@@ -133,7 +138,6 @@ public class UserCert {
 
     /**
      * Imposta la password del pkcs12
-     *
      * @param passwordPkcs12 una stringa che rappresenta la password
      */
     public void setPasswordPkcs12(String passwordPkcs12) {
@@ -141,9 +145,7 @@ public class UserCert {
     }
 
     /**
-     * Restituisce la password della chiave privata dell'utente contenuta nel
-     * pkcs12
-     *
+     * Restituisce la password della chiave privata dell'utente contenuta nel pkcs12
      * @return una stringa che rappresenta la password
      */
     public String getPasswordKey() {
@@ -152,7 +154,6 @@ public class UserCert {
 
     /**
      * Imposta la password della chiave privata dell'utente contenuta nel pkcs12
-     *
      * @param passwordKey una stringa che rappresenta la password
      */
     public void setPasswordKey(String passwordKey) {
@@ -160,17 +161,15 @@ public class UserCert {
     }
 
     /**
-     * Ritorna lo username dell'utente
-     *
-     * @return lo username
+     * Ritorna una stringa rappresentante 
+     * @return the user
      */
     public String getUser() {
         return user;
     }
 
     /**
-     * Assegna lo username dell'utente
-     *
+     * 
      * @param user the user to set
      */
     public void setUser(String user) {
@@ -179,9 +178,7 @@ public class UserCert {
 
     /**
      * Ritorna la data di inizio di validità del certificato
-     *
-     * @return una stringa rappresentante la data a partire dalla quale il
-     * certificato è valido
+     * @return una stringa rappresentante la data a partire dalla quale il certificato è valido
      */
     public String getStartD() {
         return startD;
@@ -189,9 +186,7 @@ public class UserCert {
 
     /**
      * Imposta la data di inizio di validità del certificato
-     *
-     * @param startD una stringa rappresentante la data a partire dalla quale il
-     * certificato è valido
+     * @param startD una stringa rappresentante la data a partire dalla quale il certificato è valido
      */
     public void setStartD(String startD) {
         this.startD = startD;

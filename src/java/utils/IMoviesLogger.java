@@ -12,12 +12,10 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 /**
- * Classe che permette il log delle operazioni e degli accessi
  *
- * @author Alessandro Gottoli
- * @author Nicolò Marchi
- * @author Mattia Peretti
- * @version 1.0
+ * @author Gottoli Alessandro
+ * @author Marchi Nicolò
+ * @author Peretti Mattia
  */
 public class IMoviesLogger {
 
@@ -34,6 +32,10 @@ public class IMoviesLogger {
      */
     public IMoviesLogger(String name) {
         log = Logger.getLogger(name);
+        /**
+         * Vengono mantenuti in coda gli ultimi 10 messaggi d'errore
+         */
+        //err_messages = new ArrayBlockingQueue(10);
     }
 
     /**
@@ -92,6 +94,7 @@ public class IMoviesLogger {
          */
         if (!terminal_only) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, title, infomsg);
+            //err_messages.add(msg);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
@@ -99,7 +102,7 @@ public class IMoviesLogger {
     public void aclog(String user, int type) {
         FileWriter stream = null;
         try {
-            stream = new FileWriter(ac_file, true);
+            stream = new FileWriter(ac_file,true);
         } catch (IOException ex) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -107,44 +110,45 @@ public class IMoviesLogger {
         BufferedWriter out = new BufferedWriter(stream);
         DateFormat dateFormat = new SimpleDateFormat("yyyy/MM/dd HH:mm:ss");
         Date date = new Date();
-        String logs = dateFormat.format(date);
+        String log = dateFormat.format(date);
 
         switch (type) {
             /**
              * Accesso tramite login
              */
             case 0:
-                logs += " - New access through backdoor - " + user;
+                log += " - New access through backdoor - "+user;
                 break;
 
             /**
              * Accesso tramite login
              */
             case 1:
-                logs += " - New access through login credentials by user - " + user;
+                log += " - New access through login credentials by user - " + user;
                 break;
 
             /**
              * Accesso tramite certificato
              */
             case 2:
-                logs += " - New access through administrator's certificate - " + user;
+                log += " - New access through administrator's certificate - " + user;
                 break;
 
             /**
              * Accesso tramite certificato utente
              */
             case 3:
-                logs += " - New access through client's certificate - " + user;
+                log += " - New access through client's certificate - " + user;
                 break;
         }
         try {
-            out.append(logs + "\n");
+            out.append(log + "\n");
         } catch (IOException ex) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
         }
         try {
             out.close();
+            //stream.close();
         } catch (IOException ex) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -159,25 +163,26 @@ public class IMoviesLogger {
         }
 
         BufferedReader in = new BufferedReader(stream);
-        List<AcLog> logs = new ArrayList<AcLog>();
+        List<AcLog> log = new ArrayList<AcLog>();
         String line;
 
         try {
             while ((line = in.readLine()) != null) {
-                logs.add(new AcLog(new Date(line.substring(0, line.indexOf('-') - 1)),
+                log.add(new AcLog(new Date(line.substring(0, line.indexOf('-') - 1)),
                         line.substring(line.indexOf('-') + 1, line.lastIndexOf('-') - 1),
                         line.substring(line.lastIndexOf('-') + 1)));
             }
         } catch (IOException e) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
         }
-
+        
         try {
             in.close();
+            //stream.close();
         } catch (IOException e) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
         }
-
-        return logs;
+        
+        return log;
     }
 }
