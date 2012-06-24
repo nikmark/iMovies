@@ -75,10 +75,13 @@ public class Utilities {
 
             process.waitFor();
 
-            log.info(false, "Creazione certificato", "Comando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate);
+            //log.info(false, "Make certificate", "Comando firma", "comando: sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate);
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -sign " + pb.getUid() + " " + startDate + " " + endDate});
             process.waitFor();
+            
+            log.info(false, "Create certificate", "Your certificate has been created.", "Certificato creato");
+            
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
@@ -289,12 +292,13 @@ public class Utilities {
 //        Process process2=null;
         try {
 //            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
-            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -revoke " + directory + "/newcerts/" + ue.getNameFile());
+            log.info(true, "Creazione certificato", "Generazione file con chiavi", "comando: sh " + scripts + "CA.sh -revoke " + directory + "/newcerts/" + ue.getNameFile());
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -revoke " + directory + "/newcerts/" + ue.getNameFile()});
 //            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+nomeFile+" >> "+scripts+"error"});
             process.waitFor();
 //            process2.waitFor();
+            log.info(false,"Revoke certificate","Your certificate has been revoked.","Certificato revocato");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
@@ -310,12 +314,13 @@ public class Utilities {
 //        Process process2=null;
         try {
 //            log.info(false, "Creazione certificato", "Generazione file con chiavi", "Generazione csr in cartella, questa è la cartella scripts: " + scripts);
-            log.info(false, "Creazione certificato", "Generazione file con chiavi", "comando: rm " + directory + "/newcerts/" + selectedUserCert.getNameFile());
+            log.info(true, "Creazione certificato", "Generazione file con chiavi", "comando: rm " + directory + "/newcerts/" + selectedUserCert.getNameFile());
 
             process = Runtime.getRuntime().exec(new String[]{"bash", "-c", "sh " + scripts + "CA.sh -revcanc " + directory + "/newcerts/" + selectedUserCert.getNameFile()});
 //            process2 = Runtime.getRuntime().exec(new String[]{"bash", "-c", "echo sh " + scripts + "CA.sh -revoke "+directory+"/newcerts/"+nomeFile+" >> "+scripts+"error"});
             process.waitFor();
 //            process2.waitFor();
+            log.info(false, "Delete certificate", "Your certificate has been deleted.", "Certificato eliminato");
         } catch (IOException ex) {
             log.err(false, "Errore di IO", ex.toString(), ex.toString());
         } catch (InterruptedException ex) {
