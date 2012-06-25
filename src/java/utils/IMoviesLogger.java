@@ -1,3 +1,4 @@
+
 package utils;
 
 import java.io.*;
@@ -12,7 +13,8 @@ import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 /**
- *
+ * Classe adibita al log delle informazioni, usata in fase di sviluppo
+ * 
  * @author Gottoli Alessandro
  * @author Marchi Nicolò
  * @author Peretti Mattia
@@ -32,10 +34,7 @@ public class IMoviesLogger {
      */
     public IMoviesLogger(String name) {
         log = Logger.getLogger(name);
-        /**
-         * Vengono mantenuti in coda gli ultimi 10 messaggi d'errore
-         */
-        //err_messages = new ArrayBlockingQueue(10);
+
     }
 
     /**
@@ -94,7 +93,6 @@ public class IMoviesLogger {
          */
         if (!terminal_only) {
             FacesMessage msg = new FacesMessage(FacesMessage.SEVERITY_ERROR, title, infomsg);
-            //err_messages.add(msg);
             FacesContext.getCurrentInstance().addMessage(null, msg);
         }
     }
@@ -148,7 +146,6 @@ public class IMoviesLogger {
         }
         try {
             out.close();
-            //stream.close();
         } catch (IOException ex) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, ex);
         }
@@ -178,7 +175,6 @@ public class IMoviesLogger {
         
         try {
             in.close();
-            //stream.close();
         } catch (IOException e) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
         }

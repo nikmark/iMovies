@@ -1,3 +1,4 @@
+
 package main;
 
 import java.io.*;
@@ -16,7 +17,9 @@ import utils.UserCert;
 /**
  * Bean di gestione certificati
  *
- * @author Gottoli, Marchi, Peretti
+ * @author Alessandro Gottoli
+ * @author Nicolò Marchi
+ * @author Mattia Peretti
  * @version 1.0
  */
 public class CertificateBean implements Serializable {
@@ -36,7 +39,8 @@ public class CertificateBean implements Serializable {
     }
 
     /**
-     *
+     * Metodo che restituisce la lista dei certificati dell'utente.
+     * 
      * @return Un oggetto di tipo List che rappresenta gli UserCert
      */
     public List<UserCert> getUCert() {
@@ -44,13 +48,21 @@ public class CertificateBean implements Serializable {
     }
 
     /**
-     * 
-     * @return 
+     * Metodo che restituisce lo UserCert scelto nella
+     * <code>DataTable</code>.
+     *
+     * @return oggetto che rappresenta un utente e i suoi certificati
      */
     public UserCert getSelectedUserCert() {
         return selectedUserCert;
     }
 
+    /**
+     * Metodo che setta lo UserCert nel bean.
+     *
+     * @param selectedUserCert oggetto UserCert selezionato nella
+     * <code>DataTable</code>
+     */
     public void setSelectedUserCert(UserCert selectedUserCert) {
         this.selectedUserCert = selectedUserCert;
     }
@@ -67,8 +79,13 @@ public class CertificateBean implements Serializable {
         return "refresh";
     }
 
+    /**
+     * Metodo che permette di scaricare un certificato selezionato. Il
+     * certificato verrà incluso in un PKCS12 con la relativa chiave primaria.
+     *
+     * @throws IOException quando il file è nullo.
+     */
     public void downloadCertificate() throws IOException {
-        //System.out.println("sono in downloadCertificate.");
         utils.Utilities.pkcs12Certificate(getSelectedUserCert());
         InputStream stream = ((ServletContext) FacesContext.getCurrentInstance().getExternalContext().getContext()).getResourceAsStream("/pkcs12/" + getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
         this.file = new DefaultStreamedContent(stream, "application/x-pkcs12", getSelectedUserCert().getNameFile().replace(".pem", ".p12"));
@@ -95,7 +112,7 @@ public class CertificateBean implements Serializable {
      * Il metodo restituisce lo stream del file impostato
      *
      * @return un oggetto di tipo StreamedContent
-     * @throws IOException
+     * @throws IOException se lo stream è nullo o il file è nullo
      */
     public StreamedContent getFile() throws IOException {
         System.out.println("adesso ritorno il file da getFile()");
@@ -190,7 +207,6 @@ public class CertificateBean implements Serializable {
 
         try {
             in.close();
-            //stream.close();
         } catch (IOException e) {
             Logger.getLogger(IMoviesLogger.class.getName()).log(Level.SEVERE, null, e);
         }
